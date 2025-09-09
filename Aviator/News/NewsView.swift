@@ -21,14 +21,14 @@ struct NewsView: View {
                             } label: {
                                 VStack(alignment: .leading, spacing: 6) {
                                     Text(post.title)
-                                        .font(.title2)
+                                        .font(.title3)
                                         .foregroundStyle(Theme.Palette.textPrimary)
                                     HStack(spacing: 8) {
                                         Text("by \(post.author)")
                                         Text(post.createdAt, style: .relative)
                                     }
                                     .foregroundStyle(.secondary)
-                                    .font(.title3)
+                                    .font(.subheadline)
                                 }
                             }
                         }
