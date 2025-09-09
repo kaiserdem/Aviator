@@ -9,7 +9,7 @@ private struct FlightRow: View {
                 .foregroundStyle(.tint)
             VStack(alignment: .leading, spacing: 2) {
                 Text(flight.callsign?.isEmpty == false ? flight.callsign! : "Без позивного")
-                    .font(.headline)
+                    .font(.title3)
                 Text(flight.originCountry ?? "Невідома країна")
                     .foregroundStyle(.secondary)
             }
@@ -44,6 +44,11 @@ struct FlightsView: View {
                     }
                 }
                 .navigationTitle("Flights")
+                .toolbarColorScheme(.dark, for: .navigationBar)
+                .toolbarBackground(Theme.Palette.surface, for: .navigationBar)
+                .toolbarBackground(.visible, for: .navigationBar)
+                .scrollContentBackground(.hidden)
+                .background(Theme.Gradient.background)
                 .navigationDestination(for: FlightState.self) { flight in
                     FlightDetailView(flight: flight)
                 }

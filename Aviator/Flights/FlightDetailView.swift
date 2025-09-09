@@ -43,5 +43,10 @@ struct FlightDetailView: View {
             }
         }
         .navigationTitle(flight.callsign?.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty == false ? flight.callsign! : "Flight details")
+        .toolbarColorScheme(.dark, for: .navigationBar)
+        .toolbarBackground(Theme.Palette.surface, for: .navigationBar)
+        .toolbarBackground(.visible, for: .navigationBar)
+        .scrollContentBackground(.hidden)
+        .background(Theme.Gradient.background)
     }
 }

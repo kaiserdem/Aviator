@@ -31,6 +31,12 @@ struct ContentView: View {
                 .tabItem { Label("Aircraft", systemImage: "airplane.circle") }
                 .tag(AppFeature.State.Tab.aircraft)
             }
+            .tint(Theme.Palette.primaryRed)
+            .background(Theme.Gradient.background)
+            .toolbarColorScheme(.dark, for: .tabBar)
+            .toolbarBackground(Theme.Palette.surface, for: .tabBar)
+            .toolbarBackground(.visible, for: .tabBar)
+            .preferredColorScheme(.dark)
         }
     }
 }

@@ -15,8 +15,11 @@ struct AirportsView: View {
                     }
                     Section("Featured") {
                         Label("KBP — Boryspil", systemImage: "airplane.departure")
+                            .font(.title3)
                         Label("LHR — London Heathrow", systemImage: "airplane.departure")
+                            .font(.title3)
                         Label("JFK — New York JFK", systemImage: "airplane.departure")
+                            .font(.title3)
                     }
                 }
                 .navigationTitle("Airports")
