@@ -1,16 +1,19 @@
 import Foundation
 
-struct FlightState: Identifiable, Decodable {
+struct FlightState: Identifiable, Decodable, Equatable, Hashable {
     let id: UUID = UUID()
+    let icao24: String?
     let callsign: String?
     let originCountry: String?
+    let timePosition: Int?
+    let lastContact: Int?
     let longitude: Double?
     let latitude: Double?
+    let baroAltitude: Double?
+    let onGround: Bool?
     let velocity: Double?
-
-    enum CodingKeys: String, CodingKey {
-        case callsign, originCountry = "origin_country", longitude, latitude, velocity
-    }
+    let heading: Double?
+    let verticalRate: Double?
 }
 
 enum NetworkError: Error {
@@ -32,8 +35,6 @@ final class NetworkService {
             guard (response as? HTTPURLResponse)?.statusCode == 200 else {
                 return Self.mockFlights
             }
-            // OpenSky повертає масив у полі "states" як вкладені масиви
-            // [time, [ [icao24, callsign, origin_country, time_position, last_contact, longitude, latitude, baro_altitude, on_ground, velocity, heading, vertical_rate, ... ] ]]
             struct OpenSkyEnvelope: Decodable {
                 let time: Int?
                 let states: [[AnyDecodable]]?
@@ -44,14 +45,32 @@ final class NetworkService {
             let envelope = try decoder.decode(OpenSkyEnvelope.self, from: data)
             let rows = envelope.states ?? []
             let mapped: [FlightState] = rows.compactMap { row in
-                // Індекси за специфікацією OpenSky
-                // 1: callsign, 2: origin_country, 5: longitude, 6: latitude, 9: velocity
-                let callsign = row[safe: 1]?.string
+                let icao24 = row[safe: 0]?.string
+                let callsign = row[safe: 1]?.string?.trimmingCharacters(in: .whitespaces)
                 let origin = row[safe: 2]?.string
+                let timePos = row[safe: 3]?.int
+                let last = row[safe: 4]?.int
                 let lon = row[safe: 5]?.double
                 let lat = row[safe: 6]?.double
+                let baro = row[safe: 7]?.double
+                let onGround = row[safe: 8]?.bool
                 let vel = row[safe: 9]?.double
-                return FlightState(callsign: callsign?.trimmingCharacters(in: .whitespaces), originCountry: origin, longitude: lon, latitude: lat, velocity: vel)
+                let heading = row[safe: 10]?.double
+                let vRate = row[safe: 11]?.double
+                return FlightState(
+                    icao24: icao24,
+                    callsign: callsign,
+                    originCountry: origin,
+                    timePosition: timePos,
+                    lastContact: last,
+                    longitude: lon,
+                    latitude: lat,
+                    baroAltitude: baro,
+                    onGround: onGround,
+                    velocity: vel,
+                    heading: heading,
+                    verticalRate: vRate
+                )
             }
             if mapped.isEmpty { return Self.mockFlights }
             return Array(mapped.prefix(50))
@@ -61,13 +80,12 @@ final class NetworkService {
     }
 
     private static let mockFlights: [FlightState] = [
-        FlightState(callsign: "PS101", originCountry: "Ukraine", longitude: 30.45, latitude: 50.45, velocity: 220.0),
-        FlightState(callsign: "BA238", originCountry: "United Kingdom", longitude: -0.45, latitude: 51.47, velocity: 190.0),
-        FlightState(callsign: "DLH4AB", originCountry: "Germany", longitude: 8.56, latitude: 50.04, velocity: 210.0)
+        FlightState(icao24: "abc123", callsign: "PS101", originCountry: "Ukraine", timePosition: nil, lastContact: nil, longitude: 30.45, latitude: 50.45, baroAltitude: 2000, onGround: false, velocity: 220.0, heading: 140, verticalRate: -1.2),
+        FlightState(icao24: "def456", callsign: "BA238", originCountry: "United Kingdom", timePosition: nil, lastContact: nil, longitude: -0.45, latitude: 51.47, baroAltitude: 1500, onGround: false, velocity: 190.0, heading: 280, verticalRate: 0.4),
+        FlightState(icao24: "ghi789", callsign: "DLH4AB", originCountry: "Germany", timePosition: nil, lastContact: nil, longitude: 8.56, latitude: 50.04, baroAltitude: 2300, onGround: false, velocity: 210.0, heading: 90, verticalRate: 0.0)
     ]
 }
 
-// Допоміжні типи для розпарсування динамічного масиву OpenSky
 struct AnyDecodable: Decodable {
     let value: Any
     init(from decoder: Decoder) throws {
@@ -91,6 +109,12 @@ struct AnyDecodable: Decodable {
     var double: Double? {
         if let d = value as? Double { return d }
         if let s = value as? String { return Double(s) }
+        return nil
+    }
+    var bool: Bool? { value as? Bool }
+    var int: Int? {
+        if let d = value as? Double { return Int(d) }
+        if let s = value as? String, let d = Double(s) { return Int(d) }
         return nil
     }
 }
