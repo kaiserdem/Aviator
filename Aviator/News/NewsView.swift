@@ -1,19 +1,19 @@
 import SwiftUI
 import ComposableArchitecture
-import SafariServices
+import WebKit
 
 struct NewsView: View {
     let store: StoreOf<NewsFeature>
-    @State private var safariURL: URL?
+    @State private var webURL: URL?
 
     var body: some View {
         WithViewStore(self.store, observe: { $0 }) { viewStore in
             NavigationStack {
-                Group {
+                ZStack {
                     if viewStore.isLoading {
-                        ProgressView("Loading…")
+                        ProgressView()
                             .cornerRadius(20)
-                            .frame(width: 120, height: 120)
+                            .frame(width: 80, height: 80)
                             .cornerRadius(20)
 
                     } else if viewStore.posts.isEmpty {
@@ -21,7 +21,8 @@ struct NewsView: View {
                     } else {
                         List(viewStore.posts) { post in
                             Button {
-                                safariURL = post.url
+                                viewStore.send(.select(post))
+                                webURL = post.url
                             } label: {
                                 VStack(alignment: .leading, spacing: 6) {
                                     Text(post.title)
@@ -40,30 +41,66 @@ struct NewsView: View {
                     }
                 }
                 .navigationTitle("News")
+                .navigationDestination(item: viewStore.binding(get: \.selected, send: { .select($0) })) { post in
+                    NewsWebScreen(title: post.title, url: post.url)
+                        .toolbarColorScheme(.dark, for: .navigationBar)
+                        .toolbarBackground(Theme.Palette.surface, for: .navigationBar)
+                        .toolbarBackground(.visible, for: .navigationBar)
+                        .scrollContentBackground(.hidden)
+                        .background(Theme.Gradient.background)
+                }
                 .toolbarColorScheme(.dark, for: .navigationBar)
                 .toolbarBackground(Theme.Palette.surface, for: .navigationBar)
                 .toolbarBackground(.visible, for: .navigationBar)
                 .scrollContentBackground(.hidden)
                 .background(Theme.Gradient.background)
                 .task { await viewStore.send(.onAppear).finish() }
-                .sheet(item: $safariURL) { url in
-                    SafariView(url: url)
-                        .ignoresSafeArea()
-                }
             }
         }
     }
 }
 
- extension URL: @retroactive Identifiable {
-     public var id: String { absoluteString }
+// Simple WKWebView wrapper for SwiftUI (без індикатора)
+private struct WebView: UIViewRepresentable {
+    let url: URL
+    func makeUIView(context: Context) -> WKWebView {
+        let view = WKWebView()
+        view.isOpaque = false
+        view.backgroundColor = .black
+        view.scrollView.backgroundColor = .black
+        view.load(URLRequest(url: url))
+        return view
+    }
+    func updateUIView(_ uiView: WKWebView, context: Context) {
+        if uiView.url != url {
+            uiView.load(URLRequest(url: url))
+        }
+    }
 }
 
-private struct SafariView: UIViewControllerRepresentable, Identifiable {
+// Full screen in-app web screen with title
+private struct NewsWebScreen: View, Identifiable {
     let id = UUID()
+    let title: String
+    let url: URL?
+    var body: some View {
+        if let url = url {
+            WebContentView(title: title, url: url)
+        } else {
+            ContentUnavailableView("Invalid URL", systemImage: "xmark.circle")
+        }
+    }
+}
+
+private struct WebContentView: View {
+    let title: String
     let url: URL
-    func makeUIViewController(context: Context) -> SFSafariViewController { SFSafariViewController(url: url) }
-    func updateUIViewController(_ vc: SFSafariViewController, context: Context) {}
+    var body: some View {
+        WebView(url: url)
+            .navigationTitle("")
+            .navigationBarTitleDisplayMode(.inline)
+            .background(Theme.Gradient.background)
+    }
 }
 
 
