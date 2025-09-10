@@ -12,6 +12,10 @@ struct NewsView: View {
                 Group {
                     if viewStore.isLoading {
                         ProgressView("Loading…")
+                            .cornerRadius(20)
+                            .frame(width: 120, height: 120)
+                            .cornerRadius(20)
+
                     } else if viewStore.posts.isEmpty {
                         ContentUnavailableView("No news", systemImage: "newspaper", description: Text("Please try again later"))
                     } else {

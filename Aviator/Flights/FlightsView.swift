@@ -32,6 +32,8 @@ struct FlightsView: View {
                 Group {
                     if viewStore.isLoading {
                         ProgressView("Loading…")
+                            .frame(width: 120, height: 120)
+                            .cornerRadius(20)
                     } else if viewStore.flights.isEmpty {
                         ContentUnavailableView("No data", systemImage: "airplane", description: Text("Please try again later"))
                     } else {

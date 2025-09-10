@@ -10,6 +10,9 @@ struct AirportsView: View {
                 Group {
                     if viewStore.isLoading && viewStore.airports.isEmpty {
                         ProgressView("Loading…")
+                            .frame(width: 120, height: 120)
+                            .cornerRadius(20)
+
                     } else if viewStore.query.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
                         List {
                             Section("Search") {
