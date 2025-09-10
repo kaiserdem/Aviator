@@ -5,13 +5,32 @@ private struct FlightRow: View {
     let flight: FlightState
     var body: some View {
         HStack(alignment: .firstTextBaseline) {
-            Image(systemName: "airplane")
-                .foregroundStyle(.tint)
+            // Aircraft image or icon
+            if let imageURL = flight.aircraftImageURL {
+                AsyncImage(url: imageURL) { image in
+                    image.resizable().scaledToFill()
+                } placeholder: {
+                    Image(systemName: "airplane")
+                        .foregroundStyle(.tint)
+                }
+                .frame(width: 40, height: 40)
+                .clipShape(RoundedRectangle(cornerRadius: 8))
+            } else {
+                Image(systemName: "airplane")
+                    .foregroundStyle(.tint)
+                    .frame(width: 40, height: 40)
+            }
+            
             VStack(alignment: .leading, spacing: 2) {
-                Text(flight.callsign?.isEmpty == false ? flight.callsign! : "Без позивного")
+                Text(flight.callsign?.isEmpty == false ? flight.callsign! : "Unknown callsign")
                     .font(.title3)
-                Text(flight.originCountry ?? "Невідома країна")
+                Text(flight.originCountry ?? "Unknown country")
                     .foregroundStyle(.secondary)
+                if let aircraftType = flight.aircraftType {
+                    Text(aircraftType)
+                        .font(.caption)
+                        .foregroundStyle(.tertiary)
+                }
             }
             Spacer()
             if let v = flight.velocity {

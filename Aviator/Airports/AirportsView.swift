@@ -23,16 +23,18 @@ struct AirportsView: View {
                                     .background(Theme.Palette.surface)
                                     .clipShape(RoundedRectangle(cornerRadius: 12))
                             }
+                            
                             Section("Featured") {
                                 ForEach(defaultResults(viewStore.airports)) { a in
                                     NavigationLink(value: a) {
                                         HStack {
                                             VStack(alignment: .leading) {
                                                 Text(a.name).font(.title3)
-                                                Text("\(a.city), \(a.country)").font(.caption).foregroundStyle(.secondary)
+                                                Text("\(a.city), \(a.country)").font(.caption).foregroundStyle(Theme.Palette.primaryRed)
                                             }
                                             Spacer()
                                             Text(a.iata ?? a.icao ?? "—").font(.headline)
+                                            
                                         }
                                     }
                                 }
@@ -55,7 +57,7 @@ struct AirportsView: View {
                                         HStack {
                                             VStack(alignment: .leading) {
                                                 Text(a.name).font(.title3)
-                                                Text("\(a.city), \(a.country)").font(.caption).foregroundStyle(.secondary)
+                                                Text("\(a.city), \(a.country)").font(.caption).foregroundStyle(Theme.Palette.primaryRed)
                                             }
                                             Spacer()
                                             Text(a.iata ?? a.icao ?? "—").font(.headline)

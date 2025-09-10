@@ -18,10 +18,24 @@ struct FlightDetailView: View {
 
     var body: some View {
         List {
+            // Aircraft Image Section
+            if let imageURL = flight.aircraftImageURL {
+                Section {
+                    AsyncImage(url: imageURL) { image in
+                        image.resizable().scaledToFill()
+                    } placeholder: {
+                        ProgressView()
+                    }
+                    .frame(height: 200)
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                }
+            }
+            
             Section("Flight") {
                 LabeledContent("Callsign", value: flight.callsign?.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty == false ? flight.callsign! : "Unknown")
                 LabeledContent("Origin country", value: flight.originCountry ?? "Unknown")
                 if let icao = flight.icao24 { LabeledContent("ICAO24", value: icao.uppercased()) }
+                if let aircraftType = flight.aircraftType { LabeledContent("Aircraft", value: aircraftType) }
             }
             Section("Live data") {
                 LabeledContent("Coordinates", value: coordinateText)

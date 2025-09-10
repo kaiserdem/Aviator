@@ -16,6 +16,15 @@ struct AirportDetailView: View {
                 LabeledContent("Location", value: "\(airport.city), \(airport.country)")
                 if let iata = airport.iata { LabeledContent("IATA", value: iata) }
                 if let icao = airport.icao { LabeledContent("ICAO", value: icao) }
+                if let type = airport.type { LabeledContent("Type", value: type.replacingOccurrences(of: "_", with: " ")) }
+                if let elev = airport.elevationFt { LabeledContent("Elevation", value: "\(elev) ft") }
+                if let region = airport.region { LabeledContent("Region", value: region) }
+                if let continent = airport.continent { LabeledContent("Continent", value: continent) }
+                if let local = airport.localCode, !local.isEmpty { LabeledContent("Local code", value: local) }
+                if let sched = airport.scheduledService, !sched.isEmpty { LabeledContent("Scheduled service", value: sched) }
+                if let wiki = airport.wikipediaLink { LabeledContent("Wikipedia", value: wiki.absoluteString) }
+                if let home = airport.homeLink { LabeledContent("Website", value: home.absoluteString) }
+                if let kw = airport.keywords, !kw.isEmpty { LabeledContent("Keywords", value: kw) }
             }
             if let coord = coordinate {
                 Section("Map") {

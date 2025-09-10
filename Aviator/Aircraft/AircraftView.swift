@@ -27,6 +27,7 @@ struct AircraftView: View {
                                         Label(title, systemImage: "airplane.circle")
                                             .font(.title3)
                                     }
+                                    .padding(5)
                                 }
                             }
                         }

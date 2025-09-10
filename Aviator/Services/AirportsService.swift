@@ -10,6 +10,16 @@ struct Airport: Identifiable, Equatable, Hashable {
     let icao: String?
     let latitude: Double?
     let longitude: Double?
+    // Enriched fields from OurAirports
+    let type: String?
+    let elevationFt: Int?
+    let continent: String?
+    let region: String? // iso_region
+    let localCode: String?
+    let scheduledService: String?
+    let homeLink: URL?
+    let wikipediaLink: URL?
+    let keywords: String?
 }
 
 struct AirportsClient {
@@ -41,15 +51,43 @@ enum AirportsClientKey: DependencyKey {
                 let lon = Double(row[safe: 5] ?? "")
                 let country = row[safe: 8] ?? ""
                 let city = row[safe: 10] ?? ""
+                let type = row[safe: 2]
+                let elevationFt = Int(row[safe: 6] ?? "")
+                let continent = row[safe: 7]
+                let region = row[safe: 9]
                 let gps = row[safe: 12]
                 let iata = row[safe: 13]
                 let icao = gps?.isEmpty == false ? gps : nil
+                let localCode = row[safe: 14]
+                let homeLinkStr = row[safe: 15]
+                let wikipediaLinkStr = row[safe: 16]
+                let keywords = row[safe: 17]
+                let scheduledService = row[safe: 11]
+                let homeLink = (homeLinkStr?.isEmpty == false) ? URL(string: homeLinkStr!) : nil
+                let wikipediaLink = (wikipediaLinkStr?.isEmpty == false) ? URL(string: wikipediaLinkStr!) : nil
                 let id = (icao?.isEmpty == false ? icao! : (iata ?? ident ?? UUID().uuidString))
                 // Keep only airports/large/medium/small types
-                let type = row[safe: 2] ?? ""
                 let allowed = ["small_airport","medium_airport","large_airport","heliport"]
-                guard allowed.contains(type) else { return nil }
-                return Airport(id: id, name: name, city: city, country: country, iata: iata?.isEmpty == true ? nil : iata, icao: icao, latitude: lat, longitude: lon)
+                guard let typeNonEmpty = type, allowed.contains(typeNonEmpty) else { return nil }
+                return Airport(
+                    id: id,
+                    name: name,
+                    city: city,
+                    country: country,
+                    iata: iata?.isEmpty == true ? nil : iata,
+                    icao: icao,
+                    latitude: lat,
+                    longitude: lon,
+                    type: type,
+                    elevationFt: elevationFt,
+                    continent: continent,
+                    region: region,
+                    localCode: localCode,
+                    scheduledService: scheduledService,
+                    homeLink: homeLink,
+                    wikipediaLink: wikipediaLink,
+                    keywords: keywords
+                )
             }
             try? AirportsCache.saveToDisk(airports)
             return airports
@@ -76,9 +114,52 @@ private enum AirportsCache {
         return dto.map { $0.toModel() }
     }
     private struct CachedAirport: Codable {
-        let id: String, name: String, city: String, country: String, iata: String?, icao: String?, latitude: Double?, longitude: Double?
-        init(from a: Airport) { id=a.id; name=a.name; city=a.city; country=a.country; iata=a.iata; icao=a.icao; latitude=a.latitude; longitude=a.longitude }
-        func toModel() -> Airport { Airport(id: id, name: name, city: city, country: country, iata: iata, icao: icao, latitude: latitude, longitude: longitude) }
+        let id: String
+        let name: String
+        let city: String
+        let country: String
+        let iata: String?
+        let icao: String?
+        let latitude: Double?
+        let longitude: Double?
+        let type: String?
+        let elevationFt: Int?
+        let continent: String?
+        let region: String?
+        let localCode: String?
+        let scheduledService: String?
+        let homeLink: URL?
+        let wikipediaLink: URL?
+        let keywords: String?
+
+        init(from a: Airport) {
+            id = a.id; name = a.name; city = a.city; country = a.country
+            iata = a.iata; icao = a.icao; latitude = a.latitude; longitude = a.longitude
+            type = a.type; elevationFt = a.elevationFt; continent = a.continent; region = a.region
+            localCode = a.localCode; scheduledService = a.scheduledService
+            homeLink = a.homeLink; wikipediaLink = a.wikipediaLink; keywords = a.keywords
+        }
+        func toModel() -> Airport {
+            Airport(
+                id: id,
+                name: name,
+                city: city,
+                country: country,
+                iata: iata,
+                icao: icao,
+                latitude: latitude,
+                longitude: longitude,
+                type: type,
+                elevationFt: elevationFt,
+                continent: continent,
+                region: region,
+                localCode: localCode,
+                scheduledService: scheduledService,
+                homeLink: homeLink,
+                wikipediaLink: wikipediaLink,
+                keywords: keywords
+            )
+        }
     }
 }
 
