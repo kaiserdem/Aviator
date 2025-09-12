@@ -81,12 +81,12 @@ struct MapFeature: Reducer {
             case .onAppear:
                 state.isLoading = true
                 return .run { send in
-                    print("🛩️ MapFeature: Starting to fetch aircraft data...")
+                    // print("🛩️ MapFeature: Starting to fetch aircraft data...")
                     // Fetch real aircraft data from API
                     let aircraft = await aircraftClient.fetchAircraftPositions()
-                    print("🛩️ MapFeature: Received \(aircraft.count) aircraft from API")
+                    // print("🛩️ MapFeature: Received \(aircraft.count) aircraft from API")
                     for (index, plane) in aircraft.prefix(3).enumerated() {
-                        print("🛩️ Aircraft \(index + 1): \(plane.callsign ?? "Unknown") at \(plane.latitude ?? 0), \(plane.longitude ?? 0)")
+                        // print("🛩️ Aircraft \(index + 1): \(plane.callsign ?? "Unknown") at \(plane.latitude ?? 0), \(plane.longitude ?? 0)")
                     }
                     await send(._aircraftResponse(aircraft))
                 }

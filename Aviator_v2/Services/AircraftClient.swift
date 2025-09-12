@@ -29,17 +29,17 @@ final class NetworkService {
     
     func fetchAircraftPositions() async -> [AircraftPosition] {
         let urlString = "https://opensky-network.org/api/states/all"
-        print("🌐 NetworkService: Fetching from URL: \(urlString)")
+        // print("🌐 NetworkService: Fetching from URL: \(urlString)")
         guard let url = URL(string: urlString) else { 
             print("❌ NetworkService: Invalid URL")
             return [] 
         }
         
         do {
-            print("🌐 NetworkService: Making API request...")
+            // print("🌐 NetworkService: Making API request...")
             let (data, response) = try await URLSession.shared.data(from: url)
-            print("🌐 NetworkService: Response status: \((response as? HTTPURLResponse)?.statusCode ?? -1)")
-            print("🌐 NetworkService: Data size: \(data.count) bytes")
+            // print("🌐 NetworkService: Response status: \((response as? HTTPURLResponse)?.statusCode ?? -1)")
+            // print("🌐 NetworkService: Data size: \(data.count) bytes")
             guard (response as? HTTPURLResponse)?.statusCode == 200 else {
                 print("❌ NetworkService: Bad response status")
                 return []
@@ -127,8 +127,8 @@ final class NetworkService {
             
             // Log raw JSON response
             if let jsonString = String(data: data, encoding: .utf8) {
-                print("🌐 NetworkService: Raw JSON response (first 500 chars):")
-                print(String(jsonString.prefix(500)))
+                // print("🌐 NetworkService: Raw JSON response (first 500 chars):")
+                // print(String(jsonString.prefix(500)))
             }
             
             let decoder = JSONDecoder()
@@ -136,7 +136,7 @@ final class NetworkService {
             
             do {
                 let envelope = try decoder.decode(OpenSkyEnvelope.self, from: data)
-                print("🌐 NetworkService: Successfully decoded JSON envelope")
+                // print("🌐 NetworkService: Successfully decoded JSON envelope")
             } catch {
                 print("❌ NetworkService: JSON decoding error: \(error)")
                 print("❌ NetworkService: Error details: \(error.localizedDescription)")
@@ -145,7 +145,7 @@ final class NetworkService {
             
             let envelope = try decoder.decode(OpenSkyEnvelope.self, from: data)
             let rows = envelope.states ?? []
-            print("🌐 NetworkService: Received \(rows.count) aircraft states from API")
+            // print("🌐 NetworkService: Received \(rows.count) aircraft states from API")
             
             let aircraft: [AircraftPosition] = rows.compactMap { row in
                 let icao24 = row[safe: 0]?.stringValue
@@ -160,7 +160,7 @@ final class NetworkService {
                 
                 // Log parsed aircraft data
                 if let icao = icao24, let call = callsign, let lon = lon, let lat = lat {
-                    print("🛩️ Parsed aircraft: \(icao) - \(call) at \(lat), \(lon)")
+                    // print("🛩️ Parsed aircraft: \(icao) - \(call) at \(lat), \(lon)")
                 }
                 
                 return AircraftPosition(
@@ -178,7 +178,7 @@ final class NetworkService {
             }
             
             let result = Array(aircraft.prefix(50))
-            print("🌐 NetworkService: Returning \(result.count) aircraft")
+            // print("🌐 NetworkService: Returning \(result.count) aircraft")
             return result
         } catch {
             print("❌ NetworkService: Error fetching aircraft: \(error.localizedDescription)")

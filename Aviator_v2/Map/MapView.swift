@@ -42,7 +42,7 @@ struct MapView: View {
             ))
         }
         
-        print("🗺️ MapView: Created \(annotations.count) total annotations")
+        // print("🗺️ MapView: Created \(annotations.count) total annotations")
         return annotations
     }
     

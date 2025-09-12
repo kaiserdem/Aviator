@@ -1,5 +1,6 @@
 import SwiftUI
 import ComposableArchitecture
+import WebKit
 
 struct AirlinesView: View {
     let store: StoreOf<AirlinesFeature>
@@ -132,6 +133,7 @@ struct AirlineRowView: View {
 
 struct AirlineDetailView: View {
     let airline: Airline
+    @State private var webURL: URL?
     
     var body: some View {
         ScrollView {
@@ -198,7 +200,9 @@ struct AirlineDetailView: View {
                             .fontWeight(.bold)
                             .foregroundColor(Theme.Palette.textPrimary)
                         
-                        Link(destination: website) {
+                        Button {
+                            webURL = website
+                        } label: {
                             HStack {
                                 Image(systemName: "safari")
                                 Text("Official Website")
@@ -206,9 +210,9 @@ struct AirlineDetailView: View {
                                 Image(systemName: "arrow.up.right")
                             }
                             .padding()
-                        .background(Theme.Gradient.surface)
-                        .cornerRadius(12)
-                        .shadow(color: Theme.Palette.primaryRed.opacity(0.2), radius: 2)
+                            .background(Theme.Gradient.surface)
+                            .cornerRadius(12)
+                            .shadow(color: Theme.Palette.primaryRed.opacity(0.2), radius: 2)
                         }
                         .foregroundColor(Theme.Palette.primaryRed)
                     }
@@ -220,6 +224,14 @@ struct AirlineDetailView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbarBackground(Theme.Gradient.navigationBar, for: .navigationBar)
         .toolbarColorScheme(.dark, for: .navigationBar)
+        .navigationDestination(item: $webURL) { url in
+            AirlineWebScreen(title: airline.name, url: url)
+                .toolbarColorScheme(.dark, for: .navigationBar)
+                .toolbarBackground(Theme.Palette.surface, for: .navigationBar)
+                .toolbarBackground(.visible, for: .navigationBar)
+                .scrollContentBackground(.hidden)
+                .background(Theme.Gradient.background)
+        }
     }
 }
 
@@ -250,6 +262,45 @@ struct StatCard: View {
                         .background(Theme.Gradient.surface)
                         .cornerRadius(12)
                         .shadow(color: Theme.Palette.primaryRed.opacity(0.2), radius: 2)
+    }
+}
+
+// Simple WKWebView wrapper for SwiftUI (без індикатора)
+private struct WebView: UIViewRepresentable {
+    let url: URL
+    func makeUIView(context: Context) -> WKWebView {
+        let view = WKWebView()
+        view.isOpaque = false
+        view.backgroundColor = .black
+        view.scrollView.backgroundColor = .black
+        view.load(URLRequest(url: url))
+        return view
+    }
+    func updateUIView(_ uiView: WKWebView, context: Context) {
+        if uiView.url != url {
+            uiView.load(URLRequest(url: url))
+        }
+    }
+}
+
+// Full screen in-app web screen with title
+private struct AirlineWebScreen: View, Identifiable {
+    let id = UUID()
+    let title: String
+    let url: URL
+    var body: some View {
+        WebContentView(title: title, url: url)
+    }
+}
+
+private struct WebContentView: View {
+    let title: String
+    let url: URL
+    var body: some View {
+        WebView(url: url)
+            .navigationTitle("")
+            .navigationBarTitleDisplayMode(.inline)
+            .background(Theme.Gradient.background)
     }
 }
 

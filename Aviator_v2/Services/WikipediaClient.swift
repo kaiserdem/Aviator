@@ -41,7 +41,7 @@ final class WikipediaService {
     private init() {}
     
     func searchAirlines() async -> [WikipediaAirline] {
-        print("📚 WikipediaService: Starting to fetch airlines from Wikipedia...")
+        // print("📚 WikipediaService: Starting to fetch airlines from Wikipedia...")
         
         // For now, return a simple list of known airlines
         let knownAirlines = [
@@ -91,7 +91,7 @@ final class WikipediaService {
             )
         }
         
-        print("📚 WikipediaService: Created \(airlines.count) airlines from known list")
+        // print("📚 WikipediaService: Created \(airlines.count) airlines from known list")
         return airlines
     }
     
@@ -115,7 +115,7 @@ final class WikipediaService {
             
             // Extract airlines from the page content
             let airlines = extractAirlinesFromPage(page)
-            print("📚 WikipediaService: Extracted \(airlines.count) airlines from '\(searchTerm)'")
+                // print("📚 WikipediaService: Extracted \(airlines.count) airlines from '\(searchTerm)'")
             
             return airlines
             

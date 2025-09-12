@@ -15,12 +15,12 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     }
     
     func requestLocationPermission() {
-        print("LocationManager: Requesting location permission")
+        // print("LocationManager: Requesting location permission")
         locationManager.requestWhenInUseAuthorization()
     }
     
     func startLocationUpdates() {
-        print("LocationManager: Starting location updates")
+        // print("LocationManager: Starting location updates")
         locationManager.startUpdatingLocation()
     }
     
@@ -29,7 +29,7 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     }
     
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        print("LocationManager: Authorization status changed to: \(status.rawValue)")
+        // print("LocationManager: Authorization status changed to: \(status.rawValue)")
         authorizationStatus = status
         
         if status == .authorizedWhenInUse || status == .authorizedAlways {
@@ -39,7 +39,7 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.last {
-            print("LocationManager: Location updated: \(location.coordinate)")
+            // print("LocationManager: Location updated: \(location.coordinate)")
             currentLocation = location
         }
     }
