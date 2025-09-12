@@ -7,14 +7,20 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		05F8AFFB2E70219A002364E5 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 05F8AFFA2E70219A002364E5 /* ComposableArchitecture */; };
+		0535F17C2E73FCD500EB5338 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 0535F17B2E73FCD500EB5338 /* ComposableArchitecture */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0535F1522E73EF3B00EB5338 /* Aviator_v2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Aviator_v2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		059D56452E701D2500A6A3D5 /* Aviator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Aviator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		0535F1532E73EF3B00EB5338 /* Aviator_v2 */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Aviator_v2;
+			sourceTree = "<group>";
+		};
 		059D56472E701D2500A6A3D5 /* Aviator */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = Aviator;
@@ -23,11 +29,18 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		0535F14F2E73EF3B00EB5338 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0535F17C2E73FCD500EB5338 /* ComposableArchitecture in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		059D56422E701D2500A6A3D5 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				05F8AFFB2E70219A002364E5 /* ComposableArchitecture in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -38,6 +51,7 @@
 			isa = PBXGroup;
 			children = (
 				059D56472E701D2500A6A3D5 /* Aviator */,
+				0535F1532E73EF3B00EB5338 /* Aviator_v2 */,
 				059D56462E701D2500A6A3D5 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -46,6 +60,7 @@
 			isa = PBXGroup;
 			children = (
 				059D56452E701D2500A6A3D5 /* Aviator.app */,
+				0535F1522E73EF3B00EB5338 /* Aviator_v2.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -53,6 +68,29 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		0535F1512E73EF3B00EB5338 /* Aviator_v2 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0535F15C2E73EF3D00EB5338 /* Build configuration list for PBXNativeTarget "Aviator_v2" */;
+			buildPhases = (
+				0535F14E2E73EF3B00EB5338 /* Sources */,
+				0535F14F2E73EF3B00EB5338 /* Frameworks */,
+				0535F1502E73EF3B00EB5338 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				0535F1532E73EF3B00EB5338 /* Aviator_v2 */,
+			);
+			name = Aviator_v2;
+			packageProductDependencies = (
+				0535F17B2E73FCD500EB5338 /* ComposableArchitecture */,
+			);
+			productName = Aviator_v2;
+			productReference = 0535F1522E73EF3B00EB5338 /* Aviator_v2.app */;
+			productType = "com.apple.product-type.application";
+		};
 		059D56442E701D2500A6A3D5 /* Aviator */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 059D56502E701D2700A6A3D5 /* Build configuration list for PBXNativeTarget "Aviator" */;
@@ -70,7 +108,6 @@
 			);
 			name = Aviator;
 			packageProductDependencies = (
-				05F8AFFA2E70219A002364E5 /* ComposableArchitecture */,
 			);
 			productName = Aviator;
 			productReference = 059D56452E701D2500A6A3D5 /* Aviator.app */;
@@ -86,6 +123,9 @@
 				LastSwiftUpdateCheck = 1640;
 				LastUpgradeCheck = 1640;
 				TargetAttributes = {
+					0535F1512E73EF3B00EB5338 = {
+						CreatedOnToolsVersion = 16.4;
+					};
 					059D56442E701D2500A6A3D5 = {
 						CreatedOnToolsVersion = 16.4;
 					};
@@ -101,7 +141,7 @@
 			mainGroup = 059D563C2E701D2500A6A3D5;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				05F8AFF92E70219A002364E5 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */,
+				0535F17A2E73FCD500EB5338 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 059D56462E701D2500A6A3D5 /* Products */;
@@ -109,11 +149,19 @@
 			projectRoot = "";
 			targets = (
 				059D56442E701D2500A6A3D5 /* Aviator */,
+				0535F1512E73EF3B00EB5338 /* Aviator_v2 */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		0535F1502E73EF3B00EB5338 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		059D56432E701D2500A6A3D5 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -124,6 +172,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		0535F14E2E73EF3B00EB5338 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		059D56412E701D2500A6A3D5 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -134,6 +189,70 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
+		0535F15A2E73EF3D00EB5338 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 88QUA4HBQJ;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "kaiserdem.Aviator-v2";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		0535F15B2E73EF3D00EB5338 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 88QUA4HBQJ;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "kaiserdem.Aviator-v2";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
 		059D564E2E701D2700A6A3D5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -271,7 +390,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -306,7 +425,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -328,6 +447,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		0535F15C2E73EF3D00EB5338 /* Build configuration list for PBXNativeTarget "Aviator_v2" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0535F15A2E73EF3D00EB5338 /* Debug */,
+				0535F15B2E73EF3D00EB5338 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		059D56402E701D2500A6A3D5 /* Build configuration list for PBXProject "Aviator" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -349,7 +477,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		05F8AFF92E70219A002364E5 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */ = {
+		0535F17A2E73FCD500EB5338 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/pointfreeco/swift-composable-architecture";
 			requirement = {
@@ -360,9 +488,9 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		05F8AFFA2E70219A002364E5 /* ComposableArchitecture */ = {
+		0535F17B2E73FCD500EB5338 /* ComposableArchitecture */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 05F8AFF92E70219A002364E5 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
+			package = 0535F17A2E73FCD500EB5338 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
 			productName = ComposableArchitecture;
 		};
 /* End XCSwiftPackageProductDependency section */
