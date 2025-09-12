@@ -35,7 +35,35 @@ struct ContentView: View {
                     }
                     .tag(AppFeature.State.Tab.profile)
             }
+            .accentColor(Theme.Palette.primaryRed)
+            .background(Theme.Gradient.background)
+            .onAppear {
+                setupTabBarAppearance()
+            }
         }
+    }
+    
+    private func setupTabBarAppearance() {
+        let appearance = UITabBarAppearance()
+        appearance.configureWithTransparentBackground()
+        
+        // Фон таббару з градієнтом
+        appearance.backgroundColor = UIColor.clear
+        
+        // Стиль для нормального стану
+        appearance.stackedLayoutAppearance.normal.iconColor = UIColor.white.withAlphaComponent(0.6)
+        appearance.stackedLayoutAppearance.normal.titleTextAttributes = [
+            .foregroundColor: UIColor.white.withAlphaComponent(0.6)
+        ]
+        
+        // Стиль для вибраного стану
+        appearance.stackedLayoutAppearance.selected.iconColor = UIColor(Theme.Palette.primaryRed)
+        appearance.stackedLayoutAppearance.selected.titleTextAttributes = [
+            .foregroundColor: UIColor(Theme.Palette.primaryRed)
+        ]
+        
+        UITabBar.appearance().standardAppearance = appearance
+        UITabBar.appearance().scrollEdgeAppearance = appearance
     }
 }
 

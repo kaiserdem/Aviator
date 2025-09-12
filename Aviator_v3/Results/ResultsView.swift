@@ -7,48 +7,64 @@ struct ResultsView: View {
     var body: some View {
         WithViewStore(self.store, observe: { $0 }) { viewStore in
             NavigationStack {
-                VStack {
-                    if viewStore.isLoading {
-                        ProgressView("Loading results...")
-                            .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    } else {
-                        VStack {
-                            // Sort and Filter Controls
-                            HStack {
-                                // Sort Picker
-                                Picker("Sort by", selection: viewStore.binding(get: \.sortOption, send: { .sortChanged($0) })) {
-                                    ForEach(ResultsFeature.SortOption.allCases, id: \.self) { option in
-                                        Text(option.displayName).tag(option)
+                ZStack {
+                    // Background gradient
+                    Theme.Gradient.background
+                        .ignoresSafeArea()
+                    
+                    VStack {
+                        if viewStore.isLoading {
+                            ProgressView("Loading results...")
+                                .foregroundColor(Theme.Palette.textPrimary)
+                                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        } else {
+                            VStack {
+                                // Sort and Filter Controls
+                                HStack {
+                                    // Sort Picker
+                                    Picker("Sort by", selection: viewStore.binding(get: \.sortOption, send: { .sortChanged($0) })) {
+                                        ForEach(ResultsFeature.SortOption.allCases, id: \.self) { option in
+                                            Text(option.displayName).tag(option)
+                                        }
                                     }
-                                }
                                 .pickerStyle(MenuPickerStyle())
-                                
-                                Spacer()
-                                
-                                // Filter Picker
-                                Picker("Filter", selection: viewStore.binding(get: \.filterOption, send: { .filterChanged($0) })) {
-                                    ForEach(ResultsFeature.FilterOption.allCases, id: \.self) { option in
-                                        Text(option.displayName).tag(option)
+                                .colorScheme(.dark)
+                                    
+                                    Spacer()
+                                    
+                                    // Filter Picker
+                                    Picker("Filter", selection: viewStore.binding(get: \.filterOption, send: { .filterChanged($0) })) {
+                                        ForEach(ResultsFeature.FilterOption.allCases, id: \.self) { option in
+                                            Text(option.displayName).tag(option)
+                                        }
                                     }
-                                }
                                 .pickerStyle(MenuPickerStyle())
-                            }
+                                .colorScheme(.dark)
+                                }
                             .padding()
-                            
-                            // Results List
-                            List(filteredAndSortedOffers(viewStore.flightOffers, sortOption: viewStore.sortOption, filterOption: viewStore.filterOption)) { offer in
-                                FlightOfferCard(offer: offer)
-                                    .onTapGesture {
-                                        viewStore.send(.selectOffer(offer))
-                                    }
+                            .background(Theme.Gradient.surface)
+                            .cornerRadius(12)
+                            .shadow(color: Theme.Shadow.red, radius: 4)
+                                
+                                // Results List
+                                List(filteredAndSortedOffers(viewStore.flightOffers, sortOption: viewStore.sortOption, filterOption: viewStore.filterOption)) { offer in
+                                    FlightOfferCard(offer: offer)
+                                        .onTapGesture {
+                                            viewStore.send(.selectOffer(offer))
+                                        }
+                                }
+                                .listStyle(PlainListStyle())
+                                .scrollContentBackground(.hidden)
                             }
-                            .listStyle(PlainListStyle())
                         }
                     }
-                }
-                .navigationTitle("Flight Results")
-                .onAppear {
-                    viewStore.send(.onAppear)
+                    .navigationTitle("Flight Results")
+                    .navigationBarTitleDisplayMode(.large)
+                    .toolbarBackground(Theme.Gradient.navigationBar, for: .navigationBar)
+                    .toolbarColorScheme(.dark, for: .navigationBar)
+                    .onAppear {
+                        viewStore.send(.onAppear)
+                    }
                 }
             }
         }
@@ -92,11 +108,11 @@ struct FlightOfferCard: View {
                 VStack(alignment: .leading) {
                     Text("\(offer.origin) → \(offer.destination)")
                         .font(.headline)
-                        .foregroundColor(.primary)
+                        .foregroundColor(Theme.Palette.textPrimary)
                     
                     Text(offer.airline)
                         .font(.subheadline)
-                        .foregroundColor(.secondary)
+                        .foregroundColor(Theme.Palette.textSecondary)
                 }
                 
                 Spacer()
@@ -105,29 +121,30 @@ struct FlightOfferCard: View {
                     Text("\(offer.price) \(offer.currency)")
                         .font(.title2)
                         .fontWeight(.bold)
-                        .foregroundColor(.blue)
+                        .foregroundColor(Theme.Palette.gold)
                     
                     Text(offer.duration)
                         .font(.caption)
-                        .foregroundColor(.secondary)
+                        .foregroundColor(Theme.Palette.textSecondary)
                 }
             }
             
             HStack {
                 Text("Flight: \(offer.flightNumber)")
                     .font(.caption)
-                    .foregroundColor(.secondary)
+                    .foregroundColor(Theme.Palette.textSecondary)
                 
                 Spacer()
                 
                 Text(offer.stops == 0 ? "Direct" : "\(offer.stops) stop(s)")
                     .font(.caption)
-                    .foregroundColor(.secondary)
+                    .foregroundColor(Theme.Palette.textSecondary)
             }
         }
         .padding()
-        .background(Color(.secondarySystemBackground))
-        .cornerRadius(8)
+        .background(Theme.Gradient.surface)
+        .cornerRadius(12)
+        .shadow(color: Theme.Shadow.red, radius: 2)
     }
 }
 

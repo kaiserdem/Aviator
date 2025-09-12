@@ -57,22 +57,33 @@ struct SearchFeature: Reducer {
                 
             case let .adultsChanged(count):
                 state.adults = count
+                print("🔄 Adults changed to: \(count)")
                 return .none
                 
             case let .childrenChanged(count):
                 state.children = count
+                print("🔄 Children changed to: \(count)")
                 return .none
                 
             case let .infantsChanged(count):
                 state.infants = count
+                print("🔄 Infants changed to: \(count)")
                 return .none
                 
             case let .travelClassChanged(travelClass):
                 state.travelClass = travelClass
+                print("🔄 Travel class changed to: \(travelClass)")
                 return .none
                 
             case .searchFlights:
                 state.isLoading = true
+                print("🔍 Searching flights with:")
+                print("   Origin: \(state.origin)")
+                print("   Destination: \(state.destination)")
+                print("   Adults: \(state.adults)")
+                print("   Children: \(state.children)")
+                print("   Infants: \(state.infants)")
+                print("   Travel Class: \(state.travelClass)")
                 return .run { [state] send in
                     let offers = await amadeusClient.searchFlights(
                         state.origin,

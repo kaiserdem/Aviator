@@ -7,40 +7,50 @@ struct SavedView: View {
     var body: some View {
         WithViewStore(self.store, observe: { $0 }) { viewStore in
             NavigationStack {
-                VStack {
-                    if viewStore.savedSearches.isEmpty {
-                        VStack(spacing: 16) {
-                            Image(systemName: "bookmark")
-                                .font(.system(size: 60))
-                                .foregroundColor(.gray)
-                            
-                            Text("No Saved Searches")
-                                .font(.title2)
-                                .fontWeight(.medium)
-                                .foregroundColor(.primary)
-                            
-                            Text("Save your favorite flight searches here")
-                                .font(.subheadline)
-                                .foregroundColor(.secondary)
-                                .multilineTextAlignment(.center)
-                        }
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    } else {
-                        List(viewStore.savedSearches) { search in
-                            SavedSearchRowView(search: search)
-                                .onTapGesture {
-                                    viewStore.send(.selectSearch(search))
-                                }
-                                .swipeActions(edge: .trailing, allowsFullSwipe: false) {
-                                    Button("Delete", role: .destructive) {
-                                        viewStore.send(.removeSearch(search))
+                ZStack {
+                    // Background gradient
+                    Theme.Gradient.background
+                        .ignoresSafeArea()
+                    
+                    VStack {
+                        if viewStore.savedSearches.isEmpty {
+                            VStack(spacing: 16) {
+                                Image(systemName: "bookmark")
+                                    .font(.system(size: 60))
+                                    .foregroundColor(Theme.Palette.primaryRed)
+                                
+                                Text("No Saved Searches")
+                                    .font(.title2)
+                                    .fontWeight(.medium)
+                                    .foregroundColor(Theme.Palette.textPrimary)
+                                
+                                Text("Save your favorite flight searches here")
+                                    .font(.subheadline)
+                                    .foregroundColor(Theme.Palette.textSecondary)
+                                    .multilineTextAlignment(.center)
+                            }
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        } else {
+                            List(viewStore.savedSearches) { search in
+                                SavedSearchRowView(search: search)
+                                    .onTapGesture {
+                                        viewStore.send(.selectSearch(search))
                                     }
-                                }
+                                    .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+                                        Button("Delete", role: .destructive) {
+                                            viewStore.send(.removeSearch(search))
+                                        }
+                                    }
+                            }
+                            .listStyle(PlainListStyle())
+                            .scrollContentBackground(.hidden)
                         }
-                        .listStyle(PlainListStyle())
                     }
                 }
                 .navigationTitle("Saved Searches")
+                .navigationBarTitleDisplayMode(.large)
+                .toolbarBackground(Theme.Gradient.navigationBar, for: .navigationBar)
+                .toolbarColorScheme(.dark, for: .navigationBar)
                 .onAppear {
                     viewStore.send(.onAppear)
                 }
@@ -63,7 +73,7 @@ struct SavedSearchRowView: View {
             HStack {
                 Text("\(search.origin) → \(search.destination)")
                     .font(.headline)
-                    .foregroundColor(.primary)
+                    .foregroundColor(Theme.Palette.textPrimary)
                 
                 Spacer()
                 
@@ -71,8 +81,8 @@ struct SavedSearchRowView: View {
                     .font(.caption)
                     .padding(.horizontal, 8)
                     .padding(.vertical, 4)
-                    .background(Color.blue.opacity(0.2))
-                    .foregroundColor(.blue)
+                    .background(Theme.Palette.primaryRed.opacity(0.2))
+                    .foregroundColor(Theme.Palette.primaryRed)
                     .cornerRadius(4)
             }
             
@@ -80,10 +90,10 @@ struct SavedSearchRowView: View {
                 VStack(alignment: .leading) {
                     Text("Departure")
                         .font(.caption)
-                        .foregroundColor(.secondary)
+                        .foregroundColor(Theme.Palette.textSecondary)
                     Text(dateFormatter.string(from: search.departureDate))
                         .font(.subheadline)
-                        .foregroundColor(.primary)
+                        .foregroundColor(Theme.Palette.textPrimary)
                 }
                 
                 Spacer()
@@ -91,38 +101,41 @@ struct SavedSearchRowView: View {
                 VStack(alignment: .trailing) {
                     Text("Return")
                         .font(.caption)
-                        .foregroundColor(.secondary)
+                        .foregroundColor(Theme.Palette.textSecondary)
                     Text(dateFormatter.string(from: search.returnDate))
                         .font(.subheadline)
-                        .foregroundColor(.primary)
+                        .foregroundColor(Theme.Palette.textPrimary)
                 }
             }
             
             HStack {
                 Text("Passengers: \(search.adults)")
                     .font(.caption)
-                    .foregroundColor(.secondary)
+                    .foregroundColor(Theme.Palette.textSecondary)
                 
                 if search.children > 0 {
                     Text("+ \(search.children) children")
                         .font(.caption)
-                        .foregroundColor(.secondary)
+                        .foregroundColor(Theme.Palette.textSecondary)
                 }
                 
                 if search.infants > 0 {
                     Text("+ \(search.infants) infants")
                         .font(.caption)
-                        .foregroundColor(.secondary)
+                        .foregroundColor(Theme.Palette.textSecondary)
                 }
                 
                 Spacer()
                 
                 Text("Saved \(dateFormatter.string(from: search.createdAt))")
                     .font(.caption2)
-                    .foregroundColor(.secondary)
+                    .foregroundColor(Theme.Palette.textSecondary)
             }
         }
         .padding(.vertical, 4)
+        .background(Theme.Gradient.surface)
+        .cornerRadius(12)
+        .shadow(color: Theme.Shadow.red, radius: 2)
     }
 }
 
