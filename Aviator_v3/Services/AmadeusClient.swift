@@ -191,7 +191,6 @@ struct AmadeusClient {
     var searchFlights: (String, String, Date, Date, Int, Int, Int, String) async -> [FlightOffer]
     var getAirports: () async -> [Airport]
     var getAirportWeather: () async -> [AirportWeather]
-    var getSavedSearches: () async -> [SavedSearch]
     var getCurrentUser: () async -> User?
     var login: (String, String) async -> User?
 }
@@ -215,9 +214,6 @@ extension AmadeusClient: DependencyKey {
         },
         getAirportWeather: {
             await AmadeusService.shared.getAirportWeather()
-        },
-        getSavedSearches: {
-            await AmadeusService.shared.getSavedSearches()
         },
         getCurrentUser: {
             await AmadeusService.shared.getCurrentUser()
@@ -496,11 +492,6 @@ final class AmadeusService {
         return getMockWeatherData()
     }
     
-    func getSavedSearches() async -> [SavedSearch] {
-        // TODO: Implement real Amadeus API call
-        // For now, return mock data
-        return getMockSavedSearches()
-    }
     
     func getCurrentUser() async -> User? {
         // TODO: Implement real Amadeus API call
@@ -605,32 +596,6 @@ final class AmadeusService {
         ]
     }
     
-    private func getMockSavedSearches() -> [SavedSearch] {
-        return [
-            SavedSearch(
-                origin: "NYC",
-                destination: "LAX",
-                departureDate: Date(),
-                returnDate: Calendar.current.date(byAdding: .day, value: 7, to: Date()) ?? Date(),
-                adults: 2,
-                children: 1,
-                infants: 0,
-                travelClass: "ECONOMY",
-                createdAt: Date()
-            ),
-            SavedSearch(
-                origin: "LHR",
-                destination: "CDG",
-                departureDate: Calendar.current.date(byAdding: .day, value: 30, to: Date()) ?? Date(),
-                returnDate: Calendar.current.date(byAdding: .day, value: 37, to: Date()) ?? Date(),
-                adults: 1,
-                children: 0,
-                infants: 0,
-                travelClass: "BUSINESS",
-                createdAt: Calendar.current.date(byAdding: .day, value: -5, to: Date()) ?? Date()
-            )
-        ]
-    }
     
     private func getMockUser() -> User? {
         return User(

@@ -17,45 +17,123 @@ struct ResultsView: View {
                             ProgressView("Loading results...")
                                 .foregroundColor(Theme.Palette.textPrimary)
                                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        } else {
-                            VStack {
-                                // Sort and Filter Controls
-                                HStack {
-                                    // Sort Picker
-                                    Picker("Sort by", selection: viewStore.binding(get: \.sortOption, send: { .sortChanged($0) })) {
-                                        ForEach(ResultsFeature.SortOption.allCases, id: \.self) { option in
-                                            Text(option.displayName).tag(option)
-                                        }
-                                    }
-                                    .pickerStyle(MenuPickerStyle())
-                                    .colorScheme(.dark)
-                                    
-                                    Spacer()
-                                    
-                                    // Filter Picker
-                                    Picker("Filter", selection: viewStore.binding(get: \.filterOption, send: { .filterChanged($0) })) {
-                                        ForEach(ResultsFeature.FilterOption.allCases, id: \.self) { option in
-                                            Text(option.displayName).tag(option)
-                                        }
-                                    }
-                                    .pickerStyle(MenuPickerStyle())
-                                    .colorScheme(.dark)
-                                }
-                                .padding()
-                                .background(Theme.Gradient.surface)
-                                .cornerRadius(12)
-                                .shadow(color: Theme.Shadow.red, radius: 4)
-                                .padding()
+                        } else if viewStore.flightOffers.isEmpty {
+                            // Empty state when no search has been performed
+                            VStack(spacing: 20) {
+                                Image(systemName: "magnifyingglass.circle")
+                                    .font(.system(size: 80))
+                                    .foregroundColor(Theme.Palette.primaryRed)
                                 
-                                // Results List
-                                List(filteredAndSortedOffers(viewStore.flightOffers, sortOption: viewStore.sortOption, filterOption: viewStore.filterOption)) { offer in
-                                    FlightOfferCard(offer: offer)
-                                        .onTapGesture {
-                                            viewStore.send(.selectOffer(offer))
-                                        }
+                                VStack(spacing: 12) {
+                                    Text("No Search Results Yet")
+                                        .font(.title2)
+                                        .fontWeight(.bold)
+                                        .foregroundColor(Theme.Palette.textPrimary)
+                                    
+                                    Text("Enter your search criteria on the Search tab to find flights")
+                                        .font(.subheadline)
+                                        .foregroundColor(Theme.Palette.textSecondary)
+                                        .multilineTextAlignment(.center)
+                                        .padding(.horizontal, 40)
                                 }
-                                .listStyle(PlainListStyle())
-                                .scrollContentBackground(.hidden)
+                                
+                                Button(action: {
+                                    // Switch to search tab
+                                }) {
+                                    HStack {
+                                        Image(systemName: "magnifyingglass")
+                                        Text("Go to Search")
+                                    }
+                                    .font(.headline)
+                                    .foregroundColor(Theme.Palette.textPrimary)
+                                    .padding(.horizontal, 24)
+                                    .padding(.vertical, 12)
+                                    .background(Theme.Palette.primaryRed)
+                                    .cornerRadius(8)
+                                }
+                                .buttonStyle(PlainButtonStyle())
+                            }
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        } else {
+                            let filteredOffers = filteredAndSortedOffers(viewStore.flightOffers, sortOption: viewStore.sortOption, filterOption: viewStore.filterOption)
+                            
+                            if filteredOffers.isEmpty {
+                                // Empty state when filters return no results
+                                VStack(spacing: 20) {
+                                    Image(systemName: "airplane.circle")
+                                        .font(.system(size: 80))
+                                        .foregroundColor(Theme.Palette.primaryRed)
+                                    
+                                    VStack(spacing: 12) {
+                                        Text("No Flights Match Your Filters")
+                                            .font(.title2)
+                                            .fontWeight(.bold)
+                                            .foregroundColor(Theme.Palette.textPrimary)
+                                        
+                                        Text("Try adjusting your filters to see more results")
+                                            .font(.subheadline)
+                                            .foregroundColor(Theme.Palette.textSecondary)
+                                            .multilineTextAlignment(.center)
+                                            .padding(.horizontal, 40)
+                                    }
+                                    
+                                    Button(action: {
+                                        // Reset filters
+                                    }) {
+                                        HStack {
+                                            Image(systemName: "arrow.clockwise")
+                                            Text("Reset Filters")
+                                        }
+                                        .font(.headline)
+                                        .foregroundColor(Theme.Palette.textPrimary)
+                                        .padding(.horizontal, 24)
+                                        .padding(.vertical, 12)
+                                        .background(Theme.Palette.primaryRed)
+                                        .cornerRadius(8)
+                                    }
+                                    .buttonStyle(PlainButtonStyle())
+                                }
+                                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                            } else {
+                                VStack {
+                                    // Sort and Filter Controls
+                                    HStack {
+                                        // Sort Picker
+                                        Picker("Sort by", selection: viewStore.binding(get: \.sortOption, send: { .sortChanged($0) })) {
+                                            ForEach(ResultsFeature.SortOption.allCases, id: \.self) { option in
+                                                Text(option.displayName).tag(option)
+                                            }
+                                        }
+                                        .pickerStyle(MenuPickerStyle())
+                                        .colorScheme(.dark)
+                                        
+                                        Spacer()
+                                        
+                                        // Filter Picker
+                                        Picker("Filter", selection: viewStore.binding(get: \.filterOption, send: { .filterChanged($0) })) {
+                                            ForEach(ResultsFeature.FilterOption.allCases, id: \.self) { option in
+                                                Text(option.displayName).tag(option)
+                                            }
+                                        }
+                                        .pickerStyle(MenuPickerStyle())
+                                        .colorScheme(.dark)
+                                    }
+                                    .padding()
+                                    .background(Theme.Gradient.surface)
+                                    .cornerRadius(12)
+                                    .shadow(color: Theme.Shadow.red, radius: 4)
+                                    .padding()
+                                    
+                                    // Results List
+                                    List(filteredOffers) { offer in
+                                        NavigationLink(destination: FlightDetailView(flightOffer: offer)) {
+                                            FlightOfferCard(offer: offer)
+                                        }
+                                        .buttonStyle(PlainButtonStyle())
+                                    }
+                                    .listStyle(PlainListStyle())
+                                    .scrollContentBackground(.hidden)
+                                }
                             }
                         }
                     }
