@@ -43,13 +43,12 @@ struct AirlinesView: View {
                                 }
                         }
                         .listStyle(PlainListStyle())
+                        .scrollContentBackground(.hidden) // Приховуємо фон List для прозорого навігаційного бару
                     }
                     }
                 }
                 .navigationTitle("Airlines")
                 .navigationBarTitleDisplayMode(.large)
-                .toolbarBackground(Theme.Gradient.navigationBar, for: .navigationBar)
-                .toolbarColorScheme(.dark, for: .navigationBar)
                 .onAppear {
                     viewStore.send(.onAppear)
                 }
@@ -86,6 +85,10 @@ struct RegionButton: View {
             .background(isSelected ? Theme.Gradient.button : Theme.Gradient.surface)
             .foregroundColor(isSelected ? .white : Theme.Palette.textPrimary)
             .cornerRadius(16)
+            .overlay(
+                RoundedRectangle(cornerRadius: 16)
+                    .stroke(isSelected ? Theme.Palette.black : Color.clear, lineWidth: 2)
+            )
             .shadow(color: isSelected ? Theme.Palette.primaryRed.opacity(0.3) : .clear, radius: 4)
         }
     }
@@ -222,13 +225,8 @@ struct AirlineDetailView: View {
         }
         .navigationTitle("Airline Details")
         .navigationBarTitleDisplayMode(.inline)
-        .toolbarBackground(Theme.Gradient.navigationBar, for: .navigationBar)
-        .toolbarColorScheme(.dark, for: .navigationBar)
         .navigationDestination(item: $webURL) { url in
             AirlineWebScreen(title: airline.name, url: url)
-                .toolbarColorScheme(.dark, for: .navigationBar)
-                .toolbarBackground(Theme.Palette.surface, for: .navigationBar)
-                .toolbarBackground(.visible, for: .navigationBar)
                 .scrollContentBackground(.hidden)
                 .background(Theme.Gradient.background)
         }

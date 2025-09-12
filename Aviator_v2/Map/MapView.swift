@@ -155,8 +155,6 @@ struct MapView: View {
                 }
                 .navigationTitle("Live Aircraft Map")
                 .navigationBarTitleDisplayMode(.large)
-                .toolbarBackground(Theme.Gradient.navigationBar, for: .navigationBar)
-                .toolbarColorScheme(.dark, for: .navigationBar)
                 .onAppear {
                     viewStore.send(.onAppear)
                     requestLocationPermission()
@@ -310,8 +308,6 @@ struct AircraftDetailView: View {
             .padding()
         .navigationTitle("Aircraft Details")
         .navigationBarTitleDisplayMode(.inline)
-        .toolbarBackground(Theme.Gradient.navigationBar, for: .navigationBar)
-        .toolbarColorScheme(.dark, for: .navigationBar)
         }
     }
 }

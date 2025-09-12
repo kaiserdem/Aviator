@@ -29,7 +29,7 @@ struct RoutesView: View {
                             .padding(.horizontal)
                         }
                         .padding(.vertical, 8)
-                        .background(Theme.Gradient.surface)
+                        .background(Theme.Gradient.navigationBar)
                         
                         // Routes List
                         if viewStore.isLoading {
@@ -43,13 +43,12 @@ struct RoutesView: View {
                                     }
                             }
                             .listStyle(PlainListStyle())
+                            .scrollContentBackground(.hidden) // Приховуємо фон List для прозорого навігаційного бару
                         }
                     }
                 }
                 .navigationTitle("Routes")
                 .navigationBarTitleDisplayMode(.large)
-                .toolbarBackground(Theme.Gradient.navigationBar, for: .navigationBar)
-                .toolbarColorScheme(.dark, for: .navigationBar)
                 .onAppear {
                     viewStore.send(.onAppear)
                 }
@@ -199,8 +198,6 @@ struct RouteDetailView: View {
         }
         .navigationTitle("Route Details")
         .navigationBarTitleDisplayMode(.inline)
-        .toolbarBackground(Theme.Gradient.navigationBar, for: .navigationBar)
-        .toolbarColorScheme(.dark, for: .navigationBar)
     }
 }
 

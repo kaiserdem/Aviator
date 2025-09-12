@@ -51,10 +51,10 @@ struct Theme {
         // Градієнт для таббару та навігаційного бару
         static let navigationBar = LinearGradient(
             colors: [
-                Palette.black,
-                Palette.deepRed,
                 Palette.primaryRed,
-                Palette.black
+                Palette.deepRed,
+                Palette.darkRed,
+                Palette.primaryRed
             ],
             startPoint: .topLeading,
             endPoint: .bottomTrailing

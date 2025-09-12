@@ -42,7 +42,7 @@ struct ContentView: View {
             .preferredColorScheme(.dark)
             .background(Theme.Gradient.background)
             .toolbarBackground(Theme.Gradient.tabBar, for: .tabBar)
-            .toolbarBackground(Theme.Gradient.navigationBar, for: .navigationBar)
+            .toolbarBackground(.hidden, for: .navigationBar)
             .toolbarColorScheme(.dark, for: .tabBar)
             .toolbarColorScheme(.dark, for: .navigationBar)
         }
