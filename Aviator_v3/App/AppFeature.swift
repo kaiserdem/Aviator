@@ -1,4 +1,5 @@
 import ComposableArchitecture
+import Foundation
 
 struct AppFeature: Reducer {
     struct State: Equatable {
@@ -16,6 +17,18 @@ struct AppFeature: Reducer {
         case results(ResultsFeature.Action)
         case saved(SavedFeature.Action)
         case profile(ProfileFeature.Action)
+        case searchCompleted(SearchParameters)
+    }
+    
+    struct SearchParameters: Equatable {
+        let origin: String
+        let destination: String
+        let departureDate: Date
+        let returnDate: Date
+        let adults: Int
+        let children: Int
+        let infants: Int
+        let travelClass: String
     }
 
     var body: some ReducerOf<Self> {
@@ -29,6 +42,12 @@ struct AppFeature: Reducer {
             case let .selectTab(tab):
                 state.selectedTab = tab
                 return .none
+                
+            case let .searchCompleted(parameters):
+                // Передаємо параметри пошуку до ResultsFeature та переключаємося на вкладку Results
+                state.selectedTab = .results
+                return .send(.results(.searchWithParameters(parameters)))
+                
             default:
                 return .none
             }

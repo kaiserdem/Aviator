@@ -15,6 +15,7 @@ struct ResultsFeature: Reducer {
         case sortChanged(SortOption)
         case filterChanged(FilterOption)
         case selectOffer(FlightOffer?)
+        case searchWithParameters(AppFeature.SearchParameters)
         case _flightOffersResponse([FlightOffer])
     }
 
@@ -45,17 +46,29 @@ struct ResultsFeature: Reducer {
         Reduce { state, action in
             switch action {
             case .onAppear:
+                // Не робимо автоматичний пошук при появі
+                return .none
+                
+            case let .searchWithParameters(parameters):
                 state.isLoading = true
+                print("🔍 ResultsFeature: Starting search with parameters")
+                print("   Origin: \(parameters.origin)")
+                print("   Destination: \(parameters.destination)")
+                print("   Adults: \(parameters.adults)")
+                print("   Children: \(parameters.children)")
+                print("   Infants: \(parameters.infants)")
+                print("   Travel Class: \(parameters.travelClass)")
+                
                 return .run { send in
                     let offers = await amadeusClient.searchFlights(
-                        "NYC",
-                        "LAX",
-                        Date(),
-                        Calendar.current.date(byAdding: .day, value: 7, to: Date()) ?? Date(),
-                        1,
-                        0,
-                        0,
-                        "ECONOMY"
+                        parameters.origin,
+                        parameters.destination,
+                        parameters.departureDate,
+                        parameters.returnDate,
+                        parameters.adults,
+                        parameters.children,
+                        parameters.infants,
+                        parameters.travelClass
                     )
                     await send(._flightOffersResponse(offers))
                 }

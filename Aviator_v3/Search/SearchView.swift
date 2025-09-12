@@ -153,22 +153,7 @@ struct SearchView: View {
                             .cornerRadius(12)
                             .shadow(color: Theme.Shadow.red, radius: 4)
                             
-                            // Results
-                            if !viewStore.flightOffers.isEmpty {
-                                VStack(alignment: .leading, spacing: 12) {
-                                    Text("Available Flights")
-                                        .font(.headline)
-                                        .foregroundColor(.primary)
-                                    
-                                    ForEach(viewStore.flightOffers) { offer in
-                                        FlightOfferCard(offer: offer)
-                                            .onTapGesture {
-                                                viewStore.send(.selectOffer(offer))
-                                            }
-                                    }
-                                }
-                                .padding()
-                            }
+                            // Results will be shown in ResultsView tab
                         }
                         .padding()
                     }

@@ -353,7 +353,7 @@ final class AmadeusService {
             
             guard let url = components.url else {
                 print("❌ Invalid URL")
-                return getMockFlightOffers() // Fallback to mock data
+                return [] // Return empty array instead of mock data
             }
             
             // Create request
@@ -367,7 +367,7 @@ final class AmadeusService {
             
             guard let httpResponse = response as? HTTPURLResponse else {
                 print("❌ Invalid response")
-                return getMockFlightOffers() // Fallback to mock data
+                return [] // Return empty array instead of mock data
             }
             
             print("🌐 Amadeus API Response Status: \(httpResponse.statusCode)")
@@ -379,19 +379,19 @@ final class AmadeusService {
                 } catch {
                     print("❌ JSON parsing error: \(error)")
                     print("❌ Raw response: \(String(data: data, encoding: .utf8) ?? "Unable to decode")")
-                    return getMockFlightOffers() // Fallback to mock data
+                    return [] // Return empty array instead of mock data
                 }
             } else {
                 print("❌ API Error: \(httpResponse.statusCode)")
                 if let errorData = String(data: data, encoding: .utf8) {
                     print("❌ Error details: \(errorData)")
                 }
-                return getMockFlightOffers() // Fallback to mock data
+                return [] // Return empty array instead of mock data
             }
             
         } catch {
             print("❌ Network error: \(error)")
-            return getMockFlightOffers() // Fallback to mock data
+            return [] // Return empty array instead of mock data
         }
     }
     
@@ -558,47 +558,6 @@ final class AmadeusService {
     }
     */
     
-    // Fallback mock data for when API fails
-    private func getMockFlightOffers() -> [FlightOffer] {
-        return [
-            FlightOffer(
-                price: "299",
-                currency: "USD",
-                origin: "NYC",
-                destination: "LAX",
-                departureDate: "2025-01-15",
-                returnDate: "2025-01-22",
-                airline: "American Airlines",
-                flightNumber: "AA123",
-                duration: "5h 30m",
-                stops: 0
-            ),
-            FlightOffer(
-                price: "349",
-                currency: "USD",
-                origin: "NYC",
-                destination: "LAX",
-                departureDate: "2025-01-15",
-                returnDate: "2025-01-22",
-                airline: "Delta Air Lines",
-                flightNumber: "DL456",
-                duration: "6h 15m",
-                stops: 1
-            ),
-            FlightOffer(
-                price: "279",
-                currency: "USD",
-                origin: "NYC",
-                destination: "LAX",
-                departureDate: "2025-01-15",
-                returnDate: "2025-01-22",
-                airline: "United Airlines",
-                flightNumber: "UA789",
-                duration: "5h 45m",
-                stops: 0
-            )
-        ]
-    }
     
     private func getMockAirports() -> [Airport] {
         return [

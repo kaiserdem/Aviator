@@ -27,6 +27,7 @@ struct SearchFeature: Reducer {
         case infantsChanged(Int)
         case travelClassChanged(String)
         case searchFlights
+        case searchCompleted(AppFeature.SearchParameters)
         case _flightOffersResponse([FlightOffer])
         case selectOffer(FlightOffer?)
     }
@@ -84,19 +85,24 @@ struct SearchFeature: Reducer {
                 print("   Children: \(state.children)")
                 print("   Infants: \(state.infants)")
                 print("   Travel Class: \(state.travelClass)")
-                return .run { [state] send in
-                    let offers = await amadeusClient.searchFlights(
-                        state.origin,
-                        state.destination,
-                        state.departureDate,
-                        state.returnDate,
-                        state.adults,
-                        state.children,
-                        state.infants,
-                        state.travelClass
-                    )
-                    await send(._flightOffersResponse(offers))
-                }
+                
+                // Створюємо параметри пошуку та відправляємо до AppFeature
+                let parameters = AppFeature.SearchParameters(
+                    origin: state.origin,
+                    destination: state.destination,
+                    departureDate: state.departureDate,
+                    returnDate: state.returnDate,
+                    adults: state.adults,
+                    children: state.children,
+                    infants: state.infants,
+                    travelClass: state.travelClass
+                )
+                
+                return .send(.searchCompleted(parameters))
+                
+            case let .searchCompleted(parameters):
+                // Цей випадок обробляється в AppFeature
+                return .none
                 
             case let ._flightOffersResponse(offers):
                 state.isLoading = false
