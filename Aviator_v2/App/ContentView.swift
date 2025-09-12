@@ -23,12 +23,12 @@ struct ContentView: View {
                     }
                     .tag(AppFeature.State.Tab.airlines)
                 
-                Text("Tab 3")
+                RoutesView(store: self.store.scope(state: \.routes, action: { .routes($0) }))
                     .tabItem {
-                        Image(systemName: "questionmark.circle")
-                        Text("Tab 3")
+                        Image(systemName: "airplane.departure")
+                        Text("Routes")
                     }
-                    .tag(AppFeature.State.Tab.tab3)
+                    .tag(AppFeature.State.Tab.routes)
                 
                 Text("Tab 4")
                     .tabItem {

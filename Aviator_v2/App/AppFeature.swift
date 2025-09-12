@@ -2,24 +2,27 @@ import ComposableArchitecture
 
 struct AppFeature: Reducer {
     struct State: Equatable {
-        enum Tab: Hashable { case map, airlines, tab3, tab4 }
+        enum Tab: Hashable { case map, airlines, routes, tab4 }
         var selectedTab: Tab = .map
         var map = MapFeature.State()
         var airlines = AirlinesFeature.State()
-        // TODO: Add tab3 and tab4 features
+        var routes = RoutesFeature.State()
+        // TODO: Add tab4 feature
     }
 
     enum Action: Equatable {
         case selectTab(State.Tab)
         case map(MapFeature.Action)
         case airlines(AirlinesFeature.Action)
-        // TODO: Add tab3 and tab4 actions
+        case routes(RoutesFeature.Action)
+        // TODO: Add tab4 action
     }
 
     var body: some ReducerOf<Self> {
         Scope(state: \.map, action: /Action.map) { MapFeature() }
         Scope(state: \.airlines, action: /Action.airlines) { AirlinesFeature() }
-        // TODO: Add tab3 and tab4 scopes
+        Scope(state: \.routes, action: /Action.routes) { RoutesFeature() }
+        // TODO: Add tab4 scope
 
         Reduce { state, action in
             switch action {
