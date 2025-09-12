@@ -214,7 +214,7 @@ struct AircraftListView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("Active Aircraft (\(aircraft.count))")
+            Text("Active Aircraft")
                 .font(.headline)
                 .foregroundColor(Theme.Palette.textPrimary)
                 .padding(.horizontal)

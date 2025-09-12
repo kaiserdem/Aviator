@@ -238,11 +238,21 @@ struct StatCard: View {
     let title: String
     let value: String
     let icon: String
+    let color: Color
+    let subtitle: String?
+    
+    init(title: String, value: String, icon: String, color: Color = Theme.Palette.primaryRed, subtitle: String? = nil) {
+        self.title = title
+        self.value = value
+        self.icon = icon
+        self.color = color
+        self.subtitle = subtitle
+    }
     
     var body: some View {
         HStack(spacing: 12) {
             Image(systemName: icon)
-                .foregroundColor(Theme.Palette.primaryRed)
+                .foregroundColor(color)
                 .frame(width: 24)
             
             VStack(alignment: .leading, spacing: 2) {
@@ -253,14 +263,20 @@ struct StatCard: View {
                 Text(value)
                     .font(.headline)
                     .foregroundColor(Theme.Palette.textPrimary)
+                
+                if let subtitle = subtitle {
+                    Text(subtitle)
+                        .font(.caption2)
+                        .foregroundColor(Theme.Palette.textSecondary)
+                }
             }
             
             Spacer()
         }
         .padding()
-                        .background(Theme.Gradient.surface)
-                        .cornerRadius(12)
-                        .shadow(color: Theme.Palette.primaryRed.opacity(0.2), radius: 2)
+        .background(Theme.Gradient.surface)
+        .cornerRadius(12)
+        .shadow(color: color.opacity(0.2), radius: 2)
     }
 }
 

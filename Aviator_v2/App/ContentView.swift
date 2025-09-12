@@ -30,12 +30,12 @@ struct ContentView: View {
                     }
                     .tag(AppFeature.State.Tab.routes)
                 
-                Text("Tab 4")
+                StatsView(store: self.store.scope(state: \.stats, action: { .stats($0) }))
                     .tabItem {
-                        Image(systemName: "questionmark.circle")
-                        Text("Tab 4")
+                        Image(systemName: "chart.bar.fill")
+                        Text("Stats")
                     }
-                    .tag(AppFeature.State.Tab.tab4)
+                    .tag(AppFeature.State.Tab.stats)
             }
             .environmentObject(locationManager)
             .tint(Theme.Palette.primaryRed)
