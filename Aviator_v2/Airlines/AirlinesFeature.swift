@@ -56,6 +56,11 @@ struct Airline: Identifiable, Equatable, Hashable {
     let activeFlights: Int
     let logoURL: URL?
     let website: URL?
+    let countryCode: String
+    let countryFlag: String
+    let foundedYear: Int?
+    let fleetSize: Int?
+    let headquarters: String?
 }
 
 enum Region: String, CaseIterable, Equatable {

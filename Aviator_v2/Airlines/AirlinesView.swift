@@ -115,7 +115,7 @@ struct AirlineRowView: View {
                     .font(.headline)
                     .foregroundColor(Theme.Palette.textPrimary)
                 
-                Text("\(airline.country) • \(airline.activeFlights) flights")
+                Text("\(airline.region.rawValue) • \(airline.activeFlights) flights")
                     .font(.caption)
                     .foregroundColor(Theme.Palette.textSecondary)
             }
@@ -156,9 +156,13 @@ struct AirlineDetailView: View {
                         .foregroundColor(Theme.Palette.textPrimary)
                         .multilineTextAlignment(.center)
                     
-                    Text(airline.country)
-                        .font(.subheadline)
-                        .foregroundColor(Theme.Palette.textSecondary)
+                    HStack(spacing: 8) {
+                        Text(airline.countryFlag)
+                            .font(.title2)
+                        Text(airline.country)
+                            .font(.subheadline)
+                            .foregroundColor(Theme.Palette.textSecondary)
+                    }
                 }
                 .frame(maxWidth: .infinity)
                 
@@ -172,6 +176,18 @@ struct AirlineDetailView: View {
                     StatCard(title: "Active Flights", value: "\(airline.activeFlights)", icon: "airplane")
                     StatCard(title: "Region", value: airline.region.rawValue, icon: "globe")
                     StatCard(title: "Callsign", value: airline.callsign, icon: "radio")
+                    
+                    if let foundedYear = airline.foundedYear {
+                        StatCard(title: "Founded", value: "\(foundedYear)", icon: "calendar")
+                    }
+                    
+                    if let fleetSize = airline.fleetSize {
+                        StatCard(title: "Fleet Size", value: "\(fleetSize)", icon: "airplane.circle")
+                    }
+                    
+                    if let headquarters = airline.headquarters {
+                        StatCard(title: "Headquarters", value: headquarters, icon: "building.2")
+                    }
                 }
                 
                 // Links
