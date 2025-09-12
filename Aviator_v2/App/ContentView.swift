@@ -40,11 +40,11 @@ struct ContentView: View {
             .environmentObject(locationManager)
             .tint(Theme.Palette.primaryRed)
             .preferredColorScheme(.dark)
-            .background(Theme.Gradient.background)
-            .toolbarBackground(Theme.Gradient.tabBar, for: .tabBar)
-            .toolbarBackground(.hidden, for: .navigationBar)
-            .toolbarColorScheme(.dark, for: .tabBar)
-            .toolbarColorScheme(.dark, for: .navigationBar)
+            //.background(Theme.Gradient.background)
+            //.toolbarBackground(Theme.Gradient.tabBar, for: .tabBar)
+            //.toolbarBackground(.hidden, for: .navigationBar)
+            //.toolbarColorScheme(.dark, for: .tabBar)
+            //.toolbarColorScheme(.dark, for: .navigationBar)
         }
     }
 }

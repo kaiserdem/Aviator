@@ -29,7 +29,8 @@ struct RoutesView: View {
                             .padding(.horizontal)
                         }
                         .padding(.vertical, 8)
-                        .background(Theme.Gradient.navigationBar)
+                        .background(Theme.Gradient.tabBar)
+
                         
                         // Routes List
                         if viewStore.isLoading {

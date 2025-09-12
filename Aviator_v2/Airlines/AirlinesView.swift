@@ -10,8 +10,8 @@ struct AirlinesView: View {
             NavigationStack {
                 ZStack {
                     // Background gradient
-                    Theme.Gradient.background
-                        .ignoresSafeArea()
+//                    Theme.Gradient.navigationBar
+//                        .ignoresSafeArea()
                     
                     VStack(spacing: 0) {
                     // Region Filter
@@ -29,8 +29,8 @@ struct AirlinesView: View {
                         .padding(.horizontal)
                     }
                     .padding(.vertical, 8)
-                    .background(Theme.Gradient.surface)
-                    
+                  
+                    .background(Theme.Gradient.tabBar)
                     // Airlines List
                     if viewStore.isLoading {
                         ProgressView("Loading airlines...")
@@ -44,6 +44,7 @@ struct AirlinesView: View {
                         }
                         .listStyle(PlainListStyle())
                         .scrollContentBackground(.hidden) // Приховуємо фон List для прозорого навігаційного бару
+                        
                     }
                     }
                 }

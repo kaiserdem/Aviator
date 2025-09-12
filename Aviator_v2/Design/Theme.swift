@@ -65,6 +65,7 @@ struct Theme {
             colors: [
                 Palette.black,
                 Palette.deepRed,
+                Palette.deepRed,
                 Palette.primaryRed
             ],
             startPoint: .topLeading,

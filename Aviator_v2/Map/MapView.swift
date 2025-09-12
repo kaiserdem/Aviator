@@ -88,6 +88,7 @@ struct MapView: View {
                 ZStack {
                     // Background gradient
                     Theme.Gradient.background
+                    
                         .ignoresSafeArea()
                     // Map
                     Map(coordinateRegion: viewStore.binding(get: \.region, send: { .regionChanged(MapRegion($0)) }), annotationItems: allAnnotations(viewStore)) { annotation in
@@ -122,7 +123,7 @@ struct MapView: View {
                                         .foregroundColor(.white)
                                         .font(.title2)
                                         .frame(width: 44, height: 44)
-                                        .background(Theme.Gradient.button)
+                                        .background(Theme.Gradient.tabBar)
                                         .cornerRadius(22)
                                         .shadow(color: Theme.Palette.primaryRed.opacity(0.3), radius: 4)
                                 }
@@ -135,7 +136,7 @@ struct MapView: View {
                                         .foregroundColor(.white)
                                         .font(.title2)
                                         .frame(width: 44, height: 44)
-                                        .background(Theme.Gradient.button)
+                                        .background(Theme.Gradient.tabBar)
                                         .cornerRadius(22)
                                         .shadow(color: Theme.Palette.primaryRed.opacity(0.3), radius: 4)
                                 }
