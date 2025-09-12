@@ -170,7 +170,7 @@ extension NetworkService {
     private static func getAircraftType(from icao24: String?) -> String? {
         guard let icao24 = icao24 else { return nil }
         
-        print("🔍 Checking ICAO24: \(icao24)")
+        //print("🔍 Checking ICAO24: \(icao24)")
         
         // Basic mapping based on common ICAO24 patterns
         // In real app, you'd use a more comprehensive database

@@ -29,52 +29,95 @@ final class AirlineService {
     private init() {}
     
     func fetchAirlines() async -> [Airline] {
-        print("✈️ AirlineService: Starting to fetch airlines from OpenSky API...")
+        print("✈️ AirlineService: Starting to fetch airlines from Wikipedia...")
         
-        // Use existing AircraftClient to avoid duplicate API calls
+        // Fetch airlines from Wikipedia
+        let wikipediaAirlines = await WikipediaClient.liveValue.searchAirlines()
+        print("✈️ AirlineService: Received \(wikipediaAirlines.count) airlines from Wikipedia")
+        
+        // Get aircraft data for active flights count
         let aircraftData = await AircraftClient.liveValue.fetchAircraftPositions()
         print("✈️ AirlineService: Received \(aircraftData.count) aircraft from AircraftClient")
         
-        // Group aircraft by callsign and create airline data
-        let airlines = createAirlinesFromAircraftData(aircraftData)
-        print("✈️ AirlineService: Created \(airlines.count) airlines from aircraft data")
-        
-        // If no airlines were created from API data, return empty array
-        if airlines.isEmpty {
-            print("✈️ AirlineService: No airlines created from API data")
-        }
+        // Create airlines from Wikipedia data and aircraft data
+        let airlines = createAirlinesFromWikipediaData(wikipediaAirlines, aircraftData: aircraftData)
+        print("✈️ AirlineService: Created \(airlines.count) airlines from Wikipedia data")
         
         return airlines
     }
     
-    
-    private func createAirlinesFromAircraftData(_ aircraft: [AircraftPosition]) -> [Airline] {
-        // Group aircraft by callsign
-        let groupedAircraft = Dictionary(grouping: aircraft) { aircraft in
-            aircraft.callsign ?? "UNKNOWN"
+    private func createAirlinesFromWikipediaData(_ wikipediaAirlines: [WikipediaAirline], aircraftData: [AircraftPosition]) -> [Airline] {
+        // Group aircraft by airline for active flights count
+        let groupedAircraft = Dictionary(grouping: aircraftData) { aircraft in
+            getAirlineFromCallsign(aircraft.callsign ?? "UNKNOWN")
         }
         
-        print("✈️ Total unique callsigns found: \(groupedAircraft.count)")
-        print("✈️ Callsigns: \(Array(groupedAircraft.keys).sorted().prefix(10))")
+        print("✈️ Grouped aircraft into \(groupedAircraft.count) airlines")
         
-        // Create airlines from grouped data
-        let airlines = groupedAircraft.compactMap { (callsign, aircraftList) -> Airline? in
-            guard !callsign.isEmpty && callsign != "UNKNOWN" else { 
-                return nil 
-            }
-            
-            // Show all callsigns - no filtering
-            
+        // Create airlines from Wikipedia data
+        let airlines = wikipediaAirlines.compactMap { wikipediaAirline -> Airline? in
+            let airlineName = wikipediaAirline.title
+            let aircraftList = groupedAircraft[airlineName] ?? []
             let activeFlights = aircraftList.count
-            let airlineInfo = getAirlineInfo(for: callsign, aircraftList: aircraftList)
             
-            print("✅ Created airline: \(airlineInfo.name) (\(callsign)) - \(activeFlights) flights - \(airlineInfo.region)")
+            print("🔍 Processing Wikipedia airline: '\(airlineName)' with \(activeFlights) active flights")
+            
+            let airlineInfo = getAirlineInfoByName(airlineName, aircraftList: aircraftList)
+            
+            print("✅ Created airline from Wikipedia: \(airlineInfo.name) - \(activeFlights) flights - \(airlineInfo.region)")
             
             return Airline(
                 name: airlineInfo.name,
                 country: airlineInfo.country,
                 region: airlineInfo.region,
-                callsign: callsign,
+                callsign: airlineInfo.callsign,
+                activeFlights: activeFlights,
+                logoURL: airlineInfo.logoURL ?? wikipediaAirline.thumbnail.flatMap(URL.init),
+                website: airlineInfo.website ?? wikipediaAirline.url.flatMap(URL.init),
+                countryCode: airlineInfo.countryCode,
+                countryFlag: airlineInfo.countryFlag,
+                foundedYear: airlineInfo.foundedYear,
+                fleetSize: airlineInfo.fleetSize,
+                headquarters: airlineInfo.headquarters
+            )
+        }
+        
+        // Sort by active flights (descending), then by name
+        return airlines.sorted { first, second in
+            if first.activeFlights != second.activeFlights {
+                return first.activeFlights > second.activeFlights
+            }
+            return first.name < second.name
+        }
+    }
+    
+    private func createAirlinesFromAircraftData(_ aircraft: [AircraftPosition]) -> [Airline] {
+        // Group aircraft by airline (not individual callsigns)
+        let groupedAircraft = Dictionary(grouping: aircraft) { aircraft in
+            getAirlineFromCallsign(aircraft.callsign ?? "UNKNOWN")
+        }
+        
+        print("✈️ Total unique airlines found: \(groupedAircraft.count)")
+        print("✈️ Airlines: \(Array(groupedAircraft.keys).sorted().prefix(10))")
+        
+        // Create airlines from grouped data
+        let airlines = groupedAircraft.compactMap { (airlineName, aircraftList) -> Airline? in
+            print("🔍 Processing airline: '\(airlineName)' with \(aircraftList.count) aircraft")
+            guard airlineName != "UNKNOWN" else { 
+                print("❌ Skipping UNKNOWN airline")
+                return nil 
+            }
+            
+            let activeFlights = aircraftList.count
+            let airlineInfo = getAirlineInfoByName(airlineName, aircraftList: aircraftList)
+            
+            print("✅ Created airline: \(airlineInfo.name) - \(activeFlights) flights - \(airlineInfo.region)")
+            
+            return Airline(
+                name: airlineInfo.name,
+                country: airlineInfo.country,
+                region: airlineInfo.region,
+                callsign: airlineInfo.callsign,
                 activeFlights: activeFlights,
                 logoURL: airlineInfo.logoURL,
                 website: airlineInfo.website,
@@ -90,6 +133,130 @@ final class AirlineService {
         return airlines.sorted { $0.activeFlights > $1.activeFlights }
     }
     
+    private func getAirlineFromCallsign(_ callsign: String) -> String {
+        print("🔍 Processing callsign: '\(callsign)'")
+        
+        // Extract airline prefix from callsign
+        let airlinePrefix = String(callsign.prefix(2))
+        print("🔍 Extracted prefix: '\(airlinePrefix)'")
+        
+        // Map airline prefixes to airline names
+        let airlinePrefixMap: [String: String] = [
+            "PS": "Ukraine International Airlines",
+            "BA": "British Airways", 
+            "AF": "Air France",
+            "LH": "Lufthansa",
+            "KL": "KLM Royal Dutch Airlines",
+            "IB": "Iberia",
+            "AZ": "Alitalia",
+            "TK": "Turkish Airlines",
+            "OS": "Austrian Airlines",
+            "SK": "SAS",
+            "AY": "Finnair",
+            "FI": "Icelandair",
+            "DY": "Norwegian",
+            "FR": "Ryanair",
+            "U2": "easyJet",
+            "EW": "Eurowings",
+            "AB": "Air Berlin",
+            "DE": "Condor",
+            "HV": "Transavia",
+            "LX": "Swiss International Air Lines",
+            "SN": "Brussels Airlines",
+            "TP": "TAP Air Portugal",
+            "VY": "Vueling",
+            "WF": "Widerøe",
+            "W6": "Wizz Air",
+            "W9": "Wizz Air",
+            "DLH": "Lufthansa",
+            "BAW": "British Airways",
+            "AFR": "Air France",
+            "JAL": "Japan Airlines",
+            "UAL": "United Airlines",
+            "UAE": "Emirates",
+            "SIA": "Singapore Airlines",
+            "QFA": "Qantas",
+            "SAA": "South African Airways",
+            "ACA": "Air Canada"
+        ]
+        
+        // Check for exact match first (for 3-letter codes)
+        if let airline = airlinePrefixMap[callsign] {
+            print("✅ Found exact match: '\(callsign)' → '\(airline)'")
+            return airline
+        }
+        
+        // Check for prefix match (for 2-letter codes)
+        if let airline = airlinePrefixMap[airlinePrefix] {
+            print("✅ Found prefix match: '\(airlinePrefix)' → '\(airline)'")
+            return airline
+        }
+        
+        // Return unknown if no match
+        print("❌ No match found for callsign: '\(callsign)' (prefix: '\(airlinePrefix)')")
+        return "UNKNOWN"
+    }
+    
+    private func getAirlineInfoByName(_ airlineName: String, aircraftList: [AircraftPosition]) -> (name: String, country: String, region: Region, callsign: String, logoURL: URL?, website: URL?, countryCode: String, countryFlag: String, foundedYear: Int?, fleetSize: Int?, headquarters: String?) {
+        // Known airline names mapping with extended data
+        let airlineMappings: [String: (name: String, country: String, region: Region, callsign: String, logoURL: String?, website: String?, countryCode: String, countryFlag: String, foundedYear: Int?, fleetSize: Int?, headquarters: String?)] = [
+            "Lufthansa": ("Lufthansa", "Germany", .europe, "DLH", "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Lufthansa_logo_2018.svg/200px-Lufthansa_logo_2018.svg.png", "https://www.lufthansa.com", "DE", "🇩🇪", 1953, 280, "Frankfurt"),
+            "British Airways": ("British Airways", "United Kingdom", .europe, "BAW", "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/British_Airways_logo.svg/200px-British_Airways_logo.svg.png", "https://www.britishairways.com", "GB", "🇬🇧", 1974, 280, "London"),
+            "Air France": ("Air France", "France", .europe, "AFR", "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Air_France_logo.svg/200px-Air_France_logo.svg.png", "https://www.airfrance.com", "FR", "🇫🇷", 1933, 220, "Paris"),
+            "Japan Airlines": ("Japan Airlines", "Japan", .asia, "JAL", "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Japan_Airlines_logo.svg/200px-Japan_Airlines_logo.svg.png", "https://www.jal.com", "JP", "🇯🇵", 1951, 150, "Tokyo"),
+            "United Airlines": ("United Airlines", "United States", .america, "UAL", "https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/United_Airlines_logo_2010.svg/200px-United_Airlines_logo_2010.svg.png", "https://www.united.com", "US", "🇺🇸", 1926, 800, "Chicago"),
+            "Emirates": ("Emirates", "United Arab Emirates", .asia, "UAE", "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/Emirates_logo.svg/200px-Emirates_logo.svg.png", "https://www.emirates.com", "AE", "🇦🇪", 1985, 260, "Dubai"),
+            "Singapore Airlines": ("Singapore Airlines", "Singapore", .asia, "SIA", "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Singapore_Airlines_logo.svg/200px-Singapore_Airlines_logo.svg.png", "https://www.singaporeair.com", "SG", "🇸🇬", 1972, 150, "Singapore"),
+            "Qantas": ("Qantas", "Australia", .oceania, "QFA", "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Qantas_logo_2016.svg/200px-Qantas_logo_2016.svg.png", "https://www.qantas.com", "AU", "🇦🇺", 1920, 130, "Sydney"),
+            "South African Airways": ("South African Airways", "South Africa", .africa, "SAA", "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/South_African_Airways_logo.svg/200px-South_African_Airways_logo.svg.png", "https://www.flysaa.com", "ZA", "🇿🇦", 1934, 50, "Johannesburg"),
+            "Air Canada": ("Air Canada", "Canada", .america, "ACA", "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Air_Canada_logo.svg/200px-Air_Canada_logo.svg.png", "https://www.aircanada.com", "CA", "🇨🇦", 1937, 180, "Montreal"),
+            "Ukraine International Airlines": ("Ukraine International Airlines", "Ukraine", .europe, "PS", nil, "https://www.flyuia.com", "UA", "🇺🇦", 1992, 25, "Kyiv"),
+            "Wizz Air": ("Wizz Air", "Hungary", .europe, "WZZ", nil, "https://wizzair.com", "HU", "🇭🇺", 2003, 180, "Budapest"),
+            "Ryanair": ("Ryanair", "Ireland", .europe, "RYR", nil, "https://www.ryanair.com", "IE", "🇮🇪", 1984, 470, "Dublin"),
+            "easyJet": ("easyJet", "United Kingdom", .europe, "EZY", nil, "https://www.easyjet.com", "GB", "🇬🇧", 1995, 330, "London"),
+            "Swiss International Air Lines": ("Swiss International Air Lines", "Switzerland", .europe, "SWR", nil, "https://www.swiss.com", "CH", "🇨🇭", 2002, 90, "Zurich"),
+            "KLM Royal Dutch Airlines": ("KLM Royal Dutch Airlines", "Netherlands", .europe, "KLM", nil, "https://www.klm.com", "NL", "🇳🇱", 1919, 110, "Amsterdam"),
+            "Iberia": ("Iberia", "Spain", .europe, "IBE", nil, "https://www.iberia.com", "ES", "🇪🇸", 1927, 80, "Madrid"),
+            "Alitalia": ("Alitalia", "Italy", .europe, "AZA", nil, "https://www.alitalia.com", "IT", "🇮🇹", 1946, 50, "Rome"),
+            "Aeroflot": ("Aeroflot", "Russia", .europe, "AFL", nil, "https://www.aeroflot.com", "RU", "🇷🇺", 1923, 180, "Moscow"),
+            "Turkish Airlines": ("Turkish Airlines", "Turkey", .europe, "THY", nil, "https://www.turkishairlines.com", "TR", "🇹🇷", 1933, 350, "Istanbul")
+        ]
+        
+        if let mapping = airlineMappings[airlineName] {
+            print("✅ Found mapping for '\(airlineName)': \(mapping.name)")
+            return (
+                name: mapping.name,
+                country: mapping.country,
+                region: mapping.region,
+                callsign: mapping.callsign,
+                logoURL: mapping.logoURL.flatMap(URL.init),
+                website: mapping.website.flatMap(URL.init),
+                countryCode: mapping.countryCode,
+                countryFlag: mapping.countryFlag,
+                foundedYear: mapping.foundedYear,
+                fleetSize: mapping.fleetSize,
+                headquarters: mapping.headquarters
+            )
+        } else {
+            print("❌ No mapping found for '\(airlineName)', creating generic entry")
+            // For unknown airlines, determine region from aircraft coordinates
+            let region = determineRegionFromAircraft(aircraftList)
+            let (countryCode, countryFlag) = getCountryInfoFromRegion(region)
+            return (
+                name: airlineName,
+                country: "Unknown",
+                region: region,
+                callsign: "UNK",
+                logoURL: nil,
+                website: nil,
+                countryCode: countryCode,
+                countryFlag: countryFlag,
+                foundedYear: nil,
+                fleetSize: nil,
+                headquarters: nil
+            )
+        }
+    }
     
     private func getAirlineInfo(for callsign: String, aircraftList: [AircraftPosition]) -> (name: String, country: String, region: Region, logoURL: URL?, website: URL?, countryCode: String, countryFlag: String, foundedYear: Int?, fleetSize: Int?, headquarters: String?) {
         // Known airline callsigns mapping with extended data

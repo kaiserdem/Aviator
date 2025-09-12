@@ -17,7 +17,7 @@ struct MapView: View {
     private func allAnnotations(_ viewStore: ViewStoreOf<MapFeature>) -> [MapAnnotationItem] {
         var annotations: [MapAnnotationItem] = []
         
-        print("🗺️ MapView: Creating annotations for \(viewStore.aircraft.count) aircraft")
+        //print("🗺️ MapView: Creating annotations for \(viewStore.aircraft.count) aircraft")
         
         // Add aircraft annotations
         for aircraft in viewStore.aircraft {
