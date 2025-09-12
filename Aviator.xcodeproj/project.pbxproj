@@ -8,11 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		0535F17C2E73FCD500EB5338 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 0535F17B2E73FCD500EB5338 /* ComposableArchitecture */; };
+		05F823DA2E747E32009F3FFB /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 05F823D92E747E32009F3FFB /* ComposableArchitecture */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		0535F1522E73EF3B00EB5338 /* Aviator_v2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Aviator_v2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		059D56452E701D2500A6A3D5 /* Aviator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Aviator.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		05F823CE2E747E24009F3FFB /* Aviator_v3.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Aviator_v3.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -24,6 +26,11 @@
 		059D56472E701D2500A6A3D5 /* Aviator */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = Aviator;
+			sourceTree = "<group>";
+		};
+		05F823CF2E747E24009F3FFB /* Aviator_v3 */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Aviator_v3;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -44,6 +51,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		05F823CB2E747E24009F3FFB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				05F823DA2E747E32009F3FFB /* ComposableArchitecture in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -52,6 +67,7 @@
 			children = (
 				059D56472E701D2500A6A3D5 /* Aviator */,
 				0535F1532E73EF3B00EB5338 /* Aviator_v2 */,
+				05F823CF2E747E24009F3FFB /* Aviator_v3 */,
 				059D56462E701D2500A6A3D5 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -61,6 +77,7 @@
 			children = (
 				059D56452E701D2500A6A3D5 /* Aviator.app */,
 				0535F1522E73EF3B00EB5338 /* Aviator_v2.app */,
+				05F823CE2E747E24009F3FFB /* Aviator_v3.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -113,6 +130,29 @@
 			productReference = 059D56452E701D2500A6A3D5 /* Aviator.app */;
 			productType = "com.apple.product-type.application";
 		};
+		05F823CD2E747E24009F3FFB /* Aviator_v3 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 05F823D82E747E25009F3FFB /* Build configuration list for PBXNativeTarget "Aviator_v3" */;
+			buildPhases = (
+				05F823CA2E747E24009F3FFB /* Sources */,
+				05F823CB2E747E24009F3FFB /* Frameworks */,
+				05F823CC2E747E24009F3FFB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				05F823CF2E747E24009F3FFB /* Aviator_v3 */,
+			);
+			name = Aviator_v3;
+			packageProductDependencies = (
+				05F823D92E747E32009F3FFB /* ComposableArchitecture */,
+			);
+			productName = Aviator_v3;
+			productReference = 05F823CE2E747E24009F3FFB /* Aviator_v3.app */;
+			productType = "com.apple.product-type.application";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -127,6 +167,9 @@
 						CreatedOnToolsVersion = 16.4;
 					};
 					059D56442E701D2500A6A3D5 = {
+						CreatedOnToolsVersion = 16.4;
+					};
+					05F823CD2E747E24009F3FFB = {
 						CreatedOnToolsVersion = 16.4;
 					};
 				};
@@ -150,6 +193,7 @@
 			targets = (
 				059D56442E701D2500A6A3D5 /* Aviator */,
 				0535F1512E73EF3B00EB5338 /* Aviator_v2 */,
+				05F823CD2E747E24009F3FFB /* Aviator_v3 */,
 			);
 		};
 /* End PBXProject section */
@@ -169,6 +213,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		05F823CC2E747E24009F3FFB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -180,6 +231,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		059D56412E701D2500A6A3D5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		05F823CA2E747E24009F3FFB /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -448,6 +506,72 @@
 			};
 			name = Release;
 		};
+		05F823D62E747E25009F3FFB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 88QUA4HBQJ;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "kaiserdem.Aviator-v3";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		05F823D72E747E25009F3FFB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 88QUA4HBQJ;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "kaiserdem.Aviator-v3";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -478,6 +602,15 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		05F823D82E747E25009F3FFB /* Build configuration list for PBXNativeTarget "Aviator_v3" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				05F823D62E747E25009F3FFB /* Debug */,
+				05F823D72E747E25009F3FFB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
@@ -493,6 +626,11 @@
 
 /* Begin XCSwiftPackageProductDependency section */
 		0535F17B2E73FCD500EB5338 /* ComposableArchitecture */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0535F17A2E73FCD500EB5338 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
+			productName = ComposableArchitecture;
+		};
+		05F823D92E747E32009F3FFB /* ComposableArchitecture */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 0535F17A2E73FCD500EB5338 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
 			productName = ComposableArchitecture;
