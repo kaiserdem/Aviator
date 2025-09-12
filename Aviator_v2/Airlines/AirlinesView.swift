@@ -46,6 +46,9 @@ struct AirlinesView: View {
                     }
                 }
                 .navigationTitle("Airlines")
+                .navigationBarTitleDisplayMode(.large)
+                .toolbarBackground(Theme.Gradient.navigationBar, for: .navigationBar)
+                .toolbarColorScheme(.dark, for: .navigationBar)
                 .onAppear {
                     viewStore.send(.onAppear)
                 }
@@ -199,6 +202,8 @@ struct AirlineDetailView: View {
         }
         .navigationTitle("Airline Details")
         .navigationBarTitleDisplayMode(.inline)
+        .toolbarBackground(Theme.Gradient.navigationBar, for: .navigationBar)
+        .toolbarColorScheme(.dark, for: .navigationBar)
     }
 }
 

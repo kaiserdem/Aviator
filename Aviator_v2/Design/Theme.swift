@@ -48,6 +48,28 @@ struct Theme {
             endPoint: .bottomTrailing
         )
         
+        // Градієнт для таббару та навігаційного бару
+        static let navigationBar = LinearGradient(
+            colors: [
+                Palette.deepRed,
+                Palette.darkRed,
+                Palette.black
+            ],
+            startPoint: .topLeading,
+            endPoint: .bottomTrailing
+        )
+        
+        // Градієнт для таббару
+        static let tabBar = LinearGradient(
+            colors: [
+                Palette.black,
+                Palette.darkRed,
+                Palette.deepRed
+            ],
+            startPoint: .topLeading,
+            endPoint: .bottomTrailing
+        )
+        
         // Градієнт для кнопок
         static let button = LinearGradient(
             colors: [

@@ -42,15 +42,12 @@ struct MapFeature: Reducer {
 
     @Dependency(\.aircraftClient) var aircraftClient
 
-    @Dependency(\.locationManager) var locationManager
-
     var body: some ReducerOf<Self> {
         Reduce { state, action in
             switch action {
             case .onAppear:
                 state.isLoading = true
                 return .run { send in
-                    await send(.requestLocationPermission)
                     let aircraft = await aircraftClient.fetchAircraftPositions()
                     await send(._aircraftResponse(aircraft))
                 }
@@ -65,20 +62,11 @@ struct MapFeature: Reducer {
                 return .none
                 
             case .requestLocationPermission:
-                return .run { send in
-                    let status = await locationManager.requestPermission()
-                    await send(.locationPermissionChanged(status))
-                }
+                // This will be handled by the view
+                return .none
                 
             case let .locationPermissionChanged(status):
                 state.locationPermissionStatus = status
-                if status == .authorized {
-                    return .run { send in
-                        if let location = await locationManager.getCurrentLocation() {
-                            await send(.userLocationUpdated(LocationCoordinate(location)))
-                        }
-                    }
-                }
                 return .none
                 
             case let .userLocationUpdated(coordinate):

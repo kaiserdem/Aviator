@@ -1,8 +1,10 @@
 import SwiftUI
 import ComposableArchitecture
+import CoreLocation
 
 struct ContentView: View {
     let store: StoreOf<AppFeature>
+    @StateObject private var locationManager = LocationManager()
     
     var body: some View {
         WithViewStore(self.store, observe: { $0 }) { viewStore in
@@ -35,9 +37,14 @@ struct ContentView: View {
                     }
                     .tag(AppFeature.State.Tab.tab4)
             }
+            .environmentObject(locationManager)
             .tint(Theme.Palette.primaryRed)
             .preferredColorScheme(.dark)
             .background(Theme.Gradient.background)
+            .toolbarBackground(Theme.Gradient.tabBar, for: .tabBar)
+            .toolbarBackground(Theme.Gradient.navigationBar, for: .navigationBar)
+            .toolbarColorScheme(.dark, for: .tabBar)
+            .toolbarColorScheme(.dark, for: .navigationBar)
         }
     }
 }

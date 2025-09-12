@@ -1,6 +1,7 @@
 import SwiftUI
 import ComposableArchitecture
 import MapKit
+import CoreLocation
 
 struct MapAnnotationItem: Identifiable {
     let id = UUID()
@@ -10,6 +11,8 @@ struct MapAnnotationItem: Identifiable {
 
 struct MapView: View {
     let store: StoreOf<MapFeature>
+    @EnvironmentObject var locationManager: LocationManager
+    @State private var userLocation: CLLocationCoordinate2D?
     
     private func allAnnotations(_ viewStore: ViewStoreOf<MapFeature>) -> [MapAnnotationItem] {
         var annotations: [MapAnnotationItem] = []
@@ -30,14 +33,50 @@ struct MapView: View {
         }
         
         // Add user location annotation
-        if let userLocation = viewStore.userLocation {
+        if let userLocation = userLocation {
             annotations.append(MapAnnotationItem(
-                coordinate: userLocation.clLocationCoordinate,
+                coordinate: userLocation,
                 view: AnyView(UserLocationAnnotationView())
             ))
         }
         
         return annotations
+    }
+    
+    private func requestLocationPermission() {
+        if locationManager.authorizationStatus == .notDetermined {
+            locationManager.requestLocationPermission()
+        }
+    }
+    
+    private func handleLocationPermissionChange(_ status: CLAuthorizationStatus, viewStore: ViewStoreOf<MapFeature>) {
+        let permissionStatus: LocationPermissionStatus
+        switch status {
+        case .notDetermined:
+            permissionStatus = .notDetermined
+        case .denied, .restricted:
+            permissionStatus = .denied
+        case .authorizedWhenInUse, .authorizedAlways:
+            permissionStatus = .authorized
+            // Start location updates
+            startLocationUpdates(viewStore: viewStore)
+        @unknown default:
+            permissionStatus = .denied
+        }
+        
+        viewStore.send(.locationPermissionChanged(permissionStatus))
+    }
+    
+    private func startLocationUpdates(viewStore: ViewStoreOf<MapFeature>) {
+        // Use actual location from LocationManager
+        if let location = locationManager.currentLocation {
+            let coordinate = LocationCoordinate(location.coordinate)
+            viewStore.send(.userLocationUpdated(coordinate))
+        } else {
+            // Fallback to mock location if no real location available
+            let mockLocation = CLLocationCoordinate2D(latitude: 50.4501, longitude: 30.5234) // Kyiv
+            viewStore.send(.userLocationUpdated(LocationCoordinate(mockLocation)))
+        }
     }
     
     var body: some View {
@@ -112,8 +151,21 @@ struct MapView: View {
                     }
                 }
                 .navigationTitle("Live Aircraft Map")
+                .navigationBarTitleDisplayMode(.large)
+                .toolbarBackground(Theme.Gradient.navigationBar, for: .navigationBar)
+                .toolbarColorScheme(.dark, for: .navigationBar)
                 .onAppear {
                     viewStore.send(.onAppear)
+                    requestLocationPermission()
+                }
+                .onChange(of: locationManager.authorizationStatus) { status in
+                    handleLocationPermissionChange(status, viewStore: viewStore)
+                }
+                .onChange(of: locationManager.currentLocation) { location in
+                    if let location = location {
+                        let coordinate = LocationCoordinate(location.coordinate)
+                        viewStore.send(.userLocationUpdated(coordinate))
+                    }
                 }
                 .sheet(item: viewStore.binding(get: \.selectedAircraft, send: { .selectAircraft($0) })) { aircraft in
                     AircraftDetailView(aircraft: aircraft)
@@ -253,8 +305,10 @@ struct AircraftDetailView: View {
                 Spacer()
             }
             .padding()
-            .navigationTitle("Aircraft Details")
-            .navigationBarTitleDisplayMode(.inline)
+        .navigationTitle("Aircraft Details")
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbarBackground(Theme.Gradient.navigationBar, for: .navigationBar)
+        .toolbarColorScheme(.dark, for: .navigationBar)
         }
     }
 }
