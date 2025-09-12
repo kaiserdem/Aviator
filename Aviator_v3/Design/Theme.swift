@@ -2,11 +2,12 @@ import SwiftUI
 
 struct Theme {
     struct Palette {
-        // Основні кольори з скріншота
-        static let primaryRed = Color(hex: "FF2D55")        // Насичений червоний
-        static let deepRed = Color(hex: "8B0000")          // Глибокий червоний/бордовий
-        static let darkRed = Color(hex: "4A0000")          // Темно-червоний
-        static let black = Color(hex: "000000")            // Чорний
+        // Основні кольори з більшим контрастом (як у Aviator_v2)
+        static let primaryRed = Color(hex: "#FF1744")       // Яскраво-червоний акцент
+        static let darkRed = Color(hex: "#B71C1C")          // Темно-червоний
+        static let deepRed = Color(hex: "#8D0000")           // Глибокий червоний
+        static let black = Color(hex: "#000000")             // Чорний
+        static let darkGray = Color(hex: "#212121")          // Темно-сірий
         
         // Пурпурові градієнти
         static let deepPurple = Color(hex: "4A148C")       // Темно-пурпуровий
@@ -19,20 +20,31 @@ struct Theme {
         static let green = Color(hex: "4CAF50")          // Зелений
         static let blue = Color(hex: "2196F3")           // Синій
         
-        // Текстові кольори
-        static let textPrimary = Color.white
-        static let textSecondary = Color(hex: "B0B0B0")   // Світло-сірий
-        static let textTertiary = Color(hex: "808080")   // Середньо-сірий
-        
         // Фонові кольори
-        static let surface = Color(hex: "1A1A1A")        // Темно-сірий
-        static let surfaceLight = Color(hex: "2A2A2A")   // Світліший сірий
+        static let background = Color(hex: "#1A1A1A")        // Темний фон
+        static let surface = Color(hex: "#2A2A2A")           // Темна поверхня
+        static let cardBackground = Color(hex: "#1E1E1E")    // Фон карток
+        
+        // Текстові кольори
+        static let textPrimary = Color.white                 // Білий текст
+        static let textSecondary = Color(hex: "#CCCCCC")    // Світло-сірий текст
+        static let textTertiary = Color(hex: "#999999")     // Сірий текст
+        
+        // Акцентні кольори
+        static let accent = Color(hex: "#FF6B6B")           // Світло-червоний акцент
+        static let success = Color(hex: "#4CAF50")           // Зелений для успіху
+        static let warning = Color(hex: "#FF9800")           // Помаранчевий для попереджень
     }
     
     struct Gradient {
-        // Основні градієнти з скріншота
+        // Основний градієнт фону з більшим контрастом (як у Aviator_v2)
         static let background = LinearGradient(
-            colors: [Palette.deepRed, Palette.black],
+            colors: [
+                Palette.primaryRed,
+                Palette.deepRed,
+                Palette.darkRed,
+                Palette.black
+            ],
             startPoint: .topLeading,
             endPoint: .bottomTrailing
         )
@@ -56,10 +68,16 @@ struct Theme {
             endPoint: .bottomTrailing
         )
         
+        // Градієнт для таббару (як у Aviator_v2)
         static let tabBar = LinearGradient(
-            colors: [Palette.black, Palette.deepRed, Palette.primaryRed, Palette.black],
-            startPoint: .leading,
-            endPoint: .trailing
+            colors: [
+                Palette.black,
+                Palette.deepRed,
+                Palette.deepRed,
+                Palette.primaryRed
+            ],
+            startPoint: .topLeading,
+            endPoint: .bottomTrailing
         )
         
         // Кнопки та елементи
@@ -70,7 +88,7 @@ struct Theme {
         )
         
         static let surface = LinearGradient(
-            colors: [Palette.surface, Palette.surfaceLight],
+            colors: [Palette.surface, Palette.deepRed],
             startPoint: .topLeading,
             endPoint: .bottomTrailing
         )
