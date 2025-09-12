@@ -4,23 +4,34 @@ import MapKit
 import CoreLocation
 
 struct MapRegion: Equatable {
-    let center: CLLocationCoordinate2D
-    let span: MKCoordinateSpan
+    let center: LocationCoordinate
+    let span: MapSpan
     
     init(_ region: MKCoordinateRegion) {
-        self.center = region.center
-        self.span = region.span
+        self.center = LocationCoordinate(region.center)
+        self.span = MapSpan(region.span)
     }
     
     var mkCoordinateRegion: MKCoordinateRegion {
-        MKCoordinateRegion(center: center, span: span)
+        MKCoordinateRegion(center: center.clLocationCoordinate, span: span.mkCoordinateSpan)
     }
     
     static func == (lhs: MapRegion, rhs: MapRegion) -> Bool {
-        return lhs.center.latitude == rhs.center.latitude &&
-               lhs.center.longitude == rhs.center.longitude &&
-               lhs.span.latitudeDelta == rhs.span.latitudeDelta &&
-               lhs.span.longitudeDelta == rhs.span.longitudeDelta
+        return lhs.center == rhs.center && lhs.span == rhs.span
+    }
+}
+
+struct MapSpan: Equatable {
+    let latitudeDelta: Double
+    let longitudeDelta: Double
+    
+    init(_ span: MKCoordinateSpan) {
+        self.latitudeDelta = span.latitudeDelta
+        self.longitudeDelta = span.longitudeDelta
+    }
+    
+    var mkCoordinateSpan: MKCoordinateSpan {
+        MKCoordinateSpan(latitudeDelta: latitudeDelta, longitudeDelta: longitudeDelta)
     }
 }
 
@@ -70,72 +81,13 @@ struct MapFeature: Reducer {
             case .onAppear:
                 state.isLoading = true
                 return .run { send in
-                    // Simulate loading delay
-                    try? await Task.sleep(nanoseconds: 1_000_000_000) // 1 second
-                    
-                    // Use test data for now to avoid network issues
-                    let aircraft = [
-                        AircraftPosition(
-                            icao24: "abc123",
-                            callsign: "PS101",
-                            originCountry: "Ukraine",
-                            longitude: 30.5234,
-                            latitude: 50.4501,
-                            altitude: 2000,
-                            velocity: 220.0,
-                            heading: 140,
-                            aircraftType: "Boeing 737",
-                            aircraftImageURL: nil
-                        ),
-                        AircraftPosition(
-                            icao24: "def456",
-                            callsign: "BA238",
-                            originCountry: "United Kingdom",
-                            longitude: 25.0,
-                            latitude: 52.0,
-                            altitude: 1500,
-                            velocity: 190.0,
-                            heading: 280,
-                            aircraftType: "Airbus A320",
-                            aircraftImageURL: nil
-                        ),
-                        AircraftPosition(
-                            icao24: "ghi789",
-                            callsign: "LH445",
-                            originCountry: "Germany",
-                            longitude: 35.0,
-                            latitude: 48.0,
-                            altitude: 3000,
-                            velocity: 250.0,
-                            heading: 90,
-                            aircraftType: "Boeing 777",
-                            aircraftImageURL: nil
-                        ),
-                        AircraftPosition(
-                            icao24: "jkl012",
-                            callsign: "AF123",
-                            originCountry: "France",
-                            longitude: 20.0,
-                            latitude: 55.0,
-                            altitude: 2500,
-                            velocity: 200.0,
-                            heading: 45,
-                            aircraftType: "Airbus A330",
-                            aircraftImageURL: nil
-                        ),
-                        AircraftPosition(
-                            icao24: "mno345",
-                            callsign: "KL456",
-                            originCountry: "Netherlands",
-                            longitude: 15.0,
-                            latitude: 50.0,
-                            altitude: 1800,
-                            velocity: 180.0,
-                            heading: 320,
-                            aircraftType: "Boeing 737",
-                            aircraftImageURL: nil
-                        )
-                    ]
+                    print("🛩️ MapFeature: Starting to fetch aircraft data...")
+                    // Fetch real aircraft data from API
+                    let aircraft = await aircraftClient.fetchAircraftPositions()
+                    print("🛩️ MapFeature: Received \(aircraft.count) aircraft from API")
+                    for (index, plane) in aircraft.prefix(3).enumerated() {
+                        print("🛩️ Aircraft \(index + 1): \(plane.callsign ?? "Unknown") at \(plane.latitude ?? 0), \(plane.longitude ?? 0)")
+                    }
                     await send(._aircraftResponse(aircraft))
                 }
                 
@@ -158,10 +110,7 @@ struct MapFeature: Reducer {
                 
             case let .userLocationUpdated(coordinate):
                 state.userLocation = coordinate
-                state.region = MKCoordinateRegion(
-                    center: coordinate.clLocationCoordinate,
-                    span: MKCoordinateSpan(latitudeDelta: 5.0, longitudeDelta: 5.0)
-                )
+                // Не перезаписуємо region автоматично, щоб не заважати користувачу переміщати карту
                 return .none
                 
             case .zoomIn:

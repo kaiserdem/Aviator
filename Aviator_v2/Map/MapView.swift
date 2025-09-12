@@ -17,6 +17,8 @@ struct MapView: View {
     private func allAnnotations(_ viewStore: ViewStoreOf<MapFeature>) -> [MapAnnotationItem] {
         var annotations: [MapAnnotationItem] = []
         
+        print("🗺️ MapView: Creating annotations for \(viewStore.aircraft.count) aircraft")
+        
         // Add aircraft annotations
         for aircraft in viewStore.aircraft {
             if let latitude = aircraft.latitude, let longitude = aircraft.longitude {
@@ -40,6 +42,7 @@ struct MapView: View {
             ))
         }
         
+        print("🗺️ MapView: Created \(annotations.count) total annotations")
         return annotations
     }
     
@@ -182,15 +185,15 @@ struct AircraftAnnotationView: View {
         VStack {
             Image(systemName: "airplane")
                 .foregroundColor(Theme.Palette.primaryRed)
-                .font(.title2)
-            Text(aircraft.callsign ?? "Unknown")
                 .font(.caption)
+            Text(aircraft.callsign ?? "Unknown")
+                .font(.caption2)
                 .foregroundColor(Theme.Palette.textPrimary)
         }
-        .padding(8)
+        .padding(4)
         .background(Theme.Gradient.surface)
-        .cornerRadius(8)
-        .shadow(color: Theme.Palette.primaryRed.opacity(0.3), radius: 4)
+        .cornerRadius(6)
+        .shadow(color: Theme.Palette.primaryRed.opacity(0.3), radius: 2)
     }
 }
 
@@ -212,7 +215,7 @@ struct AircraftListView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("Active Aircraft")
+            Text("Active Aircraft (\(aircraft.count))")
                 .font(.headline)
                 .foregroundColor(Theme.Palette.textPrimary)
                 .padding(.horizontal)

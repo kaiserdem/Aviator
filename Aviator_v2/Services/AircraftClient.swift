@@ -11,37 +11,6 @@ extension AircraftClient: DependencyKey {
             await NetworkService.shared.fetchAircraftPositions()
         }
     )
-    
-    static let testValue = Self(
-        fetchAircraftPositions: {
-            [
-                AircraftPosition(
-                    icao24: "abc123",
-                    callsign: "PS101",
-                    originCountry: "Ukraine",
-                    longitude: 30.45,
-                    latitude: 50.45,
-                    altitude: 2000,
-                    velocity: 220.0,
-                    heading: 140,
-                    aircraftType: "Boeing 737",
-                    aircraftImageURL: nil
-                ),
-                AircraftPosition(
-                    icao24: "def456",
-                    callsign: "BA238",
-                    originCountry: "United Kingdom",
-                    longitude: -0.45,
-                    latitude: 51.47,
-                    altitude: 1500,
-                    velocity: 190.0,
-                    heading: 280,
-                    aircraftType: "Airbus A320",
-                    aircraftImageURL: nil
-                )
-            ]
-        }
-    )
 }
 
 extension DependencyValues {
@@ -60,34 +29,139 @@ final class NetworkService {
     
     func fetchAircraftPositions() async -> [AircraftPosition] {
         let urlString = "https://opensky-network.org/api/states/all"
-        guard let url = URL(string: urlString) else { return [] }
+        print("🌐 NetworkService: Fetching from URL: \(urlString)")
+        guard let url = URL(string: urlString) else { 
+            print("❌ NetworkService: Invalid URL")
+            return [] 
+        }
         
         do {
+            print("🌐 NetworkService: Making API request...")
             let (data, response) = try await URLSession.shared.data(from: url)
+            print("🌐 NetworkService: Response status: \((response as? HTTPURLResponse)?.statusCode ?? -1)")
+            print("🌐 NetworkService: Data size: \(data.count) bytes")
             guard (response as? HTTPURLResponse)?.statusCode == 200 else {
+                print("❌ NetworkService: Bad response status")
                 return []
             }
             
             struct OpenSkyEnvelope: Decodable {
-                let time: Int?
-                let states: [[AnyDecodable]]?
+                let time: Int
+                let states: [[State]]?
+            }
+            
+            enum State: Codable {
+                case bool(Bool)
+                case double(Double)
+                case string(String)
+                case null
+
+                init(from decoder: Decoder) throws {
+                    let container = try decoder.singleValueContainer()
+                    if let x = try? container.decode(Bool.self) {
+                        self = .bool(x)
+                        return
+                    }
+                    if let x = try? container.decode(Double.self) {
+                        self = .double(x)
+                        return
+                    }
+                    if let x = try? container.decode(String.self) {
+                        self = .string(x)
+                        return
+                    }
+                    if container.decodeNil() {
+                        self = .null
+                        return
+                    }
+                    throw DecodingError.typeMismatch(State.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Wrong type for State"))
+                }
+
+                func encode(to encoder: Encoder) throws {
+                    var container = encoder.singleValueContainer()
+                    switch self {
+                    case .bool(let x):
+                        try container.encode(x)
+                    case .double(let x):
+                        try container.encode(x)
+                    case .string(let x):
+                        try container.encode(x)
+                    case .null:
+                        try container.encodeNil()
+                    }
+                }
+                
+                var stringValue: String? {
+                    switch self {
+                    case .string(let value): return value
+                    default: return nil
+                    }
+                }
+                
+                var doubleValue: Double? {
+                    switch self {
+                    case .double(let value): return value
+                    default: return nil
+                    }
+                }
+                
+                var boolValue: Bool? {
+                    switch self {
+                    case .bool(let value): return value
+                    default: return nil
+                    }
+                }
+                
+                var intValue: Int? {
+                    switch self {
+                    case .double(let value): return Int(value)
+                    default: return nil
+                    }
+                }
+                
+                var arrayValue: [State]? {
+                    // This won't be used in our case, but keeping for completeness
+                    return nil
+                }
+            }
+            
+            // Log raw JSON response
+            if let jsonString = String(data: data, encoding: .utf8) {
+                print("🌐 NetworkService: Raw JSON response (first 500 chars):")
+                print(String(jsonString.prefix(500)))
             }
             
             let decoder = JSONDecoder()
             decoder.keyDecodingStrategy = .convertFromSnakeCase
+            
+            do {
+                let envelope = try decoder.decode(OpenSkyEnvelope.self, from: data)
+                print("🌐 NetworkService: Successfully decoded JSON envelope")
+            } catch {
+                print("❌ NetworkService: JSON decoding error: \(error)")
+                print("❌ NetworkService: Error details: \(error.localizedDescription)")
+                throw error
+            }
+            
             let envelope = try decoder.decode(OpenSkyEnvelope.self, from: data)
             let rows = envelope.states ?? []
+            print("🌐 NetworkService: Received \(rows.count) aircraft states from API")
             
             let aircraft: [AircraftPosition] = rows.compactMap { row in
-                let icao24 = row[safe: 0]?.string
-                let callsign = row[safe: 1]?.string?.trimmingCharacters(in: .whitespaces)
-                let origin = row[safe: 2]?.string
-                let lon = row[safe: 5]?.double
-                let lat = row[safe: 6]?.double
-                let baro = row[safe: 7]?.double
-                let vel = row[safe: 9]?.double
-                let heading = row[safe: 10]?.double
+                let icao24 = row[safe: 0]?.stringValue
+                let callsign = row[safe: 1]?.stringValue?.trimmingCharacters(in: .whitespaces)
+                let origin = row[safe: 2]?.stringValue
+                let lon = row[safe: 5]?.doubleValue
+                let lat = row[safe: 6]?.doubleValue
+                let baro = row[safe: 7]?.doubleValue
+                let vel = row[safe: 9]?.doubleValue
+                let heading = row[safe: 10]?.doubleValue
                 let aircraftType = Self.getAircraftType(from: icao24)
+                
+                // Log parsed aircraft data
+                if let icao = icao24, let call = callsign, let lon = lon, let lat = lat {
+                    print("🛩️ Parsed aircraft: \(icao) - \(call) at \(lat), \(lon)")
+                }
                 
                 return AircraftPosition(
                     icao24: icao24,
@@ -103,8 +177,11 @@ final class NetworkService {
                 )
             }
             
-            return Array(aircraft.prefix(50))
+            let result = Array(aircraft.prefix(50))
+            print("🌐 NetworkService: Returning \(result.count) aircraft")
+            return result
         } catch {
+            print("❌ NetworkService: Error fetching aircraft: \(error.localizedDescription)")
             return []
         }
     }
