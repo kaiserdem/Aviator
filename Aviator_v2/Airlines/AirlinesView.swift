@@ -10,8 +10,8 @@ struct AirlinesView: View {
             NavigationStack {
                 ZStack {
                     // Background gradient
-//                    Theme.Gradient.navigationBar
-//                        .ignoresSafeArea()
+                    Theme.Gradient.background
+                        .ignoresSafeArea()
                     
                     VStack(spacing: 0) {
                     // Region Filter
@@ -29,8 +29,8 @@ struct AirlinesView: View {
                         .padding(.horizontal)
                     }
                     .padding(.vertical, 8)
-                  
                     .background(Theme.Gradient.tabBar)
+                    
                     // Airlines List
                     if viewStore.isLoading {
                         ProgressView("Loading airlines...")
@@ -228,6 +228,9 @@ struct AirlineDetailView: View {
         .navigationBarTitleDisplayMode(.inline)
         .navigationDestination(item: $webURL) { url in
             AirlineWebScreen(title: airline.name, url: url)
+                .toolbarColorScheme(.dark, for: .navigationBar)
+                .toolbarBackground(Theme.Palette.surface, for: .navigationBar)
+                .toolbarBackground(.visible, for: .navigationBar)
                 .scrollContentBackground(.hidden)
                 .background(Theme.Gradient.background)
         }

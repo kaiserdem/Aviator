@@ -157,7 +157,7 @@ final class NetworkService {
             
             let aircraft: [AircraftPosition] = rows.compactMap { row in
                 let icao24 = row[safe: 0]?.stringValue
-                let callsign = row[safe: 1]?.stringValue?.trimmingCharacters(in: .whitespaces)
+                let callsign = row[safe: 1]?.stringValue?.trimmingCharacters(in: .whitespacesAndNewlines).replacingOccurrences(of: ")", with: "").replacingOccurrences(of: "(", with: "")
                 let origin = row[safe: 2]?.stringValue
                 let lon = row[safe: 5]?.doubleValue
                 let lat = row[safe: 6]?.doubleValue
@@ -259,7 +259,7 @@ final class NetworkService {
             
             aircraft.append(AircraftPosition(
                 icao24: "4CA\(String(format: "%03d", i + 1))",
-                callsign: "\(airline.0)\(String(format: "%03d", i + 1)))",
+                callsign: "\(airline.0)\(String(format: "%03d", i + 1))",
                 originCountry: airline.1,
                 longitude: city.0 + Double.random(in: -0.5...0.5),
                 latitude: city.1 + Double.random(in: -0.5...0.5),
