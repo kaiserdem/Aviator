@@ -153,7 +153,57 @@ struct SearchView: View {
                             .cornerRadius(12)
                             .shadow(color: Theme.Shadow.red, radius: 4)
                             
-                            // Results will be shown in ResultsView tab
+                            // Search Results Summary
+                            if let resultsCount = viewStore.searchResultsCount {
+                                VStack(spacing: 16) {
+                                    VStack(spacing: 12) {
+                                        HStack {
+                                            Image(systemName: "checkmark.circle.fill")
+                                                .foregroundColor(Theme.Palette.success)
+                                            Text("Search Completed")
+                                                .font(.headline)
+                                                .foregroundColor(Theme.Palette.textPrimary)
+                                            Spacer()
+                                        }
+                                        
+                                        HStack {
+                                            Text("Found \(resultsCount) flight\(resultsCount == 1 ? "" : "s")")
+                                                .font(.subheadline)
+                                                .foregroundColor(Theme.Palette.textSecondary)
+                                            Spacer()
+                                            Text("View Results →")
+                                                .font(.subheadline)
+                                                .foregroundColor(Theme.Palette.primaryRed)
+                                        }
+                                    }
+                                    .padding()
+                                    .background(Theme.Gradient.surface)
+                                    .cornerRadius(12)
+                                    .shadow(color: Theme.Shadow.red, radius: 4)
+                                    
+                                    // Clear Results Button
+                                    Button(action: {
+                                        viewStore.send(.clearResults)
+                                    }) {
+                                        HStack {
+                                            Image(systemName: "trash")
+                                                .foregroundColor(Theme.Palette.textSecondary)
+                                            Text("Clear Results")
+                                                .font(.subheadline)
+                                                .foregroundColor(Theme.Palette.textSecondary)
+                                        }
+                                        .frame(maxWidth: .infinity)
+                                        .padding(.vertical, 12)
+                                        .background(Theme.Palette.surface)
+                                        .cornerRadius(8)
+                                        .overlay(
+                                            RoundedRectangle(cornerRadius: 8)
+                                                .stroke(Theme.Palette.textTertiary, lineWidth: 1)
+                                        )
+                                    }
+                                    .buttonStyle(PlainButtonStyle())
+                                }
+                            }
                         }
                         .padding()
                     }

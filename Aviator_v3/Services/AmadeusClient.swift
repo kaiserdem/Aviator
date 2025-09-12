@@ -67,7 +67,8 @@ struct Aircraft: Codable {
 }
 
 struct Operating: Codable {
-    let carrierCode: String
+    let carrierCode: String?
+    let carrierName: String?
 }
 
 struct Price: Codable {
@@ -646,3 +647,5 @@ final class AmadeusService {
         )
     }
 }
+
+

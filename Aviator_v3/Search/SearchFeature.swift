@@ -14,6 +14,8 @@ struct SearchFeature: Reducer {
         var travelClass: String = "ECONOMY"
         var flightOffers: [FlightOffer] = []
         var selectedOffer: FlightOffer?
+        var searchParameters: AppFeature.SearchParameters?
+        var searchResultsCount: Int? = nil
     }
 
     enum Action: Equatable {
@@ -27,7 +29,8 @@ struct SearchFeature: Reducer {
         case infantsChanged(Int)
         case travelClassChanged(String)
         case searchFlights
-        case searchCompleted(AppFeature.SearchParameters)
+        case searchCompleted(Int) // Кількість знайдених рейсів
+        case clearResults // Очистити результати пошуку
         case _flightOffersResponse([FlightOffer])
         case selectOffer(FlightOffer?)
     }
@@ -78,7 +81,7 @@ struct SearchFeature: Reducer {
                 
             case .searchFlights:
                 state.isLoading = true
-                print("🔍 Searching flights with:")
+                print("🔍 SearchFeature: Starting search with:")
                 print("   Origin: \(state.origin)")
                 print("   Destination: \(state.destination)")
                 print("   Adults: \(state.adults)")
@@ -86,7 +89,7 @@ struct SearchFeature: Reducer {
                 print("   Infants: \(state.infants)")
                 print("   Travel Class: \(state.travelClass)")
                 
-                // Створюємо параметри пошуку та відправляємо до AppFeature
+                // Створюємо параметри пошуку та зберігаємо в state
                 let parameters = AppFeature.SearchParameters(
                     origin: state.origin,
                     destination: state.destination,
@@ -98,10 +101,21 @@ struct SearchFeature: Reducer {
                     travelClass: state.travelClass
                 )
                 
-                return .send(.searchCompleted(parameters))
+                // Зберігаємо параметри пошуку в state
+                state.searchParameters = parameters
+                print("✅ SearchFeature: Parameters saved to state")
+                return .none
                 
-            case let .searchCompleted(parameters):
-                // Цей випадок обробляється в AppFeature
+            case let .searchCompleted(count):
+                state.isLoading = false
+                state.searchResultsCount = count
+                print("✅ SearchFeature: Search completed with \(count) results")
+                return .none
+                
+            case .clearResults:
+                state.searchResultsCount = nil
+                state.searchParameters = nil
+                print("🧹 SearchFeature: Results cleared")
                 return .none
                 
             case let ._flightOffersResponse(offers):
@@ -117,32 +131,3 @@ struct SearchFeature: Reducer {
     }
 }
 
-// MARK: - Models
-
-struct FlightOffer: Identifiable, Equatable {
-    let id: UUID = UUID()
-    let price: String
-    let currency: String
-    let origin: String
-    let destination: String
-    let departureDate: String
-    let returnDate: String
-    let airline: String
-    let flightNumber: String
-    let duration: String
-    let stops: Int
-    
-    static func == (lhs: FlightOffer, rhs: FlightOffer) -> Bool {
-        lhs.id == rhs.id &&
-        lhs.price == rhs.price &&
-        lhs.currency == rhs.currency &&
-        lhs.origin == rhs.origin &&
-        lhs.destination == rhs.destination &&
-        lhs.departureDate == rhs.departureDate &&
-        lhs.returnDate == rhs.returnDate &&
-        lhs.airline == rhs.airline &&
-        lhs.flightNumber == rhs.flightNumber &&
-        lhs.duration == rhs.duration &&
-        lhs.stops == rhs.stops
-    }
-}

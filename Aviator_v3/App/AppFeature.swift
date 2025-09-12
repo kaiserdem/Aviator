@@ -48,6 +48,24 @@ struct AppFeature: Reducer {
                 state.selectedTab = .results
                 return .send(.results(.searchWithParameters(parameters)))
                 
+            case .search(.searchFlights):
+                // Коли SearchFeature запускає пошук, перевіряємо чи є параметри
+                print("🔍 AppFeature: Received searchFlights action")
+                if let parameters = state.search.searchParameters {
+                    print("✅ AppFeature: Found search parameters, switching to Results tab")
+                    state.selectedTab = .results
+                    return .send(.results(.searchWithParameters(parameters)))
+                } else {
+                    print("❌ AppFeature: No search parameters found")
+                }
+                return .none
+                
+            case let .results(._flightOffersResponse(offers)):
+                // Коли ResultsFeature отримує результати, повідомляємо SearchFeature
+                let count = offers.count
+                print("📊 AppFeature: Received \(count) flight offers, notifying SearchFeature")
+                return .send(.search(.searchCompleted(count)))
+                
             default:
                 return .none
             }

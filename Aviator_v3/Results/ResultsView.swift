@@ -27,8 +27,8 @@ struct ResultsView: View {
                                             Text(option.displayName).tag(option)
                                         }
                                     }
-                                .pickerStyle(MenuPickerStyle())
-                                .colorScheme(.dark)
+                                    .pickerStyle(MenuPickerStyle())
+                                    .colorScheme(.dark)
                                     
                                     Spacer()
                                     
@@ -38,13 +38,14 @@ struct ResultsView: View {
                                             Text(option.displayName).tag(option)
                                         }
                                     }
-                                .pickerStyle(MenuPickerStyle())
-                                .colorScheme(.dark)
+                                    .pickerStyle(MenuPickerStyle())
+                                    .colorScheme(.dark)
                                 }
-                            .padding()
-                            .background(Theme.Gradient.surface)
-                            .cornerRadius(12)
-                            .shadow(color: Theme.Shadow.red, radius: 4)
+                                .padding()
+                                .background(Theme.Gradient.surface)
+                                .cornerRadius(12)
+                                .shadow(color: Theme.Shadow.red, radius: 4)
+                                .padding()
                                 
                                 // Results List
                                 List(filteredAndSortedOffers(viewStore.flightOffers, sortOption: viewStore.sortOption, filterOption: viewStore.filterOption)) { offer in
