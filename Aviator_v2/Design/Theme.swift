@@ -2,12 +2,12 @@ import SwiftUI
 
 struct Theme {
     struct Palette {
-        // Основні кольори з скріншота
-        static let primaryRed = Color(hex: "#FF3B30")       // Яскраво-червоний акцент
-        static let darkRed = Color(hex: "#8B0000")          // Темно-червоний
-        static let deepRed = Color(hex: "#660000")           // Глибокий червоний
+        // Основні кольори з більшим контрастом
+        static let primaryRed = Color(hex: "#FF1744")       // Яскраво-червоний акцент
+        static let darkRed = Color(hex: "#B71C1C")          // Темно-червоний
+        static let deepRed = Color(hex: "#8D0000")           // Глибокий червоний
         static let black = Color(hex: "#000000")             // Чорний
-        static let darkGray = Color(hex: "#1A1A1A")          // Темно-сірий
+        static let darkGray = Color(hex: "#212121")          // Темно-сірий
         
         // Фонові кольори
         static let background = Color(hex: "#1A1A1A")        // Темний фон
@@ -26,13 +26,13 @@ struct Theme {
     }
     
     struct Gradient {
-        // Основний градієнт фону (як на скріншоті)
+        // Основний градієнт фону з більшим контрастом
         static let background = LinearGradient(
             colors: [
+                Palette.primaryRed,
                 Palette.deepRed,
                 Palette.darkRed,
-                Palette.black,
-                Palette.darkGray
+                Palette.black
             ],
             startPoint: .topLeading,
             endPoint: .bottomTrailing
@@ -51,8 +51,9 @@ struct Theme {
         // Градієнт для таббару та навігаційного бару
         static let navigationBar = LinearGradient(
             colors: [
+                Palette.black,
                 Palette.deepRed,
-                Palette.darkRed,
+                Palette.primaryRed,
                 Palette.black
             ],
             startPoint: .topLeading,
@@ -63,8 +64,8 @@ struct Theme {
         static let tabBar = LinearGradient(
             colors: [
                 Palette.black,
-                Palette.darkRed,
-                Palette.deepRed
+                Palette.deepRed,
+                Palette.primaryRed
             ],
             startPoint: .topLeading,
             endPoint: .bottomTrailing
@@ -85,6 +86,29 @@ struct Theme {
             colors: [
                 Palette.accent,
                 Palette.primaryRed
+            ],
+            startPoint: .topLeading,
+            endPoint: .bottomTrailing
+        )
+        
+        // Градієнт з максимальним контрастом
+        static let highContrast = LinearGradient(
+            colors: [
+                Palette.primaryRed,
+                Palette.black,
+                Palette.primaryRed
+            ],
+            startPoint: .topLeading,
+            endPoint: .bottomTrailing
+        )
+        
+        // Градієнт для навігаційного бару з акцентом на чорний
+        static let navigationBarDark = LinearGradient(
+            colors: [
+                Palette.black,
+                Palette.darkRed,
+                Palette.black,
+                Palette.deepRed
             ],
             startPoint: .topLeading,
             endPoint: .bottomTrailing

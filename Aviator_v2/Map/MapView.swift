@@ -87,7 +87,7 @@ struct MapView: View {
                     Theme.Gradient.background
                         .ignoresSafeArea()
                     // Map
-                    Map(coordinateRegion: viewStore.binding(get: \.region, send: { _ in .zoomIn }), annotationItems: allAnnotations(viewStore)) { annotation in
+                    Map(coordinateRegion: viewStore.binding(get: \.region, send: { .regionChanged(MapRegion($0)) }), annotationItems: allAnnotations(viewStore)) { annotation in
                         MapAnnotation(coordinate: annotation.coordinate) {
                             annotation.view
                         }
