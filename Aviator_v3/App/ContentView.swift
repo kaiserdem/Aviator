@@ -3,10 +3,12 @@ import ComposableArchitecture
 
 struct ContentView: View {
     let store: StoreOf<AppFeature>
-
+    
     var body: some View {
         WithViewStore(self.store, observe: { $0 }) { viewStore in
-            TabView(selection: viewStore.binding(get: \.selectedTab, send: { .selectTab($0) })) {
+            Group {
+                // Always show main app for now - auth will be handled in Profile tab
+                TabView(selection: viewStore.binding(get: \.selectedTab, send: { .selectTab($0) })) {
                 SearchView(store: self.store.scope(state: \.search, action: { .search($0) }))
                     .tabItem {
                         Image(systemName: "magnifyingglass")
@@ -44,9 +46,13 @@ struct ContentView: View {
                         Text("Profile")
                     }
                     .tag(AppFeature.State.Tab.profile)
+                    }
+                    .tint(Theme.Palette.primaryRed)
+                    .preferredColorScheme(.dark)
+                    .onAppear {
+                        viewStore.send(.onAppear)
+                    }
             }
-            .tint(Theme.Palette.primaryRed)
-            .preferredColorScheme(.dark)
         }
     }
 }

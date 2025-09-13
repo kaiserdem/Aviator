@@ -191,8 +191,10 @@ struct AmadeusClient {
     var searchFlights: (String, String, Date, Date, Int, Int, Int, String) async -> [FlightOffer]
     var getAirports: () async -> [Airport]
     var getAirportWeather: () async -> [AirportWeather]
-    var getCurrentUser: () async -> User?
-    var login: (String, String) async -> User?
+    var getCurrentUser: () async -> AppUser?
+    var login: (String, String) async -> AppUser?
+    var register: (String, String, String, String) async -> AppUser?
+    var logout: () async -> Void
 }
 
 extension AmadeusClient: DependencyKey {
@@ -220,6 +222,12 @@ extension AmadeusClient: DependencyKey {
         },
         login: { email, password in
             await AmadeusService.shared.login(email: email, password: password)
+        },
+        register: { email, password, firstName, lastName in
+            await AmadeusService.shared.register(email: email, password: password, firstName: firstName, lastName: lastName)
+        },
+        logout: {
+            await AmadeusService.shared.logout()
         }
     )
 }
@@ -481,136 +489,279 @@ final class AmadeusService {
     }
     
     func getAirports() async -> [Airport] {
-        // TODO: Implement real Amadeus API call
-        // For now, return mock data
-        return getMockAirports()
+        do {
+            // Get access token first
+            let accessToken = try await getAccessToken()
+            
+            // Build URL for airports
+            let url = URL(string: "\(baseURL)/v1/reference-data/locations")!
+            var request = URLRequest(url: url)
+            request.httpMethod = "GET"
+            request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+            
+            // Add query parameters
+            var components = URLComponents(url: url, resolvingAgainstBaseURL: false)!
+            components.queryItems = [
+                URLQueryItem(name: "subType", value: "AIRPORT"),
+                URLQueryItem(name: "page[limit]", value: "100")
+            ]
+            request.url = components.url
+            
+            print("🌐 Making airports request to: \(request.url?.absoluteString ?? "unknown")")
+            
+            let (data, response) = try await URLSession.shared.data(for: request)
+            
+            guard let httpResponse = response as? HTTPURLResponse else {
+                print("❌ Invalid response type")
+                return []
+            }
+            
+            print("📊 Airports response status: \(httpResponse.statusCode)")
+            
+            if httpResponse.statusCode == 200 {
+                let airportsResponse = try JSONDecoder().decode(AirportsResponse.self, from: data)
+                print("✅ Successfully decoded \(airportsResponse.data.count) airports")
+                return airportsResponse.data.map { airportData in
+                    Airport(
+                        code: airportData.iataCode,
+                        name: airportData.name,
+                        city: airportData.address?.cityName ?? "Unknown",
+                        country: airportData.address?.countryName ?? "Unknown",
+                        latitude: airportData.geoCode?.latitude ?? 0.0,
+                        longitude: airportData.geoCode?.longitude ?? 0.0
+                    )
+                }
+            } else {
+                print("❌ Airports API error: \(httpResponse.statusCode)")
+                let errorData = String(data: data, encoding: .utf8) ?? "Unknown error"
+                print("❌ Error details: \(errorData)")
+                return []
+            }
+            
+        } catch {
+            print("❌ Airports error: \(error)")
+            return []
+        }
     }
     
     func getAirportWeather() async -> [AirportWeather] {
-        // TODO: Implement real Amadeus API call
-        // For now, return mock data
-        return getMockWeatherData()
+        // Airport Weather API is not available in Amadeus
+        return []
     }
     
-    
-    func getCurrentUser() async -> User? {
-        // TODO: Implement real Amadeus API call
-        // For now, return mock data
-        return getMockUser()
+    func getCurrentUser() async -> AppUser? {
+        return LocalUserStorage.shared.getCurrentUser()
     }
     
-    func login(email: String, password: String) async -> User? {
-        // TODO: Implement real Amadeus API call
-        // For now, return mock data
-        return getMockUser()
-    }
-    
-    // MARK: - Mock Data (Commented out for flight search)
-    
-    /*
-    private func getMockFlightOffers() -> [FlightOffer] {
-        return [
-            FlightOffer(
-                price: "299",
-                currency: "USD",
-                origin: "NYC",
-                destination: "LAX",
-                departureDate: "2025-01-15",
-                returnDate: "2025-01-22",
-                airline: "American Airlines",
-                flightNumber: "AA123",
-                duration: "5h 30m",
-                stops: 0
-            ),
-            FlightOffer(
-                price: "349",
-                currency: "USD",
-                origin: "NYC",
-                destination: "LAX",
-                departureDate: "2025-01-15",
-                returnDate: "2025-01-22",
-                airline: "Delta Air Lines",
-                flightNumber: "DL456",
-                duration: "6h 15m",
-                stops: 1
-            ),
-            FlightOffer(
-                price: "279",
-                currency: "USD",
-                origin: "NYC",
-                destination: "LAX",
-                departureDate: "2025-01-15",
-                returnDate: "2025-01-22",
-                airline: "United Airlines",
-                flightNumber: "UA789",
-                duration: "5h 45m",
-                stops: 0
+    func login(email: String, password: String) async -> AppUser? {
+        print("🔐 Local login attempt for: \(email)")
+        
+        // Try to login locally first
+        if let existingUser = LocalUserStorage.shared.loginUser(email: email, password: password) {
+            print("✅ User logged in successfully: \(email)")
+            // Send notification to update ProfileView
+            NotificationCenter.default.post(name: .userDidLogin, object: nil)
+            return existingUser
+        }
+        
+        // For demo purposes, create test user if credentials match
+        if email == "test@example.com" && password == "password" {
+            print("✅ Creating demo user for testing")
+            let demoUser = LocalUserStorage.shared.registerUser(
+                email: email,
+                password: password,
+                firstName: "Demo",
+                lastName: "User"
             )
-        ]
-    }
-    */
-    
-    
-    private func getMockAirports() -> [Airport] {
-        return [
-            Airport(code: "JFK", name: "John F. Kennedy International Airport", city: "New York", country: "United States", latitude: 40.6413, longitude: -73.7781),
-            Airport(code: "LAX", name: "Los Angeles International Airport", city: "Los Angeles", country: "United States", latitude: 33.9416, longitude: -118.4085),
-            Airport(code: "LHR", name: "London Heathrow Airport", city: "London", country: "United Kingdom", latitude: 51.4700, longitude: -0.4543),
-            Airport(code: "CDG", name: "Charles de Gaulle Airport", city: "Paris", country: "France", latitude: 49.0097, longitude: 2.5479),
-            Airport(code: "NRT", name: "Narita International Airport", city: "Tokyo", country: "Japan", latitude: 35.7720, longitude: 140.3928)
-        ]
-    }
-    
-    private func getMockWeatherData() -> [AirportWeather] {
-        return [
-            AirportWeather(
-                airportCode: "JFK",
-                temperature: 15.0,
-                humidity: 65,
-                windSpeed: 12.5,
-                windDirection: 270,
-                visibility: 10.0,
-                pressure: 1013.25,
-                condition: "Partly Cloudy"
-            ),
-            AirportWeather(
-                airportCode: "LAX",
-                temperature: 22.0,
-                humidity: 45,
-                windSpeed: 8.2,
-                windDirection: 180,
-                visibility: 15.0,
-                pressure: 1015.30,
-                condition: "Clear"
-            ),
-            AirportWeather(
-                airportCode: "LHR",
-                temperature: 8.0,
-                humidity: 80,
-                windSpeed: 15.8,
-                windDirection: 240,
-                visibility: 8.0,
-                pressure: 1008.75,
-                condition: "Overcast"
-            )
-        ]
+            // Set as current user
+            if let user = demoUser {
+                LocalUserStorage.shared.setCurrentUser(user)
+                print("✅ Demo user created and logged in: \(email)")
+                // Send notification to update ProfileView
+                NotificationCenter.default.post(name: .userDidLogin, object: nil)
+                return user
+            }
+        }
+        
+        print("❌ Login failed for: \(email)")
+        return nil
     }
     
+    func register(email: String, password: String, firstName: String, lastName: String) async -> AppUser? {
+        print("📝 Local registration attempt for: \(email)")
+        
+        // Register locally
+        let newUser = LocalUserStorage.shared.registerUser(
+            email: email,
+            password: password,
+            firstName: firstName.isEmpty ? "User" : firstName,
+            lastName: lastName.isEmpty ? "User" : lastName
+        )
+        
+        if let user = newUser {
+            // Set as current user
+            LocalUserStorage.shared.setCurrentUser(user)
+            print("✅ User registered and logged in: \(email)")
+            // Send notification to update ProfileView
+            NotificationCenter.default.post(name: .userDidLogin, object: nil)
+            return user
+        } else {
+            print("❌ Registration failed for: \(email)")
+            return nil
+        }
+    }
     
-    private func getMockUser() -> User? {
-        return User(
-            email: "user@example.com",
-            firstName: "John",
-            lastName: "Doe",
-            phoneNumber: "+1 (555) 123-4567",
+    func logout() async {
+        LocalUserStorage.shared.logoutUser()
+        print("✅ User logged out successfully")
+    }
+    
+}
+
+// MARK: - Airport API Models
+
+struct AirportsResponse: Codable {
+    let data: [AirportData]
+}
+
+struct AirportData: Codable {
+    let type: String
+    let subType: String
+    let name: String
+    let iataCode: String
+    let address: AirportAddress?
+    let geoCode: AirportGeoCode?
+}
+
+struct AirportAddress: Codable {
+    let cityName: String?
+    let countryName: String?
+}
+
+struct AirportGeoCode: Codable {
+    let latitude: Double
+    let longitude: Double
+}
+
+
+// MARK: - Local User Models
+
+struct AppUser: Identifiable, Codable, Equatable {
+    let id: UUID = UUID()
+    let email: String
+    let firstName: String
+    let lastName: String
+    let phoneNumber: String?
+    let preferences: UserPreferences?
+    
+    static func == (lhs: AppUser, rhs: AppUser) -> Bool {
+        lhs.id == rhs.id &&
+        lhs.email == rhs.email &&
+        lhs.firstName == lhs.firstName &&
+        lhs.lastName == rhs.lastName
+    }
+}
+
+struct UserPreferences: Codable, Equatable {
+    let preferredAirline: String?
+    let preferredSeat: String?
+    let preferredMeal: String?
+    let notificationsEnabled: Bool
+}
+
+// MARK: - Local User Storage
+
+class LocalUserStorage {
+    static let shared = LocalUserStorage()
+    private let userDefaults = UserDefaults.standard
+    private let usersKey = "stored_users"
+    private let currentUserKey = "current_user"
+    
+    private init() {}
+    
+    // MARK: - User Management
+    
+    func registerUser(email: String, password: String, firstName: String, lastName: String) -> AppUser? {
+        // Check if user already exists
+        if getUserByEmail(email) != nil {
+            print("❌ User with email \(email) already exists")
+            return nil
+        }
+        
+        // Create new user
+        let user = AppUser(
+            email: email,
+            firstName: firstName,
+            lastName: lastName,
+            phoneNumber: nil,
             preferences: UserPreferences(
-                preferredAirline: "American Airlines",
-                preferredSeat: "Window",
-                preferredMeal: "Vegetarian",
+                preferredAirline: nil,
+                preferredSeat: nil,
+                preferredMeal: nil,
                 notificationsEnabled: true
             )
         )
+        
+        // Store user
+        var users = getAllUsers()
+        users.append(user)
+        saveUsers(users)
+        
+        print("✅ User registered successfully: \(email)")
+        return user
     }
+    
+    func loginUser(email: String, password: String) -> AppUser? {
+        guard let user = getUserByEmail(email) else {
+            print("❌ User not found: \(email)")
+            return nil
+        }
+        
+        // Set as current user
+        setCurrentUser(user)
+        print("✅ User logged in successfully: \(email)")
+        return user
+    }
+    
+    func logoutUser() {
+        userDefaults.removeObject(forKey: currentUserKey)
+        print("✅ User logged out")
+    }
+    
+    func getCurrentUser() -> AppUser? {
+        guard let data = userDefaults.data(forKey: currentUserKey),
+              let user = try? JSONDecoder().decode(AppUser.self, from: data) else {
+            return nil
+        }
+        return user
+    }
+    
+    func setCurrentUser(_ user: AppUser) {
+        if let data = try? JSONEncoder().encode(user) {
+            userDefaults.set(data, forKey: currentUserKey)
+        }
+    }
+    
+    // MARK: - Private Methods
+    
+    private func getAllUsers() -> [AppUser] {
+        guard let data = userDefaults.data(forKey: usersKey),
+              let users = try? JSONDecoder().decode([AppUser].self, from: data) else {
+            return []
+        }
+        return users
+    }
+    
+    private func saveUsers(_ users: [AppUser]) {
+        if let data = try? JSONEncoder().encode(users) {
+            userDefaults.set(data, forKey: usersKey)
+        }
+    }
+    
+    private func getUserByEmail(_ email: String) -> AppUser? {
+        return getAllUsers().first { $0.email == email }
+    }
+    
 }
 
 

@@ -9,6 +9,7 @@ struct AppFeature: Reducer {
         var results = ResultsFeature.State()
         var saved = SavedFeature.State()
         var profile = ProfileFeature.State()
+        var auth = AuthFeature.State()
     }
 
     enum Action: Equatable {
@@ -17,7 +18,9 @@ struct AppFeature: Reducer {
         case results(ResultsFeature.Action)
         case saved(SavedFeature.Action)
         case profile(ProfileFeature.Action)
+        case auth(AuthFeature.Action)
         case searchCompleted(SearchParameters)
+        case onAppear
     }
     
     struct SearchParameters: Equatable {
@@ -36,9 +39,13 @@ struct AppFeature: Reducer {
         Scope(state: \.results, action: /Action.results) { ResultsFeature() }
         Scope(state: \.saved, action: /Action.saved) { SavedFeature() }
         Scope(state: \.profile, action: /Action.profile) { ProfileFeature() }
+        Scope(state: \.auth, action: /Action.auth) { AuthFeature() }
 
         Reduce { state, action in
             switch action {
+            case .onAppear:
+                return .send(.auth(.checkAuthStatus))
+                
             case let .selectTab(tab):
                 state.selectedTab = tab
                 return .none

@@ -8,6 +8,14 @@ struct ResultsFeature: Reducer {
         var selectedOffer: FlightOffer?
         var sortOption: SortOption = .price
         var filterOption: FilterOption = .all
+        
+        init() {
+            self.isLoading = false
+            self.flightOffers = []
+            self.selectedOffer = nil
+            self.sortOption = .price
+            self.filterOption = .all
+        }
     }
 
     enum Action: Equatable {

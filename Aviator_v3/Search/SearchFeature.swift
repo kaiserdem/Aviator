@@ -16,6 +16,22 @@ struct SearchFeature: Reducer {
         var selectedOffer: FlightOffer?
         var searchParameters: AppFeature.SearchParameters?
         var searchResultsCount: Int? = nil
+        
+        init() {
+            self.isLoading = false
+            self.origin = ""
+            self.destination = ""
+            self.departureDate = Date()
+            self.returnDate = Calendar.current.date(byAdding: .day, value: 7, to: Date()) ?? Date()
+            self.adults = 1
+            self.children = 0
+            self.infants = 0
+            self.travelClass = "ECONOMY"
+            self.flightOffers = []
+            self.selectedOffer = nil
+            self.searchParameters = nil
+            self.searchResultsCount = nil
+        }
     }
 
     enum Action: Equatable {

@@ -6,6 +6,12 @@ struct SavedFeature: Reducer {
         var savedFlights: [SavedFlight] = []
         var selectedFlight: SavedFlight?
         var isLoading = false
+        
+        init() {
+            self.savedFlights = []
+            self.selectedFlight = nil
+            self.isLoading = false
+        }
     }
 
     enum Action: Equatable {
