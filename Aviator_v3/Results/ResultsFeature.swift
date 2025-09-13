@@ -14,6 +14,7 @@ struct ResultsFeature: Reducer {
         case onAppear
         case sortChanged(SortOption)
         case filterChanged(FilterOption)
+        case resetFilters
         case selectOffer(FlightOffer?)
         case searchWithParameters(AppFeature.SearchParameters)
         case _flightOffersResponse([FlightOffer])
@@ -79,6 +80,12 @@ struct ResultsFeature: Reducer {
                 
             case let .filterChanged(option):
                 state.filterOption = option
+                return .none
+                
+            case .resetFilters:
+                state.sortOption = .price
+                state.filterOption = .all
+                print("🔄 ResultsFeature: Filters reset")
                 return .none
                 
             case let .selectOffer(offer):

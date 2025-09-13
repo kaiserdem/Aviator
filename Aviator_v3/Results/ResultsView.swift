@@ -79,7 +79,7 @@ struct ResultsView: View {
                                     }
                                     
                                     Button(action: {
-                                        // Reset filters
+                                        viewStore.send(.resetFilters)
                                     }) {
                                         HStack {
                                             Image(systemName: "arrow.clockwise")
@@ -168,14 +168,55 @@ struct ResultsView: View {
         // Apply sort
         switch sortOption {
         case .price:
-            filtered.sort { Int($0.price) ?? 0 < Int($1.price) ?? 0 }
+            filtered.sort { 
+                let price1 = Double($0.price.replacingOccurrences(of: ",", with: "")) ?? 0
+                let price2 = Double($1.price.replacingOccurrences(of: ",", with: "")) ?? 0
+                return price1 < price2
+            }
         case .duration:
-            filtered.sort { $0.duration < $1.duration }
+            filtered.sort { 
+                let duration1 = parseDuration($0.duration)
+                let duration2 = parseDuration($1.duration)
+                return duration1 < duration2
+            }
         case .departure:
-            filtered.sort { $0.departureDate < $1.departureDate }
+            filtered.sort { 
+                let date1 = parseDate($0.departureDate)
+                let date2 = parseDate($1.departureDate)
+                return date1 < date2
+            }
         }
         
         return filtered
+    }
+    
+    private func parseDuration(_ duration: String) -> Int {
+        // Parse duration like "PT5H15M" to minutes
+        let components = duration.replacingOccurrences(of: "PT", with: "")
+        var totalMinutes = 0
+        
+        if let hoursRange = components.range(of: "H") {
+            let hoursString = String(components[..<hoursRange.lowerBound])
+            if let hours = Int(hoursString) {
+                totalMinutes += hours * 60
+            }
+        }
+        
+        if let minutesRange = components.range(of: "M") {
+            let minutesString = String(components[components.index(after: components.lastIndex(of: "H") ?? components.startIndex)..<minutesRange.lowerBound])
+            if let minutes = Int(minutesString) {
+                totalMinutes += minutes
+            }
+        }
+        
+        return totalMinutes
+    }
+    
+    private func parseDate(_ dateString: String) -> Date {
+        // Parse date like "2024-01-15T10:30:00"
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+        return formatter.date(from: dateString) ?? Date()
     }
 }
 
