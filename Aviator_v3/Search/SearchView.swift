@@ -230,7 +230,7 @@ struct SearchView: View {
     
     private func clearResultsButton(viewStore: ViewStoreOf<SearchFeature>) -> some View {
         Button(action: {
-            viewStore.send(.clearResults)
+            viewStore.send(.clearSearchFields)
         }) {
             HStack {
                 Image(systemName: "trash")

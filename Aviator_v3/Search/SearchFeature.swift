@@ -31,6 +31,7 @@ struct SearchFeature: Reducer {
         case searchFlights
         case searchCompleted(Int) // Кількість знайдених рейсів
         case clearResults // Очистити результати пошуку
+        case clearSearchFields // Очистити поля пошуку
         case _flightOffersResponse([FlightOffer])
         case selectOffer(FlightOffer?)
     }
@@ -116,6 +117,14 @@ struct SearchFeature: Reducer {
                 state.searchResultsCount = nil
                 state.searchParameters = nil
                 print("🧹 SearchFeature: Results cleared")
+                return .none
+                
+            case .clearSearchFields:
+                state.origin = ""
+                state.destination = ""
+                state.searchResultsCount = nil
+                state.searchParameters = nil
+                print("🧹 SearchFeature: Search fields cleared")
                 return .none
                 
             case let ._flightOffersResponse(offers):
