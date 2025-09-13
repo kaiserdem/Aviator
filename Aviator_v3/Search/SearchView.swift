@@ -63,7 +63,7 @@ struct SearchView: View {
     }
     
     private func originDestinationFields(viewStore: ViewStoreOf<SearchFeature>) -> some View {
-        HStack(spacing: 12) {
+        VStack(spacing: 16) {
             VStack(alignment: .leading) {
                 Text("From")
                     .font(.caption)
@@ -185,7 +185,7 @@ struct SearchView: View {
             }
             .frame(maxWidth: .infinity)
             .padding()
-            .background(isSearchEnabled ? Theme.Gradient.button : Theme.Gradient.surface)
+            .background(isSearchEnabled ? Theme.Gradient.button : Theme.Gradient.tabBar)
             .foregroundColor(isSearchEnabled ? .white : Theme.Palette.textTertiary)
             .cornerRadius(10)
             .shadow(color: isSearchEnabled ? Theme.Shadow.red : .clear, radius: 4)
