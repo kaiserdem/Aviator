@@ -4,6 +4,7 @@ import ComposableArchitecture
 struct ResultsView: View {
     let store: StoreOf<ResultsFeature>
     let onGoToSearch: () -> Void
+    @Dependency(\.databaseClient) var databaseClient
     
     var body: some View {
         WithViewStore(self.store, observe: { $0 }) { viewStore in
@@ -128,7 +129,7 @@ struct ResultsView: View {
                                     // Results List
                                     List(filteredOffers) { offer in
                                         NavigationLink(destination: FlightDetailView(flightOffer: offer)) {
-                                            FlightOfferCard(offer: offer)
+                                            SavedFlightOfferCard(offer: offer)
                                         }
                                         .buttonStyle(PlainButtonStyle())
                                     }
@@ -220,16 +221,46 @@ struct ResultsView: View {
     }
 }
 
+struct SavedFlightOfferCard: View {
+    let offer: FlightOffer
+    @Dependency(\.databaseClient) var databaseClient
+    @State private var isSaved = false
+    
+    var body: some View {
+        FlightOfferCard(offer: offer, isSaved: isSaved)
+            .onAppear {
+                Task {
+                    do {
+                        let savedStatus = try await databaseClient.isFlightSaved(offer)
+                        print("🔍 Checking flight \(offer.flightNumber): isSaved = \(savedStatus)")
+                        isSaved = savedStatus
+                    } catch {
+                        print("❌ Error checking if flight is saved: \(error)")
+                    }
+                }
+            }
+    }
+}
+
 struct FlightOfferCard: View {
     let offer: FlightOffer
+    let isSaved: Bool
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
                 VStack(alignment: .leading) {
-                    Text("\(offer.origin) → \(offer.destination)")
-                        .font(.headline)
-                        .foregroundColor(Theme.Palette.textPrimary)
+                    HStack {
+                        Text("\(offer.origin) → \(offer.destination)")
+                            .font(.headline)
+                            .foregroundColor(Theme.Palette.textPrimary)
+                        
+                        if isSaved {
+                            Image(systemName: "bookmark.fill")
+                                .foregroundColor(Theme.Palette.primaryRed)
+                                .font(.caption)
+                        }
+                    }
                     
                     Text(offer.airline)
                         .font(.subheadline)

@@ -4,6 +4,7 @@ import ComposableArchitecture
 struct FlightDetailView: View {
     let flightOffer: FlightOffer
     @Dependency(\.databaseClient) var databaseClient
+    @Environment(\.dismiss) private var dismiss
     @State private var isSaved = false
     @State private var isLoading = false
     @State private var showNotesAlert = false
@@ -143,6 +144,29 @@ struct FlightDetailView: View {
         .navigationBarTitleDisplayMode(.large)
         .toolbarBackground(Theme.Gradient.navigationBar, for: .navigationBar)
         .toolbarColorScheme(.dark, for: .navigationBar)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button(action: {
+                    dismiss()
+                }) {
+                    HStack(spacing: 8) {
+                        Image(systemName: "chevron.left")
+                            .font(.system(size: 16, weight: .medium))
+                        Text("Back")
+                            .font(.system(size: 16, weight: .medium))
+                    }
+                    .foregroundColor(Theme.Palette.textPrimary)
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 8)
+                    .background(Theme.Palette.surface.opacity(0.8))
+                    .cornerRadius(8)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 8)
+                            .stroke(Theme.Palette.primaryRed.opacity(0.3), lineWidth: 1)
+                    )
+                }
+            }
+        }
         .onAppear {
             Task {
                 await checkIfSaved()

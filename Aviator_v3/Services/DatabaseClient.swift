@@ -13,16 +13,16 @@ struct DatabaseClient {
 extension DatabaseClient: DependencyKey {
     static let liveValue = DatabaseClient(
         saveFlight: { flight, notes in
-            try await InMemoryDatabaseService().saveFlight(flight, notes: notes)
+            try await InMemoryDatabaseService.shared.saveFlight(flight, notes: notes)
         },
         getSavedFlights: {
-            try await InMemoryDatabaseService().getSavedFlights()
+            try await InMemoryDatabaseService.shared.getSavedFlights()
         },
         deleteSavedFlight: { flight in
-            try await InMemoryDatabaseService().deleteSavedFlight(flight)
+            try await InMemoryDatabaseService.shared.deleteSavedFlight(flight)
         },
         isFlightSaved: { flight in
-            try await InMemoryDatabaseService().isFlightSaved(flight)
+            try await InMemoryDatabaseService.shared.isFlightSaved(flight)
         }
     )
 }
