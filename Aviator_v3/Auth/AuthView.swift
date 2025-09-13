@@ -56,7 +56,7 @@ struct AuthView: View {
                                     .foregroundColor(.red)
                                     .font(.title2)
                                 
-                                Text("Помилка")
+                                Text("Error")
                                     .font(.headline)
                                     .foregroundColor(.red)
                                 

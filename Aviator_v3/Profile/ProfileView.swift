@@ -50,16 +50,49 @@ struct ProfileView: View {
                                 icon: "person.circle",
                                 content: {
                                     VStack(spacing: 12) {
-                                        ProfileRowView(
+                                        EditableProfileRowView(
                                             icon: "envelope",
                                             title: "Email",
-                                            value: viewStore.user?.email ?? ""
+                                            value: viewStore.user?.email ?? "",
+                                            onEdit: { newValue in
+                                                // TODO: Update email
+                                            }
                                         )
                                         
-                                        ProfileRowView(
+                                        EditableProfileRowView(
                                             icon: "phone",
                                             title: "Phone",
-                                            value: viewStore.user?.phoneNumber ?? "Not provided"
+                                            value: viewStore.user?.phoneNumber ?? "Not provided",
+                                            onEdit: { newValue in
+                                                // TODO: Update phone
+                                            }
+                                        )
+                                        
+                                        EditableProfileRowView(
+                                            icon: "calendar",
+                                            title: "Date of Birth",
+                                            value: viewStore.user?.dateOfBirth ?? "Not provided",
+                                            onEdit: { newValue in
+                                                // TODO: Update date of birth
+                                            }
+                                        )
+                                        
+                                        EditableProfileRowView(
+                                            icon: "flag",
+                                            title: "Nationality",
+                                            value: viewStore.user?.nationality ?? "Not provided",
+                                            onEdit: { newValue in
+                                                // TODO: Update nationality
+                                            }
+                                        )
+                                        
+                                        EditableProfileRowView(
+                                            icon: "doc.text",
+                                            title: "Passport Number",
+                                            value: viewStore.user?.passportNumber ?? "Not provided",
+                                            onEdit: { newValue in
+                                                // TODO: Update passport
+                                            }
                                         )
                                     }
                                 }
@@ -71,22 +104,58 @@ struct ProfileView: View {
                                 icon: "airplane",
                                 content: {
                                     VStack(spacing: 12) {
-                                        ProfileRowView(
+                                        EditableProfileRowView(
                                             icon: "airplane.circle",
                                             title: "Preferred Airline",
-                                            value: viewStore.user?.preferences?.preferredAirline ?? "Not set"
+                                            value: viewStore.user?.preferences?.preferredAirline ?? "Not set",
+                                            onEdit: { newValue in
+                                                // TODO: Update airline
+                                            }
                                         )
                                         
-                                        ProfileRowView(
-                                            icon: "seat.2",
+                                        EditableProfileRowView(
+                                            icon: "chair",
                                             title: "Preferred Seat",
-                                            value: viewStore.user?.preferences?.preferredSeat ?? "Not set"
+                                            value: viewStore.user?.preferences?.preferredSeat ?? "Not set",
+                                            onEdit: { newValue in
+                                                // TODO: Update seat
+                                            }
                                         )
                                         
-                                        ProfileRowView(
+                                        EditableProfileRowView(
                                             icon: "fork.knife",
                                             title: "Preferred Meal",
-                                            value: viewStore.user?.preferences?.preferredMeal ?? "Not set"
+                                            value: viewStore.user?.preferences?.preferredMeal ?? "Not set",
+                                            onEdit: { newValue in
+                                                // TODO: Update meal
+                                            }
+                                        )
+                                        
+                                        EditableProfileRowView(
+                                            icon: "star",
+                                            title: "Preferred Class",
+                                            value: viewStore.user?.preferences?.preferredClass ?? "Not set",
+                                            onEdit: { newValue in
+                                                // TODO: Update class
+                                            }
+                                        )
+                                        
+                                        EditableProfileRowView(
+                                            icon: "building.2",
+                                            title: "Preferred Airport",
+                                            value: viewStore.user?.preferences?.preferredAirport ?? "Not set",
+                                            onEdit: { newValue in
+                                                // TODO: Update airport
+                                            }
+                                        )
+                                        
+                                        EditableProfileRowView(
+                                            icon: "creditcard",
+                                            title: "Frequent Flyer Number",
+                                            value: viewStore.user?.preferences?.frequentFlyerNumber ?? "Not set",
+                                            onEdit: { newValue in
+                                                // TODO: Update frequent flyer
+                                            }
                                         )
                                     }
                                 }
@@ -103,12 +172,42 @@ struct ProfileView: View {
                                                 .foregroundColor(Theme.Palette.primaryRed)
                                                 .frame(width: 24)
                                             
-                                            Text("Notifications")
+                                            Text("Push Notifications")
                                                 .foregroundColor(.white)
                                             
                                             Spacer()
                                             
-                                            Toggle("", isOn: .constant(viewStore.user?.preferences?.notificationsEnabled ?? false))
+                                            Toggle("", isOn: .constant(viewStore.user?.preferences?.pushNotifications ?? false))
+                                                .toggleStyle(SwitchToggleStyle(tint: Theme.Palette.primaryRed))
+                                        }
+                                        .padding(.vertical, 8)
+                                        
+                                        HStack {
+                                            Image(systemName: "envelope")
+                                                .foregroundColor(Theme.Palette.primaryRed)
+                                                .frame(width: 24)
+                                            
+                                            Text("Email Notifications")
+                                                .foregroundColor(.white)
+                                            
+                                            Spacer()
+                                            
+                                            Toggle("", isOn: .constant(viewStore.user?.preferences?.emailNotifications ?? false))
+                                                .toggleStyle(SwitchToggleStyle(tint: Theme.Palette.primaryRed))
+                                        }
+                                        .padding(.vertical, 8)
+                                        
+                                        HStack {
+                                            Image(systemName: "message")
+                                                .foregroundColor(Theme.Palette.primaryRed)
+                                                .frame(width: 24)
+                                            
+                                            Text("SMS Notifications")
+                                                .foregroundColor(.white)
+                                            
+                                            Spacer()
+                                            
+                                            Toggle("", isOn: .constant(viewStore.user?.preferences?.smsNotifications ?? false))
                                                 .toggleStyle(SwitchToggleStyle(tint: Theme.Palette.primaryRed))
                                         }
                                         .padding(.vertical, 8)
@@ -220,6 +319,57 @@ struct ProfileRowView: View {
             }
             
             Spacer()
+        }
+        .padding(.vertical, 4)
+    }
+}
+
+struct EditableProfileRowView: View {
+    let icon: String
+    let title: String
+    let value: String
+    let onEdit: (String) -> Void
+    
+    @State private var isEditing = false
+    @State private var editedValue = ""
+    
+    var body: some View {
+        HStack {
+            Image(systemName: icon)
+                .foregroundColor(.gray)
+                .frame(width: 20)
+            
+            VStack(alignment: .leading, spacing: 2) {
+                Text(title)
+                    .font(.caption)
+                    .foregroundColor(.gray)
+                
+                if isEditing {
+                    TextField("Enter \(title.lowercased())", text: $editedValue)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .font(.subheadline)
+                } else {
+                    Text(value)
+                        .font(.subheadline)
+                        .foregroundColor(.white)
+                }
+            }
+            
+            Spacer()
+            
+            Button(action: {
+                if isEditing {
+                    onEdit(editedValue)
+                    isEditing = false
+                } else {
+                    editedValue = value
+                    isEditing = true
+                }
+            }) {
+                Image(systemName: isEditing ? "checkmark" : "pencil")
+                    .foregroundColor(Theme.Palette.primaryRed)
+                    .font(.caption)
+            }
         }
         .padding(.vertical, 4)
     }

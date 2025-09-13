@@ -98,7 +98,12 @@ struct AuthFeature: Reducer {
                     state.showingAuth = false
                 } else {
                     // Set error message if login failed
-                    state.errorMessage = "Невірний email або пароль. Спробуйте ще раз."
+                    state.errorMessage = "Invalid email or password. Please try again."
+                    // Auto-hide error after 2 seconds
+                    return .run { send in
+                        try await Task.sleep(nanoseconds: 2_000_000_000) // 2 seconds
+                        await send(.setError(nil))
+                    }
                 }
                 return .none
                 

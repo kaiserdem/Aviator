@@ -556,6 +556,9 @@ final class AmadeusService {
     func login(email: String, password: String) async -> AppUser? {
         print("🔐 Local login attempt for: \(email)")
         
+        // Add delay to show loading indicator
+        try? await Task.sleep(nanoseconds: 1_000_000_000) // 1 second
+        
         // Try to login locally first
         if let existingUser = LocalUserStorage.shared.loginUser(email: email, password: password) {
             print("✅ User logged in successfully: \(email)")
@@ -565,7 +568,7 @@ final class AmadeusService {
         }
         
         // For demo purposes, create test user if credentials match
-        if email == "test@example.com" && password == "password" {
+        if email == "test@example.com" && password == "123_!password" {
             print("✅ Creating demo user for testing")
             let demoUser = LocalUserStorage.shared.registerUser(
                 email: email,
@@ -589,6 +592,9 @@ final class AmadeusService {
     
     func register(email: String, password: String, firstName: String, lastName: String) async -> AppUser? {
         print("📝 Local registration attempt for: \(email)")
+        
+        // Add delay to show loading indicator
+        try? await Task.sleep(nanoseconds: 1_000_000_000) // 1 second
         
         // Register locally
         let newUser = LocalUserStorage.shared.registerUser(
@@ -648,11 +654,14 @@ struct AirportGeoCode: Codable {
 
 struct AppUser: Identifiable, Codable, Equatable {
     let id: UUID = UUID()
-    let email: String
-    let firstName: String
-    let lastName: String
-    let phoneNumber: String?
-    let preferences: UserPreferences?
+    var email: String
+    var firstName: String
+    var lastName: String
+    var phoneNumber: String?
+    var dateOfBirth: String?
+    var nationality: String?
+    var passportNumber: String?
+    var preferences: UserPreferences?
     
     static func == (lhs: AppUser, rhs: AppUser) -> Bool {
         lhs.id == rhs.id &&
@@ -663,10 +672,16 @@ struct AppUser: Identifiable, Codable, Equatable {
 }
 
 struct UserPreferences: Codable, Equatable {
-    let preferredAirline: String?
-    let preferredSeat: String?
-    let preferredMeal: String?
-    let notificationsEnabled: Bool
+    var preferredAirline: String?
+    var preferredSeat: String?
+    var preferredMeal: String?
+    var preferredClass: String?
+    var preferredAirport: String?
+    var frequentFlyerNumber: String?
+    var notificationsEnabled: Bool
+    var emailNotifications: Bool
+    var smsNotifications: Bool
+    var pushNotifications: Bool
 }
 
 // MARK: - Local User Storage
@@ -694,11 +709,20 @@ class LocalUserStorage {
             firstName: firstName,
             lastName: lastName,
             phoneNumber: nil,
+            dateOfBirth: nil,
+            nationality: nil,
+            passportNumber: nil,
             preferences: UserPreferences(
                 preferredAirline: nil,
                 preferredSeat: nil,
                 preferredMeal: nil,
-                notificationsEnabled: true
+                preferredClass: nil,
+                preferredAirport: nil,
+                frequentFlyerNumber: nil,
+                notificationsEnabled: false,
+                emailNotifications: false,
+                smsNotifications: false,
+                pushNotifications: false
             )
         )
         
