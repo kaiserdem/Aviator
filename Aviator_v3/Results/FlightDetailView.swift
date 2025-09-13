@@ -1,5 +1,6 @@
 import SwiftUI
 import ComposableArchitecture
+import WebKit
 
 struct FlightDetailView: View {
     let flightOffer: FlightOffer
@@ -9,6 +10,7 @@ struct FlightDetailView: View {
     @State private var isLoading = false
     @State private var showNotesAlert = false
     @State private var notes = ""
+    @State private var webURL: URL?
     
     var body: some View {
         ScrollView {
@@ -68,6 +70,25 @@ struct FlightDetailView: View {
                             RoundedRectangle(cornerRadius: 8)
                                 .stroke(isSaved ? Theme.Palette.primaryRed : Theme.Palette.textTertiary, lineWidth: 1)
                         )
+                    }
+                    .buttonStyle(PlainButtonStyle())
+                    
+                    // Book Now Button
+                    Button(action: {
+                        openBookingWebsite()
+                    }) {
+                        HStack {
+                            Image(systemName: "safari")
+                                .foregroundColor(.white)
+                            Text("Book Now")
+                                .font(.headline)
+                                .foregroundColor(.white)
+                        }
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 12)
+                        .background(Theme.Gradient.navigationBar)
+                        .cornerRadius(8)
+                        .shadow(color: Theme.Shadow.red, radius: 4)
                     }
                     .buttonStyle(PlainButtonStyle())
                 }
@@ -150,18 +171,17 @@ struct FlightDetailView: View {
                     dismiss()
                 }) {
                     HStack(spacing: 6) {
-                        Image(systemName: "chevron.left")
-                            .font(.system(size: 14, weight: .semibold))
+                        
                         Text(" Back ")
                             .font(.system(size: 14, weight: .semibold))
                     }
                     .foregroundColor(.white)
                     .padding(.horizontal, 16)
                     .padding(.vertical, 10)
-                    .background(Theme.Palette.darkGray)
+                    .background(Theme.Palette.cardBackground)
                     .cornerRadius(12)
                     .shadow(color: Theme.Palette.primaryRed.opacity(0.4), radius: 4, x: 0, y: 2)
-                    .offset(x: -30)
+                    .offset(x: -45)
                     Spacer()
                     Spacer()
                 }
@@ -184,6 +204,14 @@ struct FlightDetailView: View {
             }
         } message: {
             Text("Add optional notes for this flight")
+        }
+        .navigationDestination(item: $webURL) { url in
+            BookingWebScreen(title: "Book Flight", url: url)
+                .toolbarColorScheme(.dark, for: .navigationBar)
+                .toolbarBackground(Theme.Palette.surface, for: .navigationBar)
+                .toolbarBackground(.visible, for: .navigationBar)
+                .scrollContentBackground(.hidden)
+                .background(Theme.Gradient.background)
         }
     }
     
@@ -223,7 +251,15 @@ struct FlightDetailView: View {
         isLoading = true
         do {
             let savedFlights = try await databaseClient.getSavedFlights()
-            if let savedFlight = savedFlights.first(where: { $0.flightOffer.id == flightOffer.id }) {
+            if let savedFlight = savedFlights.first(where: { savedFlight in
+                savedFlight.flightOffer.origin == flightOffer.origin &&
+                savedFlight.flightOffer.destination == flightOffer.destination &&
+                savedFlight.flightOffer.departureDate == flightOffer.departureDate &&
+                savedFlight.flightOffer.returnDate == flightOffer.returnDate &&
+                savedFlight.flightOffer.airline == flightOffer.airline &&
+                savedFlight.flightOffer.flightNumber == flightOffer.flightNumber &&
+                savedFlight.flightOffer.price == flightOffer.price
+            }) {
                 try await databaseClient.deleteSavedFlight(savedFlight)
                 isSaved = false
                 print("✅ Flight unsaved successfully")
@@ -232,6 +268,25 @@ struct FlightDetailView: View {
             print("❌ Error unsaving flight: \(error)")
         }
         isLoading = false
+    }
+    
+    private func openBookingWebsite() {
+        // Створюємо URL для пошуку рейсу на популярних сайтах бронювання
+        let origin = flightOffer.origin
+        let destination = flightOffer.destination
+        let departureDate = flightOffer.departureDate.prefix(10) // Беремо тільки дату без часу
+        
+        // Використовуємо Google Flights як загальний пошук
+        let searchQuery = "\(origin) to \(destination) \(departureDate)"
+        let encodedQuery = searchQuery.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
+        let googleFlightsURL = "https://www.google.com/travel/flights?q=\(encodedQuery)"
+        
+        if let url = URL(string: googleFlightsURL) {
+            webURL = url
+            print("🌐 Opening booking website in-app: \(googleFlightsURL)")
+        } else {
+            print("❌ Error creating booking URL")
+        }
     }
 }
 
@@ -280,6 +335,45 @@ struct InfoRow: View {
                 .foregroundColor(Theme.Palette.textPrimary)
         }
         .padding(.vertical, 4)
+    }
+}
+
+// Simple WKWebView wrapper for SwiftUI
+private struct WebView: UIViewRepresentable {
+    let url: URL
+    func makeUIView(context: Context) -> WKWebView {
+        let view = WKWebView()
+        view.isOpaque = false
+        view.backgroundColor = .black
+        view.scrollView.backgroundColor = .black
+        view.load(URLRequest(url: url))
+        return view
+    }
+    func updateUIView(_ uiView: WKWebView, context: Context) {
+        if uiView.url != url {
+            uiView.load(URLRequest(url: url))
+        }
+    }
+}
+
+// Full screen in-app web screen for booking
+private struct BookingWebScreen: View, Identifiable {
+    let id = UUID()
+    let title: String
+    let url: URL
+    var body: some View {
+        WebContentView(title: title, url: url)
+    }
+}
+
+private struct WebContentView: View {
+    let title: String
+    let url: URL
+    var body: some View {
+        WebView(url: url)
+            .navigationTitle("")
+            .navigationBarTitleDisplayMode(.inline)
+            .background(Theme.Gradient.background)
     }
 }
 
