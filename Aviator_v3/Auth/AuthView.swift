@@ -98,6 +98,7 @@ struct AuthView: View {
 
 struct LoginFormView: View {
     let store: StoreOf<AuthFeature>
+    @State private var isPasswordVisible = false
     
     var body: some View {
         WithViewStore(self.store, observe: { $0 }) { viewStore in
@@ -128,11 +129,29 @@ struct LoginFormView: View {
                         .foregroundColor(.white)
                         .font(.subheadline)
                     
-                    SecureField("Enter your password", text: viewStore.binding(
-                        get: \.loginPassword,
-                        send: { .updateLoginPassword($0) }
-                    ))
-                    .textFieldStyle(AuthTextFieldStyle())
+                    ZStack(alignment: .trailing) {
+                        if isPasswordVisible {
+                            TextField("Enter your password", text: viewStore.binding(
+                                get: \.loginPassword,
+                                send: { .updateLoginPassword($0) }
+                            ))
+                            .textFieldStyle(AuthTextFieldStyle())
+                        } else {
+                            SecureField("Enter your password", text: viewStore.binding(
+                                get: \.loginPassword,
+                                send: { .updateLoginPassword($0) }
+                            ))
+                            .textFieldStyle(AuthTextFieldStyle())
+                        }
+                        
+                        Button(action: {
+                            isPasswordVisible.toggle()
+                        }) {
+                            Image(systemName: isPasswordVisible ? "eye.slash" : "eye")
+                                .foregroundColor(.gray)
+                                .padding(.trailing, 16)
+                        }
+                    }
                 }
                 
                 // Login Button
@@ -164,6 +183,7 @@ struct LoginFormView: View {
 
 struct RegisterFormView: View {
     let store: StoreOf<AuthFeature>
+    @State private var isPasswordVisible = false
     
     var body: some View {
         WithViewStore(self.store, observe: { $0 }) { viewStore in
@@ -220,11 +240,29 @@ struct RegisterFormView: View {
                         .foregroundColor(.white)
                         .font(.subheadline)
                     
-                    SecureField("Enter your password", text: viewStore.binding(
-                        get: \.registerPassword,
-                        send: { .updateRegisterPassword($0) }
-                    ))
-                    .textFieldStyle(AuthTextFieldStyle())
+                    ZStack(alignment: .trailing) {
+                        if isPasswordVisible {
+                            TextField("Enter your password", text: viewStore.binding(
+                                get: \.registerPassword,
+                                send: { .updateRegisterPassword($0) }
+                            ))
+                            .textFieldStyle(AuthTextFieldStyle())
+                        } else {
+                            SecureField("Enter your password", text: viewStore.binding(
+                                get: \.registerPassword,
+                                send: { .updateRegisterPassword($0) }
+                            ))
+                            .textFieldStyle(AuthTextFieldStyle())
+                        }
+                        
+                        Button(action: {
+                            isPasswordVisible.toggle()
+                        }) {
+                            Image(systemName: isPasswordVisible ? "eye.slash" : "eye")
+                                .foregroundColor(.gray)
+                                .padding(.trailing, 16)
+                        }
+                    }
                 }
                 
                 // Register Button
