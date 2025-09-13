@@ -149,21 +149,21 @@ struct FlightDetailView: View {
                 Button(action: {
                     dismiss()
                 }) {
-                    HStack(spacing: 8) {
+                    HStack(spacing: 6) {
                         Image(systemName: "chevron.left")
-                            .font(.system(size: 16, weight: .medium))
-                        Text("Back")
-                            .font(.system(size: 16, weight: .medium))
+                            .font(.system(size: 14, weight: .semibold))
+                        Text(" Back ")
+                            .font(.system(size: 14, weight: .semibold))
                     }
-                    .foregroundColor(Theme.Palette.textPrimary)
-                    .padding(.horizontal, 12)
-                    .padding(.vertical, 8)
-                    .background(Theme.Palette.surface.opacity(0.8))
-                    .cornerRadius(8)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 8)
-                            .stroke(Theme.Palette.primaryRed.opacity(0.3), lineWidth: 1)
-                    )
+                    .foregroundColor(.white)
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 10)
+                    .background(Theme.Palette.darkGray)
+                    .cornerRadius(12)
+                    .shadow(color: Theme.Palette.primaryRed.opacity(0.4), radius: 4, x: 0, y: 2)
+                    .offset(x: -30)
+                    Spacer()
+                    Spacer()
                 }
             }
         }
