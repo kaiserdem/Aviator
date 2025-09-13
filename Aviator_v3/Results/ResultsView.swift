@@ -3,6 +3,7 @@ import ComposableArchitecture
 
 struct ResultsView: View {
     let store: StoreOf<ResultsFeature>
+    let onGoToSearch: () -> Void
     
     var body: some View {
         WithViewStore(self.store, observe: { $0 }) { viewStore in
@@ -38,7 +39,7 @@ struct ResultsView: View {
                                 }
                                 
                                 Button(action: {
-                                    // Switch to search tab
+                                    onGoToSearch()
                                 }) {
                                     HStack {
                                         Image(systemName: "magnifyingglass")
@@ -231,6 +232,7 @@ struct FlightOfferCard: View {
     ResultsView(
         store: Store(initialState: ResultsFeature.State()) {
             ResultsFeature()
-        }
+        },
+        onGoToSearch: {}
     )
 }

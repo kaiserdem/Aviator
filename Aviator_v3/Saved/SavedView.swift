@@ -3,6 +3,7 @@ import ComposableArchitecture
 
 struct SavedView: View {
     let store: StoreOf<SavedFeature>
+    let onGoToSearch: () -> Void
     
     var body: some View {
         WithViewStore(self.store, observe: { $0 }) { viewStore in
@@ -37,7 +38,7 @@ struct SavedView: View {
                                 }
                                 
                                 Button(action: {
-                                    // Switch to search tab
+                                    onGoToSearch()
                                 }) {
                                     HStack {
                                         Image(systemName: "magnifyingglass")
@@ -175,6 +176,7 @@ struct SavedFlightRowView: View {
     SavedView(
         store: Store(initialState: SavedFeature.State()) {
             SavedFeature()
-        }
+        },
+        onGoToSearch: {}
     )
 }

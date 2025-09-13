@@ -14,19 +14,29 @@ struct ContentView: View {
                     }
                     .tag(AppFeature.State.Tab.search)
 
-                ResultsView(store: self.store.scope(state: \.results, action: { .results($0) }))
-                    .tabItem {
-                        Image(systemName: "list.bullet")
-                        Text("Results")
+                ResultsView(
+                    store: self.store.scope(state: \.results, action: { .results($0) }),
+                    onGoToSearch: {
+                        viewStore.send(.selectTab(.search))
                     }
-                    .tag(AppFeature.State.Tab.results)
+                )
+                .tabItem {
+                    Image(systemName: "list.bullet")
+                    Text("Results")
+                }
+                .tag(AppFeature.State.Tab.results)
 
-                SavedView(store: self.store.scope(state: \.saved, action: { .saved($0) }))
-                    .tabItem {
-                        Image(systemName: "bookmark.fill")
-                        Text("Saved")
+                SavedView(
+                    store: self.store.scope(state: \.saved, action: { .saved($0) }),
+                    onGoToSearch: {
+                        viewStore.send(.selectTab(.search))
                     }
-                    .tag(AppFeature.State.Tab.saved)
+                )
+                .tabItem {
+                    Image(systemName: "bookmark.fill")
+                    Text("Saved")
+                }
+                .tag(AppFeature.State.Tab.saved)
 
                 ProfileView(store: self.store.scope(state: \.profile, action: { .profile($0) }))
                     .tabItem {
