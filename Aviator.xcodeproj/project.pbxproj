@@ -15,6 +15,7 @@
 		0535F1522E73EF3B00EB5338 /* Aviator_v2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Aviator_v2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		059D56452E701D2500A6A3D5 /* Aviator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Aviator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		05F823CE2E747E24009F3FFB /* Aviator_v3.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Aviator_v3.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		05F827322E76B4C1009F3FFB /* Aviator_v4.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Aviator_v4.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -31,6 +32,11 @@
 		05F823CF2E747E24009F3FFB /* Aviator_v3 */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = Aviator_v3;
+			sourceTree = "<group>";
+		};
+		05F827332E76B4C1009F3FFB /* Aviator_v4 */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Aviator_v4;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -59,6 +65,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		05F8272F2E76B4C1009F3FFB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -68,6 +81,7 @@
 				059D56472E701D2500A6A3D5 /* Aviator */,
 				0535F1532E73EF3B00EB5338 /* Aviator_v2 */,
 				05F823CF2E747E24009F3FFB /* Aviator_v3 */,
+				05F827332E76B4C1009F3FFB /* Aviator_v4 */,
 				059D56462E701D2500A6A3D5 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -78,6 +92,7 @@
 				059D56452E701D2500A6A3D5 /* Aviator.app */,
 				0535F1522E73EF3B00EB5338 /* Aviator_v2.app */,
 				05F823CE2E747E24009F3FFB /* Aviator_v3.app */,
+				05F827322E76B4C1009F3FFB /* Aviator_v4.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -153,6 +168,28 @@
 			productReference = 05F823CE2E747E24009F3FFB /* Aviator_v3.app */;
 			productType = "com.apple.product-type.application";
 		};
+		05F827312E76B4C1009F3FFB /* Aviator_v4 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 05F8273C2E76B4C2009F3FFB /* Build configuration list for PBXNativeTarget "Aviator_v4" */;
+			buildPhases = (
+				05F8272E2E76B4C1009F3FFB /* Sources */,
+				05F8272F2E76B4C1009F3FFB /* Frameworks */,
+				05F827302E76B4C1009F3FFB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				05F827332E76B4C1009F3FFB /* Aviator_v4 */,
+			);
+			name = Aviator_v4;
+			packageProductDependencies = (
+			);
+			productName = Aviator_v4;
+			productReference = 05F827322E76B4C1009F3FFB /* Aviator_v4.app */;
+			productType = "com.apple.product-type.application";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -170,6 +207,9 @@
 						CreatedOnToolsVersion = 16.4;
 					};
 					05F823CD2E747E24009F3FFB = {
+						CreatedOnToolsVersion = 16.4;
+					};
+					05F827312E76B4C1009F3FFB = {
 						CreatedOnToolsVersion = 16.4;
 					};
 				};
@@ -194,6 +234,7 @@
 				059D56442E701D2500A6A3D5 /* Aviator */,
 				0535F1512E73EF3B00EB5338 /* Aviator_v2 */,
 				05F823CD2E747E24009F3FFB /* Aviator_v3 */,
+				05F827312E76B4C1009F3FFB /* Aviator_v4 */,
 			);
 		};
 /* End PBXProject section */
@@ -220,6 +261,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		05F827302E76B4C1009F3FFB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -238,6 +286,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		05F823CA2E747E24009F3FFB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		05F8272E2E76B4C1009F3FFB /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -572,6 +627,62 @@
 			};
 			name = Release;
 		};
+		05F8273A2E76B4C2009F3FFB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = Q2TWT4N9WP;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "aviaApp151.Aviator-v4";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		05F8273B2E76B4C2009F3FFB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = Q2TWT4N9WP;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "aviaApp151.Aviator-v4";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -607,6 +718,15 @@
 			buildConfigurations = (
 				05F823D62E747E25009F3FFB /* Debug */,
 				05F823D72E747E25009F3FFB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		05F8273C2E76B4C2009F3FFB /* Build configuration list for PBXNativeTarget "Aviator_v4" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				05F8273A2E76B4C2009F3FFB /* Debug */,
+				05F8273B2E76B4C2009F3FFB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

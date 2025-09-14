@@ -244,8 +244,8 @@ extension DependencyValues {
 final class AmadeusService {
     static let shared = AmadeusService()
     
-    private let apiKey = "eJgrtNELJeHuwATUSGsGZKbRcJnZ3C1y" // Замініть на ваш API ключ
-    private let apiSecret = "jnjmOFAwYBzBfsUa" // Замініть на ваш API секрет
+    private let apiKey = ""
+    private let apiSecret = "" 
     private let baseURL = "https://test.api.amadeus.com"
     
     private init() {}
