@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		0535F17C2E73FCD500EB5338 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 0535F17B2E73FCD500EB5338 /* ComposableArchitecture */; };
 		05F823DA2E747E32009F3FFB /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 05F823D92E747E32009F3FFB /* ComposableArchitecture */; };
+		05F8279A2E782601009F3FFB /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 05F827992E782601009F3FFB /* ComposableArchitecture */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -69,6 +70,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				05F8279A2E782601009F3FFB /* ComposableArchitecture in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -185,6 +187,7 @@
 			);
 			name = Aviator_v4;
 			packageProductDependencies = (
+				05F827992E782601009F3FFB /* ComposableArchitecture */,
 			);
 			productName = Aviator_v4;
 			productReference = 05F827322E76B4C1009F3FFB /* Aviator_v4.app */;
@@ -751,6 +754,11 @@
 			productName = ComposableArchitecture;
 		};
 		05F823D92E747E32009F3FFB /* ComposableArchitecture */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0535F17A2E73FCD500EB5338 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
+			productName = ComposableArchitecture;
+		};
+		05F827992E782601009F3FFB /* ComposableArchitecture */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 0535F17A2E73FCD500EB5338 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
 			productName = ComposableArchitecture;
