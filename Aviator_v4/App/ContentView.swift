@@ -14,12 +14,12 @@ struct ContentView: View {
                     }
                     .tag(AppFeature.State.Tab.hotels)
                 
-                CarsView(store: self.store.scope(state: \.cars, action: { .cars($0) }))
+                AviationSportsView(store: self.store.scope(state: \.aviationSports, action: { .aviationSports($0) }))
                     .tabItem {
-                        Image(systemName: "car")
-                        Text("Cars")
+                        Image(systemName: "airplane.circle")
+                        Text("Aviation Sports")
                     }
-                    .tag(AppFeature.State.Tab.cars)
+                    .tag(AppFeature.State.Tab.aviationSports)
                 
                 Tab3View(store: self.store.scope(state: \.tab3, action: { .tab3($0) }))
                     .tabItem {
@@ -30,7 +30,7 @@ struct ContentView: View {
                 
                 Tab4View(store: self.store.scope(state: \.tab4, action: { .tab4($0) }))
                     .tabItem {
-                        Image(systemName: "map")
+                        Image(systemName: "airplane.departure")
                         Text("Tracker")
                     }
                     .tag(AppFeature.State.Tab.tab4)
