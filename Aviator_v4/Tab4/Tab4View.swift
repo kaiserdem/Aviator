@@ -7,63 +7,73 @@ struct Tab4View: View {
     var body: some View {
         WithViewStore(self.store, observe: { $0 }) { viewStore in
             NavigationStack {
-                VStack(spacing: 16) {
-                    // Search Section
-                    VStack(spacing: 12) {
-                        TextField("Enter flight number (e.g., UA123)", text: viewStore.binding(get: \.searchText, send: { .searchTextChanged($0) }))
-                            .textFieldStyle(RoundedBorderTextFieldStyle())
-                            .autocapitalization(.allCharacters)
-                            .disableAutocorrection(true)
-                        
-                        Button("Track Flight") {
-                            viewStore.send(.trackFlight)
-                        }
-                        .buttonStyle(.borderedProminent)
-                        .disabled(viewStore.searchText.isEmpty)
-                    }
-                    .padding()
+                ZStack {
+                    // Градієнтний фон
+                    AviationGradientBackground()
                     
-                    // Content
-                    if viewStore.isLoading {
-                        ProgressView("Tracking flight...")
-                            .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    } else if let errorMessage = viewStore.errorMessage {
-                        VStack {
-                            Image(systemName: "exclamationmark.triangle")
-                                .font(.largeTitle)
-                                .foregroundColor(.red)
-                            Text("Error: \(errorMessage)")
-                                .foregroundColor(.red)
-                                .multilineTextAlignment(.center)
-                        }
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    } else if let flightStatus = viewStore.flightStatus {
-                        FlightStatusDetailView(flightStatus: flightStatus)
-                    } else if viewStore.trackedFlights.isEmpty {
-                        VStack {
-                            Image(systemName: "airplane.departure")
-                                .font(.largeTitle)
-                                .foregroundColor(.gray)
-                            Text("No tracked flights")
-                                .foregroundColor(.gray)
-                            Text("Enter a flight number to start tracking")
-                                .font(.caption)
-                                .foregroundColor(.secondary)
-                        }
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    } else {
-                        List {
-                            Section("Tracked Flights") {
-                                ForEach(viewStore.trackedFlights) { flightStatus in
-                                    FlightStatusRowView(flightStatus: flightStatus) {
-                                        viewStore.send(.removeFromTracked(flightStatus.flightNumber))
+                        VStack(spacing: 16) {
+                            // Search Section
+                            VStack(spacing: 12) {
+                                TextField("Enter flight number (e.g., UA123)", text: viewStore.binding(get: \.searchText, send: { .searchTextChanged($0) }))
+                                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                                    .autocapitalization(.allCharacters)
+                                    .disableAutocorrection(true)
+                                
+                                Button("Track Flight") {
+                                    viewStore.send(.trackFlight)
+                                }
+                                .buttonStyle(.borderedProminent)
+                                .tint(.white)
+                                .foregroundColor(.black)
+                                .disabled(viewStore.searchText.isEmpty)
+                            }
+                            .padding()
+                            
+                            // Content
+                            if viewStore.isLoading {
+                                ProgressView("Tracking flight...")
+                                    .foregroundColor(.white)
+                                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                            } else if let errorMessage = viewStore.errorMessage {
+                                VStack {
+                                    Image(systemName: "exclamationmark.triangle")
+                                        .font(.largeTitle)
+                                        .foregroundColor(.red)
+                                    Text("Error: \(errorMessage)")
+                                        .foregroundColor(.red)
+                                        .multilineTextAlignment(.center)
+                                }
+                                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                            } else if let flightStatus = viewStore.flightStatus {
+                                FlightStatusDetailView(flightStatus: flightStatus)
+                            } else if viewStore.trackedFlights.isEmpty {
+                                VStack {
+                                    Image(systemName: "airplane.departure")
+                                        .font(.largeTitle)
+                                        .foregroundColor(.gray)
+                                    Text("No tracked flights")
+                                        .foregroundColor(.white)
+                                    Text("Enter a flight number to start tracking")
+                                        .font(.caption)
+                                        .foregroundColor(.white.opacity(0.7))
+                                }
+                                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                            } else {
+                                List {
+                                    Section("Tracked Flights") {
+                                        ForEach(viewStore.trackedFlights) { flightStatus in
+                                            FlightStatusRowView(flightStatus: flightStatus) {
+                                                viewStore.send(.removeFromTracked(flightStatus.flightNumber))
+                                            }
+                                        }
                                     }
                                 }
                             }
                         }
                     }
-                }
                 .navigationTitle("Flight Tracker")
+                .navigationBarTitleDisplayMode(.large)
+                .toolbarColorScheme(.dark, for: .navigationBar)
                 .onAppear {
                     viewStore.send(.onAppear)
                 }
@@ -89,10 +99,10 @@ struct FlightStatusDetailView: View {
                 
                 Text(flightStatus.status)
                     .font(.headline)
-                    .foregroundColor(Color(flightStatus.statusColor))
+                    .foregroundColor(flightStatus.statusColor)
                     .padding(.horizontal, 12)
                     .padding(.vertical, 6)
-                    .background(Color(flightStatus.statusColor).opacity(0.1))
+                    .background(flightStatus.statusColor.opacity(0.1))
                     .cornerRadius(8)
             }
             
@@ -186,7 +196,7 @@ struct FlightStatusRowView: View {
                 
                 Text(flightStatus.status)
                     .font(.caption)
-                    .foregroundColor(Color(flightStatus.statusColor))
+                    .foregroundColor(flightStatus.statusColor)
             }
             
             Spacer()

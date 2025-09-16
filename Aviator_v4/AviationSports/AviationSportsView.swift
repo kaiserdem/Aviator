@@ -7,78 +7,96 @@ struct AviationSportsView: View {
     var body: some View {
         WithViewStore(self.store, observe: { $0 }) { viewStore in
             NavigationStack {
-                VStack(spacing: 16) {
-                    // Filter Section
-                    VStack(spacing: 12) {
-                        HStack {
-                            Text("Category:")
-                            Picker("Category", selection: viewStore.binding(get: \.selectedCategory, send: { .categoryChanged($0) })) {
-                                ForEach(SportCategory.allCases, id: \.self) { category in
-                                    Text(category.rawValue).tag(category)
-                                }
-                            }
-                            .pickerStyle(MenuPickerStyle())
-                            
-                            Spacer()
-                            
-                            Text("Location:")
-                            Picker("Location", selection: viewStore.binding(get: \.selectedLocation, send: { .locationChanged($0) })) {
-                                Text("Global").tag("Global")
-                                Text("United States").tag("United States")
-                                Text("Europe").tag("Europe")
-                                Text("Australia").tag("Australia")
-                                Text("Asia").tag("Asia")
-                            }
-                            .pickerStyle(MenuPickerStyle())
-                        }
-                        
-                        Button("Refresh Sports") {
-                            viewStore.send(.loadSports)
-                        }
-                        .buttonStyle(.borderedProminent)
-                    }
-                    .padding()
+                ZStack {
+                    // Градієнтний фон
+                    AviationGradientBackground()
                     
-                    // Content
-                    if viewStore.isLoading {
-                        ProgressView("Loading aviation sports...")
+                    VStack(spacing: 16) {
+                        // Filter Section
+                        VStack(spacing: 12) {
+                            HStack {
+                                Text("Category:")
+                                    .foregroundColor(.white)
+                                    .fontWeight(.medium)
+                                Picker("Category", selection: viewStore.binding(get: \.selectedCategory, send: { .categoryChanged($0) })) {
+                                    ForEach(SportCategory.allCases, id: \.self) { category in
+                                        Text(category.rawValue).tag(category)
+                                    }
+                                }
+                                .pickerStyle(MenuPickerStyle())
+                                
+                                Spacer()
+                                
+                                Text("Location:")
+                                    .foregroundColor(.white)
+                                    .fontWeight(.medium)
+                                Picker("Location", selection: viewStore.binding(get: \.selectedLocation, send: { .locationChanged($0) })) {
+                                    Text("Global").tag("Global")
+                                    Text("United States").tag("United States")
+                                    Text("Europe").tag("Europe")
+                                    Text("Australia").tag("Australia")
+                                    Text("Asia").tag("Asia")
+                                }
+                                .pickerStyle(MenuPickerStyle())
+                            }
+                            
+                            Button("Refresh Sports") {
+                                viewStore.send(.loadSports)
+                            }
+                            .buttonStyle(.borderedProminent)
+                            .tint(.white)
+                            .foregroundColor(.black)
+                        }
+                        .padding()
+                        
+                        // Content
+                        if viewStore.isLoading {
+                            ProgressView("Loading aviation sports...")
+                                .foregroundColor(.white)
+                                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        } else if let errorMessage = viewStore.errorMessage {
+                            VStack {
+                                Image(systemName: "exclamationmark.triangle")
+                                    .font(.largeTitle)
+                                    .foregroundColor(.red)
+                                Text("Error: \(errorMessage)")
+                                    .foregroundColor(.red)
+                                    .multilineTextAlignment(.center)
+                            }
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    } else if let errorMessage = viewStore.errorMessage {
-                        VStack {
-                            Image(systemName: "exclamationmark.triangle")
-                                .font(.largeTitle)
-                                .foregroundColor(.red)
-                            Text("Error: \(errorMessage)")
-                                .foregroundColor(.red)
-                                .multilineTextAlignment(.center)
-                        }
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    } else if viewStore.sports.isEmpty {
-                        VStack {
-                            Image(systemName: "airplane.circle")
-                                .font(.largeTitle)
-                                .foregroundColor(.gray)
-                            Text("No sports found")
-                                .foregroundColor(.gray)
-                            Text("Try adjusting your filters")
-                                .font(.caption)
-                                .foregroundColor(.secondary)
-                        }
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    } else {
-                        List(viewStore.sports) { sport in
-                            AviationSportRowView(sport: sport)
+                        } else if viewStore.sports.isEmpty {
+                            VStack {
+                                Image(systemName: "airplane.circle")
+                                    .font(.largeTitle)
+                                    .foregroundColor(.gray)
+                                Text("No sports found")
+                                    .foregroundColor(.white)
+                                Text("Try adjusting your filters")
+                                    .font(.caption)
+                                    .foregroundColor(.white.opacity(0.7))
+                            }
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        } else {
+                            List(viewStore.sports) { sport in
+                                NavigationLink(destination: AviationSportDetailView(sport: sport, store: self.store)) {
+                                    AviationSportRowView(sport: sport)
+                                }
                                 .onAppear {
                                     if sport.imageURL == nil {
                                         viewStore.send(.loadSportImage(sport.id.uuidString, sport.name))
                                     }
+                                    // Load Wikipedia description if needed
+                                    viewStore.send(.loadSportDescription(sport.id.uuidString, sport.name))
                                 }
+                            }
                         }
                     }
-                }
-                .navigationTitle("Aviation Sports")
-                .onAppear {
-                    viewStore.send(.onAppear)
+                    .navigationTitle("Aviation Sports")
+                    .navigationBarTitleDisplayMode(.large)
+                    .toolbarColorScheme(.dark, for: .navigationBar)
+                    .onAppear {
+                        viewStore.send(.onAppear)
+                    }
                 }
             }
         }
@@ -140,10 +158,10 @@ struct AviationSportRowView: View {
                         Text(sport.difficulty.rawValue)
                             .font(.caption)
                             .fontWeight(.medium)
-                            .foregroundColor(Color(sport.difficulty.color))
+                            .foregroundColor(sport.difficulty.color)
                             .padding(.horizontal, 8)
                             .padding(.vertical, 2)
-                            .background(Color(sport.difficulty.color).opacity(0.1))
+                            .background(sport.difficulty.color.opacity(0.1))
                             .cornerRadius(4)
                         
                         Text("\(sport.competitions.count) competitions")
@@ -230,6 +248,11 @@ struct AviationSportRowView: View {
                 }
             }
             }
+            
+            // Navigation Arrow
+            Image(systemName: "chevron.right")
+                .foregroundColor(.gray)
+                .font(.caption)
         }
         .padding(.vertical, 8)
     }

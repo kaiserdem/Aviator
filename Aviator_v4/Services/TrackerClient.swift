@@ -1,5 +1,6 @@
 import Foundation
 import ComposableArchitecture
+import SwiftUI
 
 struct TrackerClient {
     var trackFlight: (String) async -> FlightStatus?
@@ -151,20 +152,20 @@ struct FlightStatus: Equatable, Identifiable {
         return formatTime(actualArrival)
     }
     
-    var statusColor: String {
+    var statusColor: Color {
         switch status.lowercased() {
         case "on time", "scheduled":
-            return "green"
+            return .green
         case "delayed":
-            return "orange"
+            return .orange
         case "cancelled":
-            return "red"
+            return .red
         case "boarding":
-            return "blue"
+            return .blue
         case "departed":
-            return "purple"
+            return .purple
         default:
-            return "gray"
+            return .gray
         }
     }
     

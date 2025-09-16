@@ -7,62 +7,74 @@ struct HotelsView: View {
     var body: some View {
         WithViewStore(self.store, observe: { $0 }) { viewStore in
             NavigationStack {
-                VStack(spacing: 16) {
-                    // Search Section
-                    VStack(spacing: 12) {
-                        TextField("Search hotels...", text: viewStore.binding(get: \.searchText, send: { .searchTextChanged($0) }))
-                            .textFieldStyle(RoundedBorderTextFieldStyle())
-                        
-                        HStack {
-                            Text("City:")
-                            Picker("City", selection: viewStore.binding(get: \.selectedCity, send: { .cityChanged($0) })) {
-                                Text("Paris").tag("PAR")
-                                Text("London").tag("LON")
-                                Text("New York").tag("NYC")
-                                Text("Tokyo").tag("TYO")
-                            }
-                            .pickerStyle(SegmentedPickerStyle())
-                            
-                            Button("Search") {
-                                viewStore.send(.searchHotels)
-                            }
-                            .buttonStyle(.borderedProminent)
-                        }
-                    }
-                    .padding()
+                ZStack {
+                    // Градієнтний фон
+                    AviationGradientBackground()
                     
-                    // Content
-                    if viewStore.isLoading {
-                        ProgressView("Searching hotels...")
+                    VStack(spacing: 16) {
+                        // Search Section
+                        VStack(spacing: 12) {
+                            TextField("Search hotels...", text: viewStore.binding(get: \.searchText, send: { .searchTextChanged($0) }))
+                                .textFieldStyle(RoundedBorderTextFieldStyle())
+                            
+                            HStack {
+                                Text("City:")
+                                    .foregroundColor(.white)
+                                    .fontWeight(.medium)
+                                Picker("City", selection: viewStore.binding(get: \.selectedCity, send: { .cityChanged($0) })) {
+                                    Text("Paris").tag("PAR")
+                                    Text("London").tag("LON")
+                                    Text("New York").tag("NYC")
+                                    Text("Tokyo").tag("TYO")
+                                }
+                                .pickerStyle(SegmentedPickerStyle())
+                                
+                                Button("Search") {
+                                    viewStore.send(.searchHotels)
+                                }
+                                .buttonStyle(.borderedProminent)
+                                .tint(.white)
+                                .foregroundColor(.black)
+                            }
+                        }
+                        .padding()
+                        
+                        // Content
+                        if viewStore.isLoading {
+                            ProgressView("Searching hotels...")
+                                .foregroundColor(.white)
+                                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        } else if let errorMessage = viewStore.errorMessage {
+                            VStack {
+                                Image(systemName: "exclamationmark.triangle")
+                                    .font(.largeTitle)
+                                    .foregroundColor(.red)
+                                Text("Error: \(errorMessage)")
+                                    .foregroundColor(.red)
+                                    .multilineTextAlignment(.center)
+                            }
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    } else if let errorMessage = viewStore.errorMessage {
-                        VStack {
-                            Image(systemName: "exclamationmark.triangle")
-                                .font(.largeTitle)
-                                .foregroundColor(.red)
-                            Text("Error: \(errorMessage)")
-                                .foregroundColor(.red)
-                                .multilineTextAlignment(.center)
-                        }
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    } else if viewStore.hotels.isEmpty {
-                        VStack {
-                            Image(systemName: "bed.double")
-                                .font(.largeTitle)
-                                .foregroundColor(.gray)
-                            Text("No hotels found")
-                                .foregroundColor(.gray)
-                        }
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    } else {
-                        List(viewStore.hotels) { hotel in
-                            HotelRowView(hotel: hotel)
+                        } else if viewStore.hotels.isEmpty {
+                            VStack {
+                                Image(systemName: "bed.double")
+                                    .font(.largeTitle)
+                                    .foregroundColor(.gray)
+                                Text("No hotels found")
+                                    .foregroundColor(.white)
+                            }
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        } else {
+                            List(viewStore.hotels) { hotel in
+                                HotelRowView(hotel: hotel)
+                            }
                         }
                     }
-                }
-                .navigationTitle("Hotels")
-                .onAppear {
-                    viewStore.send(.onAppear)
+                    .navigationTitle("Hotels")
+                    .navigationBarTitleDisplayMode(.large)
+                    .toolbarColorScheme(.dark, for: .navigationBar)
+                    .onAppear {
+                        viewStore.send(.onAppear)
+                    }
                 }
             }
         }
