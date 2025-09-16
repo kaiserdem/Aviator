@@ -3,12 +3,11 @@ import Foundation
 
 struct AppFeature: Reducer {
     struct State: Equatable {
-        enum Tab: Hashable { case hotels, aviationSports, tab3, tab4, favorites }
+        enum Tab: Hashable { case hotels, aviationSports, tab3, favorites }
         var selectedTab: Tab = .aviationSports
         var hotels = HotelsFeature.State()
         var aviationSports = AviationSportsFeature.State()
         var tab3 = Tab3Feature.State()
-        var tab4 = Tab4Feature.State()
         var favorites = FavoritesFeature.State()
         
         // Спільний стан улюблених спорту
@@ -35,7 +34,6 @@ struct AppFeature: Reducer {
         case hotels(HotelsFeature.Action)
         case aviationSports(AviationSportsFeature.Action)
         case tab3(Tab3Feature.Action)
-        case tab4(Tab4Feature.Action)
         case favorites(FavoritesFeature.Action)
         case toggleFavorite(String) // sportId
         case clearAllFavorites // Очистити всі улюблені
@@ -45,7 +43,6 @@ struct AppFeature: Reducer {
         Scope(state: \.hotels, action: /Action.hotels) { HotelsFeature() }
         Scope(state: \.aviationSports, action: /Action.aviationSports) { AviationSportsFeature() }
         Scope(state: \.tab3, action: /Action.tab3) { Tab3Feature() }
-        Scope(state: \.tab4, action: /Action.tab4) { Tab4Feature() }
         Scope(state: \.favorites, action: /Action.favorites) { FavoritesFeature() }
 
         Reduce { state, action in

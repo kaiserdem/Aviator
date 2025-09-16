@@ -31,14 +31,6 @@ struct ContentView: View {
                         }
                         .tag(AppFeature.State.Tab.tab3)
                     
-                    // 3. Пуста вкладка (третя вкладка)
-                    Tab4View(store: self.store.scope(state: \.tab4, action: { .tab4($0) }))
-                        .tabItem {
-                            Image(systemName: "airplane.departure")
-                            Text("Tracker")
-                        }
-                        .tag(AppFeature.State.Tab.tab4)
-                    
                     // 4. Favorites (четверта вкладка)
                     FavoritesView(
                         store: self.store.scope(state: \.favorites, action: { .favorites($0) }),
