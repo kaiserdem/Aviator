@@ -65,7 +65,9 @@ struct HotelsView: View {
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
                         } else {
                             List(viewStore.hotels) { hotel in
-                                HotelRowView(hotel: hotel)
+                                NavigationLink(destination: HotelDetailView(hotel: hotel)) {
+                                    HotelRowView(hotel: hotel)
+                                }
                             }
                         }
                     }
@@ -86,54 +88,80 @@ struct HotelRowView: View {
     let hotel: Hotel
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            HStack {
-                VStack(alignment: .leading, spacing: 4) {
-                    Text(hotel.name)
-                        .font(.headline)
-                        .foregroundColor(.primary)
-                    
-                    Text(hotel.address)
-                        .font(.caption)
-                        .foregroundColor(.secondary)
+        HStack(spacing: 12) {
+            // Hotel Image
+            if let imageURL = hotel.imageURL, let url = URL(string: imageURL) {
+                AsyncImage(url: url) { image in
+                    image
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                } placeholder: {
+                    Image(systemName: "bed.double")
+                        .font(.title2)
+                        .foregroundColor(.gray)
                 }
-                
-                Spacer()
-                
-                VStack(alignment: .trailing, spacing: 4) {
-                    Text("\(hotel.currency) \(Int(hotel.price))")
-                        .font(.headline)
-                        .foregroundColor(.green)
-                    
-                    HStack(spacing: 2) {
-                        ForEach(0..<Int(hotel.rating), id: \.self) { _ in
-                            Image(systemName: "star.fill")
-                                .foregroundColor(.yellow)
-                                .font(.caption)
-                        }
-                        if hotel.rating.truncatingRemainder(dividingBy: 1) > 0 {
-                            Image(systemName: "star.leadinghalf.filled")
-                                .foregroundColor(.yellow)
-                                .font(.caption)
-                        }
-                    }
-                }
+                .frame(width: 80, height: 80)
+                .clipped()
+                .cornerRadius(8)
+            } else {
+                Image(systemName: "bed.double")
+                    .font(.title2)
+                    .foregroundColor(.gray)
+                    .frame(width: 80, height: 80)
+                    .background(Color.gray.opacity(0.2))
+                    .cornerRadius(8)
             }
             
-            if !hotel.amenities.isEmpty {
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: 8) {
-                        ForEach(hotel.amenities, id: \.self) { amenity in
-                            Text(amenity)
-                                .font(.caption)
-                                .padding(.horizontal, 8)
-                                .padding(.vertical, 4)
-                                .background(Color.blue.opacity(0.1))
-                                .foregroundColor(.blue)
-                                .cornerRadius(8)
+            VStack(alignment: .leading, spacing: 8) {
+                HStack {
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text(hotel.name)
+                            .font(.headline)
+                            .foregroundColor(.primary)
+                        
+                        Text(hotel.address)
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                            .lineLimit(2)
+                    }
+                    
+                    Spacer()
+                    
+                    VStack(alignment: .trailing, spacing: 4) {
+                        Text("\(hotel.currency) \(Int(hotel.price))")
+                            .font(.headline)
+                            .foregroundColor(.green)
+                        
+                        HStack(spacing: 2) {
+                            ForEach(0..<Int(hotel.rating), id: \.self) { _ in
+                                Image(systemName: "star.fill")
+                                    .foregroundColor(.yellow)
+                                    .font(.caption)
+                            }
+                            if hotel.rating.truncatingRemainder(dividingBy: 1) > 0 {
+                                Image(systemName: "star.leadinghalf.filled")
+                                    .foregroundColor(.yellow)
+                                    .font(.caption)
+                            }
                         }
                     }
-                    .padding(.horizontal, 1)
+                }
+            
+                if !hotel.amenities.isEmpty {
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack(spacing: 8) {
+                            ForEach(hotel.amenities, id: \.self) { amenity in
+                                Text(amenity)
+                                    .font(.caption)
+                                    .padding(.horizontal, 8)
+                                    .padding(.vertical, 4)
+                                    .background(Color.blue.opacity(0.1))
+                                    .foregroundColor(.blue)
+                                    .cornerRadius(8)
+                            }
+                        }
+                        .padding(.horizontal, 1)
+                    }
                 }
             }
         }

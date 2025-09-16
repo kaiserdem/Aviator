@@ -1,8 +1,8 @@
 import SwiftUI
 import ComposableArchitecture
 
-struct Tab3View: View {
-    let store: StoreOf<Tab3Feature>
+struct SearchView: View {
+    let store: StoreOf<SearchFeature>
     
     var body: some View {
         WithViewStore(self.store, observe: { $0 }) { viewStore in
@@ -194,9 +194,9 @@ struct FlightRowView: View {
 }
 
 #Preview {
-    Tab3View(
-        store: Store(initialState: Tab3Feature.State()) {
-            Tab3Feature()
+                        SearchView(
+        store: Store(initialState: SearchFeature.State()) {
+            SearchFeature()
         }
     )
 }

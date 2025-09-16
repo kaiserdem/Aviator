@@ -74,8 +74,10 @@ struct Hotel: Equatable, Identifiable {
     let currency: String
     let amenities: [String]
     let imageURL: String?
+    let latitude: Double?
+    let longitude: Double?
     
-    init(name: String, address: String, rating: Double, price: Double, currency: String = "USD", amenities: [String] = [], imageURL: String? = nil) {
+    init(name: String, address: String, rating: Double, price: Double, currency: String = "USD", amenities: [String] = [], imageURL: String? = nil, latitude: Double? = nil, longitude: Double? = nil) {
         self.name = name
         self.address = address
         self.rating = rating
@@ -83,6 +85,8 @@ struct Hotel: Equatable, Identifiable {
         self.currency = currency
         self.amenities = amenities
         self.imageURL = imageURL
+        self.latitude = latitude
+        self.longitude = longitude
     }
     
     static func == (lhs: Hotel, rhs: Hotel) -> Bool {
@@ -93,6 +97,8 @@ struct Hotel: Equatable, Identifiable {
                lhs.price == rhs.price &&
                lhs.currency == rhs.currency &&
                lhs.amenities == rhs.amenities &&
-               lhs.imageURL == rhs.imageURL
+               lhs.imageURL == rhs.imageURL &&
+               lhs.latitude == rhs.latitude &&
+               lhs.longitude == rhs.longitude
     }
 }

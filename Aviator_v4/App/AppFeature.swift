@@ -7,7 +7,7 @@ struct AppFeature: Reducer {
         var selectedTab: Tab = .aviationSports
         var hotels = HotelsFeature.State()
         var aviationSports = AviationSportsFeature.State()
-        var tab3 = Tab3Feature.State()
+        var tab3 = SearchFeature.State()
         var favorites = FavoritesFeature.State()
         
         // Спільний стан улюблених спорту
@@ -33,7 +33,7 @@ struct AppFeature: Reducer {
         case selectTab(State.Tab)
         case hotels(HotelsFeature.Action)
         case aviationSports(AviationSportsFeature.Action)
-        case tab3(Tab3Feature.Action)
+        case tab3(SearchFeature.Action)
         case favorites(FavoritesFeature.Action)
         case toggleFavorite(String) // sportId
         case clearAllFavorites // Очистити всі улюблені
@@ -42,7 +42,7 @@ struct AppFeature: Reducer {
     var body: some ReducerOf<Self> {
         Scope(state: \.hotels, action: /Action.hotels) { HotelsFeature() }
         Scope(state: \.aviationSports, action: /Action.aviationSports) { AviationSportsFeature() }
-        Scope(state: \.tab3, action: /Action.tab3) { Tab3Feature() }
+        Scope(state: \.tab3, action: /Action.tab3) { SearchFeature() }
         Scope(state: \.favorites, action: /Action.favorites) { FavoritesFeature() }
 
         Reduce { state, action in

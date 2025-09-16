@@ -1,7 +1,7 @@
 import ComposableArchitecture
 import Foundation
 
-struct Tab3Feature: Reducer {
+struct SearchFeature: Reducer {
     struct State: Equatable {
         var isLoading = false
         var flights: [Flight] = []

@@ -24,7 +24,7 @@ struct ContentView: View {
                         .tag(AppFeature.State.Tab.aviationSports)
                     
                     // 2. Search (друга вкладка)
-                    Tab3View(store: self.store.scope(state: \.tab3, action: { .tab3($0) }))
+                                        SearchView(store: self.store.scope(state: \.tab3, action: { .tab3($0) }))
                         .tabItem {
                             Image(systemName: "magnifyingglass")
                             Text("Search")
