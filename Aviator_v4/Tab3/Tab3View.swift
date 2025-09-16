@@ -111,6 +111,7 @@ struct Tab3View: View {
                     viewStore.send(.onAppear)
                 }
             }
+            .id("tab3Navigation")
         }
     }
 }

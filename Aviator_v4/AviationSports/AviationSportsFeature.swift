@@ -9,6 +9,8 @@ struct AviationSportsFeature: Reducer {
         var selectedLocation = "Global"
         var errorMessage: String?
         var favoriteSports: Set<String> = []
+        var loadedImages: Set<String> = [] // Відстежуємо завантажені зображення
+        var loadedDescriptions: Set<String> = [] // Відстежуємо завантажені описи
         
         init() {}
     }
@@ -41,10 +43,14 @@ struct AviationSportsFeature: Reducer {
                 
             case let .categoryChanged(category):
                 state.selectedCategory = category
+                state.loadedImages.removeAll() // Очищуємо кеш зображень
+                state.loadedDescriptions.removeAll() // Очищуємо кеш описів
                 return .send(.loadSports)
                 
             case let .locationChanged(location):
                 state.selectedLocation = location
+                state.loadedImages.removeAll() // Очищуємо кеш зображень
+                state.loadedDescriptions.removeAll() // Очищуємо кеш описів
                 return .send(.loadSports)
                 
             case .loadSports:
@@ -66,6 +72,11 @@ struct AviationSportsFeature: Reducer {
                 return .none
                 
             case let .loadSportImage(sportId, sportName):
+                // Перевіряємо, чи вже завантажували це зображення
+                if state.loadedImages.contains(sportId) {
+                    return .none
+                }
+                state.loadedImages.insert(sportId)
                 return .run { send in
                     let imageURL = await aviationSportsClient.getSportImage(sportName)
                     await send(.sportImageResponse(sportId, imageURL))
@@ -88,6 +99,11 @@ struct AviationSportsFeature: Reducer {
                 return .none
                 
             case let .loadSportDescription(sportId, sportName):
+                // Перевіряємо, чи вже завантажували цей опис
+                if state.loadedDescriptions.contains(sportId) {
+                    return .none
+                }
+                state.loadedDescriptions.insert(sportId)
                 return .run { send in
                     let description = await aviationSportsClient.getSportDescription(sportName)
                     await send(.sportDescriptionResponse(sportId, description))

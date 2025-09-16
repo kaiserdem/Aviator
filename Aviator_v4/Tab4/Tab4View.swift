@@ -78,6 +78,7 @@ struct Tab4View: View {
                     viewStore.send(.onAppear)
                 }
             }
+            .id("tab4Navigation")
         }
     }
 }

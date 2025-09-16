@@ -82,13 +82,17 @@ struct AviationSportsView: View {
                                     AviationSportRowView(sport: sport)
                                 }
                                 .onAppear {
+                                    // Завантажуємо зображення тільки один раз
                                     if sport.imageURL == nil {
                                         viewStore.send(.loadSportImage(sport.id.uuidString, sport.name))
                                     }
-                                    // Load Wikipedia description if needed
-                                    viewStore.send(.loadSportDescription(sport.id.uuidString, sport.name))
                                 }
+                                .id(sport.id) // Стабільний ID для кожного елемента
                             }
+                            .listStyle(PlainListStyle()) // Використовуємо PlainListStyle для стабільності
+                            .scrollContentBackground(.hidden) // Приховуємо фон для градієнта
+                            .listRowSeparator(.hidden) // Приховуємо роздільники рядків
+                            .listRowBackground(Color.clear) // Прозорий фон для рядків
                         }
                     }
                     .navigationTitle("Aviation Sports")
@@ -99,6 +103,7 @@ struct AviationSportsView: View {
                     }
                 }
             }
+            .id("aviationSportsNavigation")
         }
     }
 }
@@ -111,19 +116,39 @@ struct AviationSportRowView: View {
             // Sport Image
             VStack {
                 if let imageURL = sport.imageURL, let url = URL(string: imageURL) {
-                    AsyncImage(url: url) { image in
-                        image
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                    } placeholder: {
-                        Image(systemName: sportIcon(for: sport.category))
-                            .font(.system(size: 30))
-                            .foregroundColor(sportColor(for: sport.category))
+                    AsyncImage(url: url) { phase in
+                        switch phase {
+                        case .success(let image):
+                            image
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .frame(width: 60, height: 60)
+                                .background(sportColor(for: sport.category).opacity(0.1))
+                                .cornerRadius(12)
+                                .clipped()
+                        case .failure(_):
+                            Image(systemName: sportIcon(for: sport.category))
+                                .font(.system(size: 30))
+                                .foregroundColor(sportColor(for: sport.category))
+                                .frame(width: 60, height: 60)
+                                .background(sportColor(for: sport.category).opacity(0.1))
+                                .cornerRadius(12)
+                        case .empty:
+                            Image(systemName: sportIcon(for: sport.category))
+                                .font(.system(size: 30))
+                                .foregroundColor(sportColor(for: sport.category))
+                                .frame(width: 60, height: 60)
+                                .background(sportColor(for: sport.category).opacity(0.1))
+                                .cornerRadius(12)
+                        @unknown default:
+                            Image(systemName: sportIcon(for: sport.category))
+                                .font(.system(size: 30))
+                                .foregroundColor(sportColor(for: sport.category))
+                                .frame(width: 60, height: 60)
+                                .background(sportColor(for: sport.category).opacity(0.1))
+                                .cornerRadius(12)
+                        }
                     }
-                    .frame(width: 60, height: 60)
-                    .background(sportColor(for: sport.category).opacity(0.1))
-                    .cornerRadius(12)
-                    .clipped()
                 } else {
                     Image(systemName: sportIcon(for: sport.category))
                         .font(.system(size: 40))
@@ -183,20 +208,18 @@ struct AviationSportRowView: View {
                         .font(.caption)
                         .foregroundColor(.secondary)
                     
-                    ScrollView(.horizontal, showsIndicators: false) {
-                        HStack(spacing: 6) {
-                            ForEach(sport.equipment, id: \.self) { equipment in
-                                Text(equipment)
-                                    .font(.caption2)
-                                    .padding(.horizontal, 6)
-                                    .padding(.vertical, 2)
-                                    .background(Color.gray.opacity(0.1))
-                                    .foregroundColor(.gray)
-                                    .cornerRadius(4)
-                            }
+                    HStack(spacing: 6) {
+                        ForEach(sport.equipment, id: \.self) { equipment in
+                            Text(equipment)
+                                .font(.caption2)
+                                .padding(.horizontal, 6)
+                                .padding(.vertical, 2)
+                                .background(Color.gray.opacity(0.1))
+                                .foregroundColor(.gray)
+                                .cornerRadius(4)
                         }
-                        .padding(.horizontal, 1)
                     }
+                    .padding(.horizontal, 1)
                 }
             }
             
@@ -248,13 +271,10 @@ struct AviationSportRowView: View {
                 }
             }
             }
-            
-            // Navigation Arrow
-            Image(systemName: "chevron.right")
-                .foregroundColor(.gray)
-                .font(.caption)
+
         }
         .padding(.vertical, 8)
+        .id(sport.id) // Стабільний ID для кожного рядка
     }
     
     private func sportIcon(for category: SportCategory) -> String {
@@ -272,7 +292,7 @@ struct AviationSportRowView: View {
         case .airRacing:
             return "speedometer"
         case .formationFlying:
-            return "airplane.2"
+            return "airplane"
         case .precisionFlying:
             return "target"
         }

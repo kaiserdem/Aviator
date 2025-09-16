@@ -3,6 +3,7 @@ import ComposableArchitecture
 
 struct ContentView: View {
     let store: StoreOf<AppFeature>
+    @State private var tabViewId = UUID()
     
     var body: some View {
         ZStack {
@@ -43,8 +44,33 @@ struct ContentView: View {
                         }
                         .tag(AppFeature.State.Tab.hotels)
                 }
-                .tint(.white)
-                .preferredColorScheme(.dark)
+                .id(tabViewId)
+            }
+            .tint(.white)
+            .preferredColorScheme(.dark)
+            .onAppear {
+                // Налаштування TabBar для стабільності
+                DispatchQueue.main.async {
+                    let appearance = UITabBarAppearance()
+                    appearance.configureWithTransparentBackground()
+                    appearance.backgroundColor = UIColor.clear
+                    
+                    // Налаштування для нормального стану
+                    appearance.stackedLayoutAppearance.normal.iconColor = UIColor.white
+                    appearance.stackedLayoutAppearance.normal.titleTextAttributes = [
+                        .foregroundColor: UIColor.white
+                    ]
+                    
+                    // Налаштування для вибраного стану
+                    appearance.stackedLayoutAppearance.selected.iconColor = UIColor.white
+                    appearance.stackedLayoutAppearance.selected.titleTextAttributes = [
+                        .foregroundColor: UIColor.white
+                    ]
+                    
+                    UITabBar.appearance().standardAppearance = appearance
+                    UITabBar.appearance().scrollEdgeAppearance = appearance
+                    UITabBar.appearance().isTranslucent = true
+                }
             }
         }
     }

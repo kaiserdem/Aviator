@@ -174,7 +174,7 @@ struct AviationSportDetailView: View {
         case .airRacing:
             return "speedometer"
         case .formationFlying:
-            return "airplane.2"
+            return "airplane"
         case .precisionFlying:
             return "target"
         }

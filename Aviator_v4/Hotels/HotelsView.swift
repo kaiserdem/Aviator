@@ -77,6 +77,7 @@ struct HotelsView: View {
                     }
                 }
             }
+            .id("hotelsNavigation")
         }
     }
 }
