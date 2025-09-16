@@ -4,6 +4,7 @@ import ComposableArchitecture
 struct AviationSportDetailView: View {
     let sport: AviationSport
     let store: StoreOf<AviationSportsFeature>
+    let appStore: StoreOf<AppFeature>
     
     var body: some View {
         ZStack {
@@ -119,17 +120,6 @@ struct AviationSportDetailView: View {
                 }
                 .padding(.horizontal)
                 
-                // Competitions Section
-                VStack(alignment: .leading, spacing: 12) {
-                    SectionHeader(title: "Upcoming Competitions", icon: "trophy")
-                    
-                    VStack(spacing: 12) {
-                        ForEach(sport.competitions) { competition in
-                            CompetitionCard(competition: competition)
-                        }
-                    }
-                }
-                .padding(.horizontal)
                 
                 // Bottom Spacing
                 Spacer(minLength: 20)
@@ -142,12 +132,19 @@ struct AviationSportDetailView: View {
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 HStack {
-                    WithViewStore(self.store, observe: { $0 }) { viewStore in
+                    WithViewStore(self.appStore, observe: { $0 }) { appViewStore in
                         Button(action: {
-                            viewStore.send(.toggleFavorite(sport.id.uuidString))
+                            print("💖 Button tapped for sport: \(sport.name) (\(sport.id.uuidString))")
+                            print("💖 Current favorites: \(appViewStore.favoriteSports)")
+                            appViewStore.send(.toggleFavorite(sport.id.uuidString))
                         }) {
-                            Image(systemName: viewStore.favoriteSports.contains(sport.id.uuidString) ? "heart.fill" : "heart")
-                                .foregroundColor(viewStore.favoriteSports.contains(sport.id.uuidString) ? .red : .gray)
+                            Image(systemName: appViewStore.favoriteSports.contains(sport.id.uuidString) ? "heart.fill" : "heart")
+                                .foregroundColor(appViewStore.favoriteSports.contains(sport.id.uuidString) ? .red : .gray)
+                        }
+                        .onAppear {
+                            print("🔍 DetailView appeared for sport: \(sport.name) (\(sport.id.uuidString))")
+                            print("🔍 Is favorite: \(appViewStore.favoriteSports.contains(sport.id.uuidString))")
+                            print("🔍 All favorites: \(appViewStore.favoriteSports)")
                         }
                     }
                     
@@ -288,72 +285,6 @@ struct RuleRow: View {
     }
 }
 
-struct CompetitionCard: View {
-    let competition: Competition
-    
-    var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            HStack {
-                VStack(alignment: .leading, spacing: 4) {
-                    Text(competition.name)
-                        .font(.headline)
-                        .foregroundColor(.white)
-                    
-                    Text(competition.type.rawValue)
-                        .font(.caption)
-                        .foregroundColor(.blue)
-                        .padding(.horizontal, 8)
-                        .padding(.vertical, 2)
-                        .background(Color.blue.opacity(0.1))
-                        .cornerRadius(4)
-                }
-                
-                Spacer()
-                
-                if let prize = competition.prize {
-                    VStack(alignment: .trailing, spacing: 2) {
-                        Text("Prize")
-                            .font(.caption2)
-                            .foregroundColor(.secondary)
-                        
-                        Text(prize)
-                            .font(.headline)
-                            .foregroundColor(.green)
-                    }
-                }
-            }
-            
-            HStack {
-                VStack(alignment: .leading, spacing: 2) {
-                        Text("Date")
-                            .font(.caption2)
-                            .foregroundColor(.white.opacity(0.7))
-                        
-                        Text(competition.date)
-                            .font(.caption)
-                            .fontWeight(.medium)
-                            .foregroundColor(.white)
-                }
-                
-                Spacer()
-                
-                VStack(alignment: .trailing, spacing: 2) {
-                    Text("Location")
-                        .font(.caption2)
-                        .foregroundColor(.white.opacity(0.7))
-                    
-                    Text(competition.location)
-                        .font(.caption)
-                        .fontWeight(.medium)
-                        .foregroundColor(.white)
-                }
-            }
-        }
-        .padding()
-        .background(Color.white.opacity(0.1))
-        .cornerRadius(12)
-    }
-}
 
 #Preview {
     NavigationStack {
@@ -371,14 +302,13 @@ struct CompetitionCard: View {
                     "Aerobatic rating certification mandatory",
                     "Annual medical examination required",
                     "Aircraft must be certified for aerobatic flight"
-                ],
-                competitions: [
-                    Competition(name: "World Aerobatic Championship", date: "2024-08-15", location: "France", type: .worldChampionship, prize: "$50,000"),
-                    Competition(name: "US National Aerobatic Championship", date: "2024-07-20", location: "Denver, CO", type: .nationalChampionship, prize: "$25,000")
                 ]
             ),
             store: Store(initialState: AviationSportsFeature.State()) {
                 AviationSportsFeature()
+            },
+            appStore: Store(initialState: AppFeature.State()) {
+                AppFeature()
             }
         )
     }

@@ -95,10 +95,7 @@ final class AviationSportsService {
                     "Annual medical examination required",
                     "Aircraft must be certified for aerobatic flight"
                 ],
-                competitions: [
-                    Competition(name: "World Aerobatic Championship", date: "2024-08-15", location: "France", type: .worldChampionship, prize: "$50,000"),
-                    Competition(name: "US National Aerobatic Championship", date: "2024-07-20", location: "Denver, CO", type: .nationalChampionship, prize: "$25,000")
-                ]
+                id: UUID(uuidString: "52626D95-4C17-4EBB-9A47-F9AC1CB3074D") ?? UUID()
             ),
             
             AviationSport(
@@ -115,10 +112,7 @@ final class AviationSportsService {
                     "Weather briefing mandatory before each flight",
                     "Radio communication required"
                 ],
-                competitions: [
-                    Competition(name: "World Gliding Championship", date: "2024-09-10", location: "Germany", type: .worldChampionship, prize: "$30,000"),
-                    Competition(name: "Australian Gliding Nationals", date: "2024-06-15", location: "Narromine, NSW", type: .nationalChampionship, prize: "$15,000")
-                ]
+                id: UUID(uuidString: "439D3D90-7207-499B-A3E7-1B89B3F639AD") ?? UUID()
             ),
             
             AviationSport(
@@ -135,10 +129,7 @@ final class AviationSportsService {
                     "Team coordination training mandatory",
                     "Safety equipment inspection required"
                 ],
-                competitions: [
-                    Competition(name: "World Formation Skydiving Championship", date: "2024-10-05", location: "Spain", type: .worldChampionship, prize: "$40,000"),
-                    Competition(name: "USPA National Championships", date: "2024-08-25", location: "Arizona", type: .nationalChampionship, prize: "$20,000")
-                ]
+                id: UUID(uuidString: "7F8E9A2B-1C3D-4E5F-6A7B-8C9D0E1F2A3B") ?? UUID()
             ),
             
             AviationSport(
@@ -155,10 +146,7 @@ final class AviationSportsService {
                     "Radio communication with ground crew",
                     "Minimum 50 hours balloon experience"
                 ],
-                competitions: [
-                    Competition(name: "World Hot Air Balloon Championship", date: "2024-11-12", location: "Switzerland", type: .worldChampionship, prize: "$35,000"),
-                    Competition(name: "Albuquerque International Balloon Fiesta", date: "2024-10-01", location: "New Mexico", type: .exhibition, prize: "$10,000")
-                ]
+                id: UUID(uuidString: "A1B2C3D4-E5F6-7890-ABCD-EF1234567890") ?? UUID()
             ),
             
             AviationSport(
@@ -175,10 +163,7 @@ final class AviationSportsService {
                     "Aircraft modification certification",
                     "Annual safety inspection mandatory"
                 ],
-                competitions: [
-                    Competition(name: "Reno Air Races", date: "2024-09-15", location: "Reno, NV", type: .worldChampionship, prize: "$100,000"),
-                    Competition(name: "Red Bull Air Race", date: "2024-07-30", location: "UK", type: .worldChampionship, prize: "$75,000")
-                ]
+                id: UUID(uuidString: "B2C3D4E5-F6G7-8901-BCDE-F23456789012") ?? UUID()
             ),
             
             AviationSport(
@@ -195,10 +180,7 @@ final class AviationSportsService {
                     "Team training mandatory",
                     "Safety briefing before each flight"
                 ],
-                competitions: [
-                    Competition(name: "World Formation Flying Championship", date: "2024-08-20", location: "France", type: .worldChampionship, prize: "$45,000"),
-                    Competition(name: "Canadian Formation Flying Nationals", date: "2024-07-10", location: "Ontario", type: .nationalChampionship, prize: "$18,000")
-                ]
+                id: UUID(uuidString: "C3D4E5F6-G7H8-9012-CDEF-345678901234") ?? UUID()
             ),
             
             AviationSport(
@@ -215,10 +197,7 @@ final class AviationSportsService {
                     "Precision landing training",
                     "Aircraft weight and balance check"
                 ],
-                competitions: [
-                    Competition(name: "World Precision Landing Championship", date: "2024-09-05", location: "Germany", type: .worldChampionship, prize: "$25,000"),
-                    Competition(name: "EAA AirVenture Landing Contest", date: "2024-07-25", location: "Oshkosh, WI", type: .exhibition, prize: "$5,000")
-                ]
+                id: UUID(uuidString: "D4E5F6G7-H8I9-0123-DEFG-456789012345") ?? UUID()
             ),
             
             AviationSport(
@@ -235,10 +214,7 @@ final class AviationSportsService {
                     "Annual medical examination",
                     "Safety harness mandatory at all times"
                 ],
-                competitions: [
-                    Competition(name: "World Wing Walking Championship", date: "2024-08-30", location: "UK", type: .worldChampionship, prize: "$60,000"),
-                    Competition(name: "US Wing Walking Nationals", date: "2024-07-15", location: "California", type: .nationalChampionship, prize: "$30,000")
-                ]
+                id: UUID(uuidString: "E5F6G7H8-I9J0-1234-EFGH-567890123456") ?? UUID()
             ),
             
             AviationSport(
@@ -254,10 +230,6 @@ final class AviationSportsService {
                     "Minimum 200 hours helicopter time",
                     "Precision flying certification",
                     "Weather assessment mandatory"
-                ],
-                competitions: [
-                    Competition(name: "World Helicopter Precision Championship", date: "2024-10-20", location: "France", type: .worldChampionship, prize: "$45,000"),
-                    Competition(name: "Heli-Expo Precision Contest", date: "2024-03-15", location: "Las Vegas", type: .exhibition, prize: "$15,000")
                 ]
             ),
             
@@ -274,10 +246,6 @@ final class AviationSportsService {
                     "Minimum 100 hours ultralight experience",
                     "Aircraft modification certification",
                     "Annual safety inspection"
-                ],
-                competitions: [
-                    Competition(name: "World Ultralight Championship", date: "2024-09-25", location: "Australia", type: .worldChampionship, prize: "$35,000"),
-                    Competition(name: "US Ultralight Nationals", date: "2024-08-10", location: "Texas", type: .nationalChampionship, prize: "$18,000")
                 ]
             ),
             
@@ -295,10 +263,7 @@ final class AviationSportsService {
                     "Aerobatic helicopter rating",
                     "Annual medical examination"
                 ],
-                competitions: [
-                    Competition(name: "World Helicopter Aerobatic Championship", date: "2024-11-05", location: "Russia", type: .worldChampionship, prize: "$80,000"),
-                    Competition(name: "Heli-Expo Aerobatic Contest", date: "2024-03-20", location: "Las Vegas", type: .exhibition, prize: "$25,000")
-                ]
+                id: UUID(uuidString: "H8I9J0K1-L2M3-4567-HIJK-890123456789") ?? UUID()
             ),
             
             AviationSport(
@@ -314,10 +279,6 @@ final class AviationSportsService {
                     "Minimum 200 hours paragliding experience",
                     "Cross-country certification",
                     "Weather briefing mandatory"
-                ],
-                competitions: [
-                    Competition(name: "World Paragliding Championship", date: "2024-07-30", location: "Spain", type: .worldChampionship, prize: "$40,000"),
-                    Competition(name: "European Paragliding Cup", date: "2024-06-20", location: "France", type: .regionalChampionship, prize: "$20,000")
                 ]
             ),
             
@@ -334,10 +295,6 @@ final class AviationSportsService {
                     "Base jumping certification",
                     "Site-specific training mandatory",
                     "Safety equipment inspection"
-                ],
-                competitions: [
-                    Competition(name: "World Base Jumping Championship", date: "2024-09-15", location: "Norway", type: .worldChampionship, prize: "$50,000"),
-                    Competition(name: "European Base Jumping Cup", date: "2024-08-05", location: "Switzerland", type: .regionalChampionship, prize: "$25,000")
                 ]
             ),
             
@@ -354,10 +311,6 @@ final class AviationSportsService {
                     "Minimum 300 hours glider experience",
                     "Aerobatic glider rating",
                     "Annual medical examination"
-                ],
-                competitions: [
-                    Competition(name: "World Aerobatic Glider Championship", date: "2024-08-25", location: "Germany", type: .worldChampionship, prize: "$55,000"),
-                    Competition(name: "US Aerobatic Glider Nationals", date: "2024-07-10", location: "Colorado", type: .nationalChampionship, prize: "$28,000")
                 ]
             ),
             
@@ -374,10 +327,6 @@ final class AviationSportsService {
                     "Minimum 150 hours hang gliding experience",
                     "Racing certification",
                     "Weather assessment mandatory"
-                ],
-                competitions: [
-                    Competition(name: "World Hang Gliding Championship", date: "2024-10-10", location: "Brazil", type: .worldChampionship, prize: "$45,000"),
-                    Competition(name: "US Hang Gliding Nationals", date: "2024-09-05", location: "Utah", type: .nationalChampionship, prize: "$22,000")
                 ]
             ),
             
@@ -394,10 +343,6 @@ final class AviationSportsService {
                     "Minimum 500 hours flight time",
                     "Formation aerobatic certification",
                     "Team training mandatory"
-                ],
-                competitions: [
-                    Competition(name: "World Aerobatic Formation Championship", date: "2024-09-20", location: "France", type: .worldChampionship, prize: "$70,000"),
-                    Competition(name: "EAA AirVenture Formation Contest", date: "2024-07-30", location: "Oshkosh", type: .exhibition, prize: "$20,000")
                 ]
             ),
             
@@ -414,10 +359,6 @@ final class AviationSportsService {
                     "Minimum 100 hours helicopter time",
                     "Slalom flying certification",
                     "Safety briefing mandatory"
-                ],
-                competitions: [
-                    Competition(name: "World Helicopter Slalom Championship", date: "2024-08-15", location: "Germany", type: .worldChampionship, prize: "$30,000"),
-                    Competition(name: "Canadian Helicopter Slalom", date: "2024-07-25", location: "Ontario", type: .nationalChampionship, prize: "$15,000")
                 ]
             ),
             
@@ -434,10 +375,6 @@ final class AviationSportsService {
                     "Minimum 400 hours flight time",
                     "Aerobatic solo rating",
                     "Annual medical examination"
-                ],
-                competitions: [
-                    Competition(name: "World Aerobatic Solo Championship", date: "2024-10-05", location: "France", type: .worldChampionship, prize: "$65,000"),
-                    Competition(name: "US Aerobatic Solo Nationals", date: "2024-08-20", location: "Denver", type: .nationalChampionship, prize: "$32,000")
                 ]
             ),
             
@@ -454,10 +391,6 @@ final class AviationSportsService {
                     "Minimum 300 hours glider experience",
                     "Aerobatic glider rating",
                     "Annual medical examination"
-                ],
-                competitions: [
-                    Competition(name: "World Glider Aerobatic Championship", date: "2024-08-25", location: "Germany", type: .worldChampionship, prize: "$55,000"),
-                    Competition(name: "US Glider Aerobatic Nationals", date: "2024-07-10", location: "Colorado", type: .nationalChampionship, prize: "$28,000")
                 ]
             ),
             
@@ -474,10 +407,6 @@ final class AviationSportsService {
                     "Minimum 500 hours flight time",
                     "Formation aerobatic certification",
                     "Team coordination training mandatory"
-                ],
-                competitions: [
-                    Competition(name: "World Aerobatic Team Championship", date: "2024-09-30", location: "France", type: .worldChampionship, prize: "$75,000"),
-                    Competition(name: "US Aerobatic Team Nationals", date: "2024-08-25", location: "Denver", type: .nationalChampionship, prize: "$35,000")
                 ]
             )
         ]
@@ -498,7 +427,7 @@ enum SportCategory: String, CaseIterable, Equatable {
 }
 
 struct AviationSport: Equatable, Identifiable {
-    let id = UUID()
+    let id: UUID
     let name: String
     let category: SportCategory
     let description: String
@@ -507,9 +436,9 @@ struct AviationSport: Equatable, Identifiable {
     let locations: [String]
     let imageURL: String?
     let rules: [String]
-    let competitions: [Competition]
     
-    init(name: String, category: SportCategory, description: String, difficulty: DifficultyLevel, equipment: [String], locations: [String], imageURL: String? = nil, rules: [String], competitions: [Competition]) {
+    init(name: String, category: SportCategory, description: String, difficulty: DifficultyLevel, equipment: [String], locations: [String], imageURL: String? = nil, rules: [String], id: UUID = UUID()) {
+        self.id = id
         self.name = name
         self.category = category
         self.description = description
@@ -518,7 +447,6 @@ struct AviationSport: Equatable, Identifiable {
         self.locations = locations
         self.imageURL = imageURL
         self.rules = rules
-        self.competitions = competitions
     }
     
     static func == (lhs: AviationSport, rhs: AviationSport) -> Bool {
@@ -530,8 +458,7 @@ struct AviationSport: Equatable, Identifiable {
                lhs.equipment == rhs.equipment &&
                lhs.locations == rhs.locations &&
                lhs.imageURL == rhs.imageURL &&
-               lhs.rules == rhs.rules &&
-               lhs.competitions == rhs.competitions
+               lhs.rules == rhs.rules
     }
 }
 
@@ -549,38 +476,4 @@ enum DifficultyLevel: String, CaseIterable, Equatable {
         case .expert: return .red
         }
     }
-}
-
-struct Competition: Equatable, Identifiable {
-    let id = UUID()
-    let name: String
-    let date: String
-    let location: String
-    let type: CompetitionType
-    let prize: String?
-    
-    init(name: String, date: String, location: String, type: CompetitionType, prize: String? = nil) {
-        self.name = name
-        self.date = date
-        self.location = location
-        self.type = type
-        self.prize = prize
-    }
-    
-    static func == (lhs: Competition, rhs: Competition) -> Bool {
-        return lhs.id == rhs.id &&
-               lhs.name == rhs.name &&
-               lhs.date == rhs.date &&
-               lhs.location == rhs.location &&
-               lhs.type == rhs.type &&
-               lhs.prize == rhs.prize
-    }
-}
-
-enum CompetitionType: String, CaseIterable, Equatable {
-    case worldChampionship = "World Championship"
-    case nationalChampionship = "National Championship"
-    case regionalChampionship = "Regional Championship"
-    case localCompetition = "Local Competition"
-    case exhibition = "Exhibition"
 }

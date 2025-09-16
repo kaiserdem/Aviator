@@ -3,9 +3,13 @@ import ComposableArchitecture
 
 struct AviationSportsView: View {
     let store: StoreOf<AviationSportsFeature>
+    let appStore: StoreOf<AppFeature>
     
     var body: some View {
         WithViewStore(self.store, observe: { $0 }) { viewStore in
+            WithViewStore(self.appStore, observe: { $0 }) { appViewStore in
+                let _ = print("🛩️ AviationSportsView: Current favorites: \(viewStore.favoriteSports)")
+                let _ = print("🛩️ AviationSportsView: AppStore favorites: \(appViewStore.favoriteSports)")
             NavigationStack {
                 ZStack {
                     // Градієнтний фон
@@ -15,37 +19,55 @@ struct AviationSportsView: View {
                         // Filter Section
                         VStack(spacing: 12) {
                             HStack {
-                                Text("Category:")
-                                    .foregroundColor(.white)
-                                    .fontWeight(.medium)
+//                                Text("Category:")
+//                                    .foregroundColor(.white)
+//                                    .fontWeight(.medium)
                                 Picker("Category", selection: viewStore.binding(get: \.selectedCategory, send: { .categoryChanged($0) })) {
                                     ForEach(SportCategory.allCases, id: \.self) { category in
-                                        Text(category.rawValue).tag(category)
+                                        HStack {
+                                            Image(systemName: categoryIcon(for: category))
+                                                .foregroundColor(categoryColor(for: category))
+                                            Text(category.rawValue)
+                                        }.tag(category)
                                     }
                                 }
                                 .pickerStyle(MenuPickerStyle())
                                 
                                 Spacer()
                                 
-                                Text("Location:")
-                                    .foregroundColor(.white)
-                                    .fontWeight(.medium)
+//                                Text("Location:")
+//                                    .foregroundColor(.white)
+//                                    .fontWeight(.medium)
                                 Picker("Location", selection: viewStore.binding(get: \.selectedLocation, send: { .locationChanged($0) })) {
-                                    Text("Global").tag("Global")
-                                    Text("United States").tag("United States")
-                                    Text("Europe").tag("Europe")
-                                    Text("Australia").tag("Australia")
-                                    Text("Asia").tag("Asia")
+                                    HStack {
+                                        Image(systemName: "globe")
+                                            .foregroundColor(.blue)
+                                        Text("Global")
+                                    }.tag("Global")
+                                    HStack {
+                                        Image(systemName: "flag")
+                                            .foregroundColor(.red)
+                                        Text("United States")
+                                    }.tag("United States")
+                                    HStack {
+                                        Image(systemName: "flag")
+                                            .foregroundColor(.blue)
+                                        Text("Europe")
+                                    }.tag("Europe")
+                                    HStack {
+                                        Image(systemName: "flag")
+                                            .foregroundColor(.green)
+                                        Text("Australia")
+                                    }.tag("Australia")
+                                    HStack {
+                                        Image(systemName: "flag")
+                                            .foregroundColor(.orange)
+                                        Text("Asia")
+                                    }.tag("Asia")
                                 }
                                 .pickerStyle(MenuPickerStyle())
                             }
                             
-                            Button("Refresh Sports") {
-                                viewStore.send(.loadSports)
-                            }
-                            .buttonStyle(.borderedProminent)
-                            .tint(.white)
-                            .foregroundColor(.buttonTextColor)
                         }
                         .padding()
                         
@@ -78,7 +100,7 @@ struct AviationSportsView: View {
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
                         } else {
                             List(viewStore.sports) { sport in
-                                NavigationLink(destination: AviationSportDetailView(sport: sport, store: self.store)) {
+                                NavigationLink(destination: AviationSportDetailView(sport: sport, store: self.store, appStore: self.appStore)) {
                                     AviationSportRowView(sport: sport)
                                 }
                                 .onAppear {
@@ -104,6 +126,49 @@ struct AviationSportsView: View {
                 }
             }
             .id("aviationSportsNavigation")
+        }
+        }
+    }
+    
+    private func categoryIcon(for category: SportCategory) -> String {
+        switch category {
+        case .all:
+            return "airplane.circle"
+        case .aerobatics:
+            return "airplane.departure"
+        case .gliding:
+            return "airplane.arrival"
+        case .parachuting:
+            return "figure.fall"
+        case .ballooning:
+            return "balloon"
+        case .airRacing:
+            return "speedometer"
+        case .formationFlying:
+            return "airplane"
+        case .precisionFlying:
+            return "target"
+        }
+    }
+    
+    private func categoryColor(for category: SportCategory) -> Color {
+        switch category {
+        case .all:
+            return .blue
+        case .aerobatics:
+            return .red
+        case .gliding:
+            return .green
+        case .parachuting:
+            return .orange
+        case .ballooning:
+            return .purple
+        case .airRacing:
+            return .yellow
+        case .formationFlying:
+            return .cyan
+        case .precisionFlying:
+            return .pink
         }
     }
 }
@@ -188,10 +253,6 @@ struct AviationSportRowView: View {
                             .padding(.vertical, 2)
                             .background(sport.difficulty.color.opacity(0.1))
                             .cornerRadius(4)
-                        
-                        Text("\(sport.competitions.count) competitions")
-                            .font(.caption2)
-                            .foregroundColor(.secondary)
                     }
                 }
             
@@ -236,40 +297,6 @@ struct AviationSportRowView: View {
                 }
             }
             
-            // Competitions Preview
-            if !sport.competitions.isEmpty {
-                VStack(alignment: .leading, spacing: 4) {
-                    Text("Upcoming Competitions:")
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                    
-                    ForEach(sport.competitions.prefix(2)) { competition in
-                        HStack {
-                            VStack(alignment: .leading, spacing: 2) {
-                                Text(competition.name)
-                                    .font(.caption)
-                                    .fontWeight(.medium)
-                                
-                                Text("\(competition.date) • \(competition.location)")
-                                    .font(.caption2)
-                                    .foregroundColor(.secondary)
-                            }
-                            
-                            Spacer()
-                            
-                            Text(competition.type.rawValue)
-                                .font(.caption2)
-                                .foregroundColor(.blue)
-                        }
-                    }
-                    
-                    if sport.competitions.count > 2 {
-                        Text("+ \(sport.competitions.count - 2) more competitions")
-                            .font(.caption2)
-                            .foregroundColor(.secondary)
-                    }
-                }
-            }
             }
 
         }
@@ -320,10 +347,14 @@ struct AviationSportRowView: View {
     }
 }
 
+
 #Preview {
     AviationSportsView(
         store: Store(initialState: AviationSportsFeature.State()) {
             AviationSportsFeature()
+        },
+        appStore: Store(initialState: AppFeature.State()) {
+            AppFeature()
         }
     )
 }

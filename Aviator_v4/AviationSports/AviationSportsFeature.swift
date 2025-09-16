@@ -26,7 +26,6 @@ struct AviationSportsFeature: Reducer {
         case sportImageResponse(String, String?) // sportId, imageURL
         case loadSportDescription(String, String) // sportId, sportName
         case sportDescriptionResponse(String, String?) // sportId, description
-        case toggleFavorite(String) // sportId
     }
     
     @Dependency(\.aviationSportsClient) var aviationSportsClient
@@ -92,8 +91,7 @@ struct AviationSportsFeature: Reducer {
                         equipment: state.sports[index].equipment,
                         locations: state.sports[index].locations,
                         imageURL: imageURL,
-                        rules: state.sports[index].rules,
-                        competitions: state.sports[index].competitions
+                        rules: state.sports[index].rules
                     )
                 }
                 return .none
@@ -120,17 +118,8 @@ struct AviationSportsFeature: Reducer {
                         equipment: state.sports[index].equipment,
                         locations: state.sports[index].locations,
                         imageURL: state.sports[index].imageURL,
-                        rules: state.sports[index].rules,
-                        competitions: state.sports[index].competitions
+                        rules: state.sports[index].rules
                     )
-                }
-                return .none
-                
-            case let .toggleFavorite(sportId):
-                if state.favoriteSports.contains(sportId) {
-                    state.favoriteSports.remove(sportId)
-                } else {
-                    state.favoriteSports.insert(sportId)
                 }
                 return .none
             }
