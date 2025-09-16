@@ -32,19 +32,13 @@ struct HotelDetailView: View {
                     // Header Section
                     VStack(spacing: 16) {
                         // Hotel Image
-                        if let imageURL = hotel.imageURL, let url = URL(string: imageURL) {
-                            AsyncImage(url: url) { image in
-                                image
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fill)
-                            } placeholder: {
-                                Image(systemName: "bed.double")
-                                    .font(.system(size: 80))
-                                    .foregroundColor(.white.opacity(0.7))
-                            }
-                            .frame(height: 200)
-                            .clipped()
-                            .cornerRadius(12)
+                        if let imageName = hotel.imageURL {
+                            Image(imageName)
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .frame(height: 200)
+                                .clipped()
+                                .cornerRadius(12)
                         } else {
                             Image(systemName: "bed.double")
                                 .font(.system(size: 80))
@@ -103,20 +97,40 @@ struct HotelDetailView: View {
                     .background(Color.white.opacity(0.1))
                     .cornerRadius(12)
                     
-                    // Address Section
+                    // Location Section
                     VStack(spacing: 12) {
                         Text("Location")
                             .font(.headline)
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity, alignment: .leading)
                         
-                        HStack {
-                            Image(systemName: "location")
-                                .foregroundColor(.blue)
-                            Text(hotel.address)
-                                .foregroundColor(.white)
-                                .multilineTextAlignment(.leading)
-                            Spacer()
+                        VStack(spacing: 8) {
+                            HStack {
+                                Image(systemName: "location")
+                                    .foregroundColor(.blue)
+                                Text(hotel.address)
+                                    .foregroundColor(.white)
+                                    .multilineTextAlignment(.leading)
+                                Spacer()
+                            }
+                            
+                            HStack {
+                                Image(systemName: "building.2")
+                                    .foregroundColor(.green)
+                                Text("\(hotel.city), \(hotel.region)")
+                                    .foregroundColor(.white)
+                                    .fontWeight(.medium)
+                                Spacer()
+                            }
+                            
+                            HStack {
+                                Image(systemName: "flag")
+                                    .foregroundColor(.orange)
+                                Text(hotel.country)
+                                    .foregroundColor(.white)
+                                    .fontWeight(.medium)
+                                Spacer()
+                            }
                         }
                     }
                     .padding()
@@ -262,6 +276,9 @@ struct HotelDetailView: View {
             hotel: Hotel(
                 name: "Grand Hotel Paris",
                 address: "123 Champs-Élysées, Paris, France",
+                country: "France",
+                city: "Paris",
+                region: "Île-de-France",
                 rating: 4.5,
                 price: 299.99,
                 currency: "USD",

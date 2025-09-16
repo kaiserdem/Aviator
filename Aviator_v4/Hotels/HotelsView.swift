@@ -90,19 +90,13 @@ struct HotelRowView: View {
     var body: some View {
         HStack(spacing: 12) {
             // Hotel Image
-            if let imageURL = hotel.imageURL, let url = URL(string: imageURL) {
-                AsyncImage(url: url) { image in
-                    image
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                } placeholder: {
-                    Image(systemName: "bed.double")
-                        .font(.title2)
-                        .foregroundColor(.gray)
-                }
-                .frame(width: 80, height: 80)
-                .clipped()
-                .cornerRadius(8)
+            if let imageName = hotel.imageURL {
+                Image(imageName)
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: 80, height: 80)
+                    .clipped()
+                    .cornerRadius(8)
             } else {
                 Image(systemName: "bed.double")
                     .font(.title2)
@@ -119,10 +113,16 @@ struct HotelRowView: View {
                             .font(.headline)
                             .foregroundColor(.primary)
                         
-                        Text(hotel.address)
-                            .font(.caption)
-                            .foregroundColor(.secondary)
-                            .lineLimit(2)
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text("\(hotel.city), \(hotel.region)")
+                                .font(.caption)
+                                .foregroundColor(.blue)
+                                .fontWeight(.medium)
+                            Text(hotel.address)
+                                .font(.caption2)
+                                .foregroundColor(.secondary)
+                                .lineLimit(1)
+                        }
                     }
                     
                     Spacer()

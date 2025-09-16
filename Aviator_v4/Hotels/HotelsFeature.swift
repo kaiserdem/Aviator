@@ -69,6 +69,9 @@ struct Hotel: Equatable, Identifiable {
     let id = UUID()
     let name: String
     let address: String
+    let country: String
+    let city: String
+    let region: String
     let rating: Double
     let price: Double
     let currency: String
@@ -77,9 +80,12 @@ struct Hotel: Equatable, Identifiable {
     let latitude: Double?
     let longitude: Double?
     
-    init(name: String, address: String, rating: Double, price: Double, currency: String = "USD", amenities: [String] = [], imageURL: String? = nil, latitude: Double? = nil, longitude: Double? = nil) {
+    init(name: String, address: String, country: String, city: String, region: String, rating: Double, price: Double, currency: String = "USD", amenities: [String] = [], imageURL: String? = nil, latitude: Double? = nil, longitude: Double? = nil) {
         self.name = name
         self.address = address
+        self.country = country
+        self.city = city
+        self.region = region
         self.rating = rating
         self.price = price
         self.currency = currency
@@ -93,6 +99,9 @@ struct Hotel: Equatable, Identifiable {
         return lhs.id == rhs.id &&
                lhs.name == rhs.name &&
                lhs.address == rhs.address &&
+               lhs.country == rhs.country &&
+               lhs.city == rhs.city &&
+               lhs.region == rhs.region &&
                lhs.rating == rhs.rating &&
                lhs.price == rhs.price &&
                lhs.currency == rhs.currency &&
