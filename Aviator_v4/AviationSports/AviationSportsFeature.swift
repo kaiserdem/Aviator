@@ -19,6 +19,8 @@ struct AviationSportsFeature: Reducer {
         case loadSports
         case sportsResponse([AviationSport])
         case loadError(String)
+        case loadSportImage(String, String) // sportId, sportName
+        case sportImageResponse(String, String?) // sportId, imageURL
     }
     
     @Dependency(\.aviationSportsClient) var aviationSportsClient
@@ -57,6 +59,28 @@ struct AviationSportsFeature: Reducer {
             case let .loadError(error):
                 state.isLoading = false
                 state.errorMessage = error
+                return .none
+                
+            case let .loadSportImage(sportId, sportName):
+                return .run { send in
+                    let imageURL = await aviationSportsClient.getSportImage(sportName)
+                    await send(.sportImageResponse(sportId, imageURL))
+                }
+                
+            case let .sportImageResponse(sportId, imageURL):
+                if let index = state.sports.firstIndex(where: { $0.id.uuidString == sportId }) {
+                    state.sports[index] = AviationSport(
+                        name: state.sports[index].name,
+                        category: state.sports[index].category,
+                        description: state.sports[index].description,
+                        difficulty: state.sports[index].difficulty,
+                        equipment: state.sports[index].equipment,
+                        locations: state.sports[index].locations,
+                        imageURL: imageURL,
+                        rules: state.sports[index].rules,
+                        competitions: state.sports[index].competitions
+                    )
+                }
                 return .none
             }
         }

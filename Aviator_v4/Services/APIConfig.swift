@@ -5,6 +5,10 @@ struct APIConfig {
     static let amadeusAPISecret = "jnjmOFAwYBzBfsUa"
     static let baseURL = "https://test.api.amadeus.com"
     
+    // Unsplash API
+    static let unsplashAPIKey = "YOUR_UNSPLASH_ACCESS_KEY" // Replace with your Unsplash access key
+    static let unsplashBaseURL = "https://api.unsplash.com"
+    
     static var accessToken: String?
     
     static func getAccessToken() async throws -> String {

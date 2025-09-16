@@ -68,6 +68,11 @@ struct AviationSportsView: View {
                     } else {
                         List(viewStore.sports) { sport in
                             AviationSportRowView(sport: sport)
+                                .onAppear {
+                                    if sport.imageURL == nil {
+                                        viewStore.send(.loadSportImage(sport.id.uuidString, sport.name))
+                                    }
+                                }
                         }
                     }
                 }
@@ -84,40 +89,68 @@ struct AviationSportRowView: View {
     let sport: AviationSport
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            // Header
-            HStack {
-                VStack(alignment: .leading, spacing: 4) {
-                    Text(sport.name)
-                        .font(.headline)
-                        .foregroundColor(.primary)
-                    
-                    Text(sport.category.rawValue)
-                        .font(.caption)
-                        .foregroundColor(.blue)
-                        .padding(.horizontal, 8)
-                        .padding(.vertical, 2)
-                        .background(Color.blue.opacity(0.1))
-                        .cornerRadius(4)
-                }
-                
-                Spacer()
-                
-                VStack(alignment: .trailing, spacing: 4) {
-                    Text(sport.difficulty.rawValue)
-                        .font(.caption)
-                        .fontWeight(.medium)
-                        .foregroundColor(Color(sport.difficulty.color))
-                        .padding(.horizontal, 8)
-                        .padding(.vertical, 2)
-                        .background(Color(sport.difficulty.color).opacity(0.1))
-                        .cornerRadius(4)
-                    
-                    Text("\(sport.competitions.count) competitions")
-                        .font(.caption2)
-                        .foregroundColor(.secondary)
+        HStack(spacing: 12) {
+            // Sport Image
+            VStack {
+                if let imageURL = sport.imageURL, let url = URL(string: imageURL) {
+                    AsyncImage(url: url) { image in
+                        image
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                    } placeholder: {
+                        Image(systemName: sportIcon(for: sport.category))
+                            .font(.system(size: 30))
+                            .foregroundColor(sportColor(for: sport.category))
+                    }
+                    .frame(width: 60, height: 60)
+                    .background(sportColor(for: sport.category).opacity(0.1))
+                    .cornerRadius(12)
+                    .clipped()
+                } else {
+                    Image(systemName: sportIcon(for: sport.category))
+                        .font(.system(size: 40))
+                        .foregroundColor(sportColor(for: sport.category))
+                        .frame(width: 60, height: 60)
+                        .background(sportColor(for: sport.category).opacity(0.1))
+                        .cornerRadius(12)
                 }
             }
+            
+            // Content
+            VStack(alignment: .leading, spacing: 12) {
+                // Header
+                HStack {
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text(sport.name)
+                            .font(.headline)
+                            .foregroundColor(.primary)
+                        
+                        Text(sport.category.rawValue)
+                            .font(.caption)
+                            .foregroundColor(.blue)
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 2)
+                            .background(Color.blue.opacity(0.1))
+                            .cornerRadius(4)
+                    }
+                    
+                    Spacer()
+                    
+                    VStack(alignment: .trailing, spacing: 4) {
+                        Text(sport.difficulty.rawValue)
+                            .font(.caption)
+                            .fontWeight(.medium)
+                            .foregroundColor(Color(sport.difficulty.color))
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 2)
+                            .background(Color(sport.difficulty.color).opacity(0.1))
+                            .cornerRadius(4)
+                        
+                        Text("\(sport.competitions.count) competitions")
+                            .font(.caption2)
+                            .foregroundColor(.secondary)
+                    }
+                }
             
             // Description
             Text(sport.description)
@@ -196,8 +229,51 @@ struct AviationSportRowView: View {
                     }
                 }
             }
+            }
         }
         .padding(.vertical, 8)
+    }
+    
+    private func sportIcon(for category: SportCategory) -> String {
+        switch category {
+        case .all:
+            return "airplane.circle"
+        case .aerobatics:
+            return "airplane.departure"
+        case .gliding:
+            return "airplane.arrival"
+        case .parachuting:
+            return "figure.fall"
+        case .ballooning:
+            return "balloon"
+        case .airRacing:
+            return "speedometer"
+        case .formationFlying:
+            return "airplane.2"
+        case .precisionFlying:
+            return "target"
+        }
+    }
+    
+    private func sportColor(for category: SportCategory) -> Color {
+        switch category {
+        case .all:
+            return .blue
+        case .aerobatics:
+            return .red
+        case .gliding:
+            return .green
+        case .parachuting:
+            return .orange
+        case .ballooning:
+            return .purple
+        case .airRacing:
+            return .yellow
+        case .formationFlying:
+            return .cyan
+        case .precisionFlying:
+            return .pink
+        }
     }
 }
 
