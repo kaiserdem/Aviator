@@ -69,7 +69,7 @@ struct Tab3View: View {
                                 }
                                 .buttonStyle(.borderedProminent)
                                 .tint(.white)
-                                .foregroundColor(.black)
+                                .foregroundColor(.buttonTextColor)
                             }
                             .padding()
                             

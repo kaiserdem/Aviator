@@ -3,7 +3,7 @@ import ComposableArchitecture
 struct AppFeature: Reducer {
     struct State: Equatable {
         enum Tab: Hashable { case hotels, aviationSports, tab3, tab4 }
-        var selectedTab: Tab = .hotels
+        var selectedTab: Tab = .aviationSports
         var hotels = HotelsFeature.State()
         var aviationSports = AviationSportsFeature.State()
         var tab3 = Tab3Feature.State()

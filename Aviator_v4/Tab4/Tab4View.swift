@@ -24,7 +24,7 @@ struct Tab4View: View {
                                 }
                                 .buttonStyle(.borderedProminent)
                                 .tint(.white)
-                                .foregroundColor(.black)
+                                .foregroundColor(.buttonTextColor)
                                 .disabled(viewStore.searchText.isEmpty)
                             }
                             .padding()

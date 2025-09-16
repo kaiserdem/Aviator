@@ -54,7 +54,7 @@ struct AviationGradientBackground: View {
             RadialGradient(
                 gradient: Gradient(colors: [
                     Color.clear,
-                    Color.black.opacity(0.1)
+                    Color(red: 0.25, green: 0.1, blue: 0.4).opacity(0.1)
                 ]),
                 center: .topLeading,
                 startRadius: 0,
@@ -128,7 +128,7 @@ struct SunsetGradientBackground: View {
                         LinearGradient(
                             gradient: Gradient(colors: [
                                 Color.clear,
-                                Color.black.opacity(0.3)
+                                Color(red: 0.25, green: 0.1, blue: 0.4).opacity(0.3)
                             ]),
                             startPoint: .top,
                             endPoint: .bottom
@@ -163,6 +163,9 @@ extension Color {
     // З четвертого зображення - темно-фіолетові
     static let aviationDarkPurple = Color(red: 0.25, green: 0.1, blue: 0.4)
     static let aviationAlmostBlack = Color(red: 0.1, green: 0.02, blue: 0.15)
+    
+    // Кольори для кнопок та UI елементів
+    static let buttonTextColor = Color(red: 0.25, green: 0.1, blue: 0.4)
     
     // Градієнтні кольори (ключові точки)
     static let gradientTop = Color.aviationCream

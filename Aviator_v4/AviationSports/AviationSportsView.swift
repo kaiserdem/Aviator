@@ -45,7 +45,7 @@ struct AviationSportsView: View {
                             }
                             .buttonStyle(.borderedProminent)
                             .tint(.white)
-                            .foregroundColor(.black)
+                            .foregroundColor(.buttonTextColor)
                         }
                         .padding()
                         

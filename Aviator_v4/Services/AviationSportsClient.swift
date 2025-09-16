@@ -52,41 +52,8 @@ final class AviationSportsService {
     }
     
     private func getMockImageURL(for sportName: String) -> String? {
-        // Mock image URLs for demonstration - using different aviation images
-        switch sportName.lowercased() {
-        case let name where name.contains("aerobatic"):
-            return "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=400&h=300&fit=crop&auto=format"
-        case let name where name.contains("glider"):
-            return "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop&auto=format"
-        case let name where name.contains("skydiving") || name.contains("parachut"):
-            return "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=400&h=300&fit=crop&auto=format"
-        case let name where name.contains("balloon"):
-            return "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop&auto=format"
-        case let name where name.contains("racing"):
-            return "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=400&h=300&fit=crop&auto=format"
-        case let name where name.contains("formation"):
-            return "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop&auto=format"
-        case let name where name.contains("precision"):
-            return "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=400&h=300&fit=crop&auto=format"
-        case let name where name.contains("wing walking"):
-            return "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=400&h=300&fit=crop&auto=format"
-        case let name where name.contains("helicopter"):
-            return "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop&auto=format"
-        case let name where name.contains("ultralight"):
-            return "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=400&h=300&fit=crop&auto=format"
-        case let name where name.contains("paragliding"):
-            return "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop&auto=format"
-        case let name where name.contains("base jumping"):
-            return "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=400&h=300&fit=crop&auto=format"
-        case let name where name.contains("hang gliding"):
-            return "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop&auto=format"
-        case let name where name.contains("slalom"):
-            return "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=400&h=300&fit=crop&auto=format"
-        case let name where name.contains("solo"):
-            return "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=400&h=300&fit=crop&auto=format"
-        default:
-            return "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=400&h=300&fit=crop&auto=format"
-        }
+        // Тимчасове рішення - використовуємо одне зображення з Pexels для всіх спорту
+        return "https://images.pexels.com/photos/19571069/pexels-photo-19571069.jpeg"
     }
     
     func getSports(category: SportCategory, location: String) async -> [AviationSport] {
