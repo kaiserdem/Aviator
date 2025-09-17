@@ -15,8 +15,16 @@ struct HotelsView: View {
                             TextField("Search hotels...", text: viewStore.binding(get: \.searchText, send: { .searchTextChanged($0) }))
                                 .textFieldStyle(RoundedBorderTextFieldStyle())
                             
+                            Button("Search Hotels") {
+                                viewStore.send(.searchHotels)
+                            }
+                            .buttonStyle(.borderedProminent)
+                            .tint(.white)
+                            .foregroundColor(.buttonTextColor)
                         }
                         .padding()
+                        .cornerRadius(12)
+                        .shadow(color: .black.opacity(0.2), radius: 4)
                         
                         if viewStore.isLoading {
                             ProgressView("Searching hotels...")
