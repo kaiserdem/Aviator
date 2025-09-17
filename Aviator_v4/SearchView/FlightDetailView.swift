@@ -1,13 +1,9 @@
 import SwiftUI
 import ComposableArchitecture
-import WebKit
 
 struct FlightDetailView: View {
     let flight: Flight
     @Environment(\.dismiss) private var dismiss
-    @State private var showNotesAlert = false
-    @State private var notes = ""
-    @State private var webURL: URL?
     
     var body: some View {
         ZStack {
@@ -108,27 +104,47 @@ struct FlightDetailView: View {
                     }
                     .padding(.horizontal)
                     
-                    // Book Now Section
+                    // Hotel Booking Section
                     VStack(alignment: .leading, spacing: 12) {
-                        SectionHeader(title: "Booking", icon: "safari")
+                        SectionHeader(title: "Hotel Booking", icon: "bed.double")
                         
-                        Button(action: {
-                            openBookingWebsite()
-                        }) {
-                            HStack {
-                                Image(systemName: "safari")
-                                    .foregroundColor(.buttonTextColor)
-                                Text("Book Now")
+                        VStack(spacing: 12) {
+                            // Destination Info
+                            VStack(alignment: .leading, spacing: 8) {
+                                Text("Destination: \(flight.destination)")
                                     .font(.headline)
-                                    .foregroundColor(.buttonTextColor)
+                                    .foregroundColor(.white)
+                                
+                                Text("Arrival: \(flight.formattedArrivalTime)")
+                                    .font(.subheadline)
+                                    .foregroundColor(.white.opacity(0.8))
                             }
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 12)
-                            .background(.white)
-                            .cornerRadius(8)
-                            .shadow(color: .black.opacity(0.2), radius: 4)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding()
+                            .background(.white.opacity(0.1))
+                            .cornerRadius(12)
+                            
+                            // Book Hotel Button
+                            Button(action: {
+                                // Navigate to Hotels tab
+                                // This would need to be implemented with proper navigation
+                                print("🏨 Navigate to Hotels tab for \(flight.destination)")
+                            }) {
+                                HStack {
+                                    Image(systemName: "bed.double.fill")
+                                        .foregroundColor(.buttonTextColor)
+                                    Text("Find Hotels in \(flight.destination)")
+                                        .font(.headline)
+                                        .foregroundColor(.buttonTextColor)
+                                }
+                                .frame(maxWidth: .infinity)
+                                .padding(.vertical, 12)
+                                .background(.white)
+                                .cornerRadius(8)
+                                .shadow(color: .black.opacity(0.2), radius: 4)
+                            }
+                            .buttonStyle(PlainButtonStyle())
                         }
-                        .buttonStyle(PlainButtonStyle())
                     }
                     .padding(.horizontal)
                 }
@@ -158,14 +174,6 @@ struct FlightDetailView: View {
                 }
             }
         }
-        .navigationDestination(item: $webURL) { url in
-            BookingWebScreen(title: "Book Flight", url: url)
-                .toolbarColorScheme(.dark, for: .navigationBar)
-                .toolbarBackground(.white.opacity(0.1), for: .navigationBar)
-                .toolbarBackground(.visible, for: .navigationBar)
-                .scrollContentBackground(.hidden)
-                .background(AviationGradientBackground())
-        }
     }
     
     private var stopsText: String {
@@ -179,24 +187,6 @@ struct FlightDetailView: View {
         }
     }
     
-    private func openBookingWebsite() {
-        // Створюємо URL для пошуку рейсу на популярних сайтах бронювання
-        let origin = flight.origin
-        let destination = flight.destination
-        let departureDate = flight.departureTime.prefix(10) // Беремо тільки дату без часу
-        
-        // Використовуємо Google Flights як загальний пошук
-        let searchQuery = "\(origin) to \(destination) \(departureDate)"
-        let encodedQuery = searchQuery.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
-        let googleFlightsURL = "https://www.google.com/travel/flights?q=\(encodedQuery)"
-        
-        if let url = URL(string: googleFlightsURL) {
-            webURL = url
-            print("🌐 Opening booking website in-app: \(googleFlightsURL)")
-        } else {
-            print("❌ Error creating booking URL")
-        }
-    }
 }
 
 struct FlightDetailRow: View {
@@ -244,44 +234,5 @@ struct InfoRow: View {
                 .foregroundColor(.white)
         }
         .padding(.vertical, 4)
-    }
-}
-
-// Simple WKWebView wrapper for SwiftUI
-private struct WebView: UIViewRepresentable {
-    let url: URL
-    func makeUIView(context: Context) -> WKWebView {
-        let view = WKWebView()
-        view.isOpaque = false
-        view.backgroundColor = .black
-        view.scrollView.backgroundColor = .black
-        view.load(URLRequest(url: url))
-        return view
-    }
-    func updateUIView(_ uiView: WKWebView, context: Context) {
-        if uiView.url != url {
-            uiView.load(URLRequest(url: url))
-        }
-    }
-}
-
-// Full screen in-app web screen for booking
-private struct BookingWebScreen: View, Identifiable {
-    let id = UUID()
-    let title: String
-    let url: URL
-    var body: some View {
-        WebContentView(title: title, url: url)
-    }
-}
-
-private struct WebContentView: View {
-    let title: String
-    let url: URL
-    var body: some View {
-        WebView(url: url)
-            .navigationTitle("")
-            .navigationBarTitleDisplayMode(.inline)
-            .background(AviationGradientBackground())
     }
 }
