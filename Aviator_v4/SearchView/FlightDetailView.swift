@@ -8,14 +8,11 @@ struct FlightDetailView: View {
     
     var body: some View {
         ZStack {
-            // Градієнтний фон
             AviationGradientBackground()
             
             ScrollView {
                 VStack(spacing: 20) {
-                    // Header Section
                     VStack(spacing: 16) {
-                        // Flight Image/Icon
                         Image(systemName: "airplane")
                             .font(.system(size: 80))
                             .foregroundColor(.white.opacity(0.7))
@@ -24,7 +21,6 @@ struct FlightDetailView: View {
                             .background(.white.opacity(0.1))
                             .cornerRadius(16)
                         
-                        // Title and Route
                         VStack(spacing: 8) {
                             Text("\(flight.origin) → \(flight.destination)")
                                 .font(.largeTitle)
@@ -40,7 +36,6 @@ struct FlightDetailView: View {
                                 .background(Color.white.opacity(0.2))
                                 .cornerRadius(20)
                             
-                            // Price Badge
                             Text("\(flight.price) \(flight.currency)")
                                 .font(.headline)
                                 .foregroundColor(.green)
@@ -52,12 +47,10 @@ struct FlightDetailView: View {
                     }
                     .padding(.horizontal)
                     
-                    // Flight Details Section
                     VStack(alignment: .leading, spacing: 12) {
                         SectionHeader(title: "Flight Details", icon: "airplane")
                         
                         VStack(spacing: 8) {
-                            // Departure
                             FlightDetailRow(
                                 title: "Departure",
                                 subtitle: flight.formattedDepartureTime,
@@ -65,7 +58,6 @@ struct FlightDetailView: View {
                                 color: .red
                             )
                             
-                            // Arrival
                             FlightDetailRow(
                                 title: "Arrival",
                                 subtitle: flight.formattedArrivalTime,
@@ -73,7 +65,6 @@ struct FlightDetailView: View {
                                 color: .green
                             )
                             
-                            // Duration
                             FlightDetailRow(
                                 title: "Duration",
                                 subtitle: flight.formattedDuration,
@@ -81,7 +72,6 @@ struct FlightDetailView: View {
                                 color: .blue
                             )
                             
-                            // Stops
                             FlightDetailRow(
                                 title: "Stops",
                                 subtitle: stopsText,
@@ -92,7 +82,6 @@ struct FlightDetailView: View {
                     }
                     .padding(.horizontal)
                     
-                    // Flight Information Section
                     VStack(alignment: .leading, spacing: 12) {
                         SectionHeader(title: "Flight Information", icon: "info.circle")
                         
@@ -105,12 +94,10 @@ struct FlightDetailView: View {
                     }
                     .padding(.horizontal)
                     
-                    // Hotel Booking Section
                     VStack(alignment: .leading, spacing: 12) {
                         SectionHeader(title: "Hotel Booking", icon: "bed.double")
                         
                         VStack(spacing: 12) {
-                            // Destination Info
                             VStack(alignment: .leading, spacing: 8) {
                                 Text("Destination: \(flight.destination)")
                                     .font(.headline)
@@ -125,7 +112,6 @@ struct FlightDetailView: View {
                             .background(.white.opacity(0.1))
                             .cornerRadius(12)
                             
-                            // Book Hotel Button
                             WithViewStore(self.appStore, observe: { $0 }) { appViewStore in
                                 Button(action: {
                                     print("🏨 Navigate to Hotels tab for \(flight.destination)")
@@ -236,5 +222,23 @@ struct InfoRow: View {
                 .foregroundColor(.white)
         }
         .padding(.vertical, 4)
+    }
+}
+
+struct SectionHeader: View {
+    let title: String
+    let icon: String
+    
+    var body: some View {
+        HStack(spacing: 8) {
+            Image(systemName: icon)
+                .foregroundColor(.white)
+                .font(.title3)
+            
+            Text(title)
+                .font(.title2)
+                .fontWeight(.bold)
+                .foregroundColor(.white)
+        }
     }
 }

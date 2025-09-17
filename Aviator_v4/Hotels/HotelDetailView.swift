@@ -14,7 +14,7 @@ struct HotelDetailView: View {
                 span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
             ))
         } else {
-            // Default to New York if no coordinates
+            
             self._region = State(initialValue: MKCoordinateRegion(
                 center: CLLocationCoordinate2D(latitude: 40.7589, longitude: -73.9851),
                 span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
@@ -24,14 +24,14 @@ struct HotelDetailView: View {
     
     var body: some View {
         ZStack {
-            // Градієнтний фон
+            
             AviationGradientBackground()
             
             ScrollView {
                 VStack(spacing: 20) {
-                    // Header Section
+                    
                     VStack(spacing: 16) {
-                        // Hotel Image
+                        
                         if let imageName = hotel.imageURL {
                             Image(imageName)
                                 .resizable()
@@ -49,7 +49,7 @@ struct HotelDetailView: View {
                                 .cornerRadius(12)
                         }
                         
-                        // Hotel Name and Rating
+                        
                         VStack(spacing: 8) {
                             Text(hotel.name)
                                 .font(.title2)
@@ -73,7 +73,7 @@ struct HotelDetailView: View {
                         }
                     }
                     
-                    // Price Section
+                    
                     VStack(spacing: 12) {
                         Text("Price")
                             .font(.headline)
@@ -97,7 +97,7 @@ struct HotelDetailView: View {
                     .background(Color.white.opacity(0.1))
                     .cornerRadius(12)
                     
-                    // Location Section
+                    
                     VStack(spacing: 12) {
                         Text("Location")
                             .font(.headline)
@@ -137,7 +137,7 @@ struct HotelDetailView: View {
                     .background(Color.white.opacity(0.1))
                     .cornerRadius(12)
                     
-                    // Map Section
+                    
                     if hotel.latitude != nil && hotel.longitude != nil {
                         VStack(spacing: 12) {
                             Text("Map")
@@ -173,7 +173,7 @@ struct HotelDetailView: View {
                         .cornerRadius(12)
                     }
                     
-                    // Amenities Section
+                    
                     if !hotel.amenities.isEmpty {
                         VStack(spacing: 12) {
                             Text("Amenities")
@@ -205,7 +205,7 @@ struct HotelDetailView: View {
                         .cornerRadius(12)
                     }
                     
-                    // Contact Section
+                    
                     VStack(spacing: 12) {
                         Text("Contact")
                             .font(.headline)

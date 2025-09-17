@@ -20,7 +20,6 @@ extension DependencyValues {
     }
 }
 
-// MARK: - Hotels Service
 
 final class HotelsService {
     static let shared = HotelsService()
@@ -51,18 +50,18 @@ final class HotelsService {
                     country: hotelData.address?.countryCode ?? "Unknown",
                     city: hotelData.address?.cityName ?? extractCityFromAddress(hotelData.address?.lines?.first),
                     region: hotelData.address?.stateCode ?? "Unknown",
-                    rating: Double.random(in: 3.0...5.0), // Random rating since API doesn't provide it
-                    price: Double.random(in: 50...150), // Lower prices as requested
+                    rating: Double.random(in: 3.0...5.0), 
+                    price: Double.random(in: 50...150), 
                     currency: "USD",
-                    amenities: generateRandomAmenities(), // Different amenities for each hotel
-                    imageURL: getHotelImage(hotelName: hotelData.name, city: hotelData.address?.cityName ?? "hotel"), // Generate hotel-specific image
+                    amenities: generateRandomAmenities(), 
+                    imageURL: getHotelImage(hotelName: hotelData.name, city: hotelData.address?.cityName ?? "hotel"), 
                     latitude: hotelData.geoCode?.latitude,
                     longitude: hotelData.geoCode?.longitude
                 )
             }
         } catch {
             print("❌ Hotels API error: \(error)")
-            // Return mock data if API fails
+            
             return generateMockHotels()
         }
     }
@@ -114,12 +113,12 @@ final class HotelsService {
         ]
     }
     
-    // MARK: - Helper Functions
+    
     
     private func extractCityFromAddress(_ address: String?) -> String {
         guard let address = address else { return "Unknown" }
         
-        // Спробуємо витягнути місто з адреси
+        
         let commonCities = ["New York", "Paris", "London", "Tokyo", "Berlin", "Rome", "Madrid", "Amsterdam", "Vienna", "Prague"]
         
         for city in commonCities {
@@ -128,7 +127,7 @@ final class HotelsService {
             }
         }
         
-        // Якщо не знайшли відоме місто, спробуємо витягнути перше слово після коми
+        
         let components = address.components(separatedBy: ",")
         if components.count > 1 {
             let cityPart = components[1].trimmingCharacters(in: .whitespaces)
@@ -143,36 +142,36 @@ final class HotelsService {
     
     private func generateRandomAmenities() -> [String] {
         let allAmenities = [
-            "WiFi",           // Завжди є
-            "Parking",        // 30-50% ймовірність
-            "Restaurant",     // 30-50% ймовірність  
-            "Gym",           // Меншість (20-30%)
-            "Pool",          // Рідко (10-20%)
-            "Spa",           // Рідко (10-20%)
-            "Room Service",  // Рідко (10-20%)
-            "Bar",           // Рідко (10-20%)
-            "Concierge",     // Рідко (10-20%)
-            "Business Center" // Рідко (10-20%)
+            "WiFi",           
+            "Parking",        
+            "Restaurant",     
+            "Gym",           
+            "Pool",          
+            "Spa",           
+            "Room Service",  
+            "Bar",           
+            "Concierge",     
+            "Business Center" 
         ]
         
-        var amenities: [String] = ["WiFi"] // WiFi завжди є
+        var amenities: [String] = ["WiFi"] 
         
-        // Додаємо Parking (30-50% ймовірність)
+        
         if Int.random(in: 1...100) <= 40 {
             amenities.append("Parking")
         }
         
-        // Додаємо Restaurant (30-50% ймовірність)
+        
         if Int.random(in: 1...100) <= 40 {
             amenities.append("Restaurant")
         }
         
-        // Додаємо Gym (20-30% ймовірність)
+        
         if Int.random(in: 1...100) <= 25 {
             amenities.append("Gym")
         }
         
-        // Додаємо інші зручності (10-20% ймовірність кожна)
+        
         let rareAmenities = ["Pool", "Spa", "Room Service", "Bar", "Concierge", "Business Center"]
         for amenity in rareAmenities {
             if Int.random(in: 1...100) <= 15 {
@@ -183,19 +182,18 @@ final class HotelsService {
         return amenities
     }
     
-    // MARK: - Free Image Sources
+    
     
     private func getHotelImage(hotelName: String, city: String) -> String {
-        // Використовуємо локальні картинки hotel_1 до hotel_40
-        // З 40 картинками повторення значно зменшується
+        
+        
         let hotelHash = abs(hotelName.hashValue)
-        let imageNumber = (hotelHash % 40) + 1 // Генеруємо число від 1 до 40
+        let imageNumber = (hotelHash % 40) + 1 
         
         return "hotel_\(imageNumber)"
     }
 }
 
-// MARK: - API Response Models
 
 struct HotelsAPIResponse: Codable {
     let data: [HotelData]

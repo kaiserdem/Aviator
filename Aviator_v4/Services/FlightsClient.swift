@@ -25,7 +25,6 @@ extension DependencyValues {
     }
 }
 
-// MARK: - Flights Service
 
 final class FlightsService {
     static let shared = FlightsService()
@@ -34,7 +33,7 @@ final class FlightsService {
     
     func searchFlights(origin: String, destination: String, departureDate: Date, passengers: Int) async -> [Flight] {
         do {
-            // Validate and normalize airport codes (from v3 architecture)
+            
             let normalizedOrigin = normalizeAirportCode(origin)
             let normalizedDestination = normalizeAirportCode(destination)
             
@@ -81,16 +80,16 @@ final class FlightsService {
         }
     }
     
-    // MARK: - Airport Code Normalization (from v3 architecture)
+    
     
     private func normalizeAirportCode(_ input: String) -> String {
         let code = input.uppercased().trimmingCharacters(in: .whitespacesAndNewlines)
         
-        // Common airport code mappings
+        
         let mappings: [String: String] = [
-            "WARSHAWA": "WAW",    // Warsaw
+            "WARSHAWA": "WAW",    
             "WARSAW": "WAW",
-            "SIFIA": "SOF",       // Sofia
+            "SIFIA": "SOF",       
             "SOFIA": "SOF",
             "PARIS": "CDG",
             "LONDON": "LHR",
@@ -133,23 +132,23 @@ final class FlightsService {
             "TAIPEI": "TPE"
         ]
         
-        // If it's already a 3-letter code, return as is
+        
         if code.count == 3 && code.allSatisfy({ $0.isLetter }) {
             return code
         }
         
-        // Try to find mapping
+        
         if let mapped = mappings[code] {
             return mapped
         }
         
-        // If no mapping found, try to extract 3-letter code from input
+        
         let letters = code.filter { $0.isLetter }
         if letters.count >= 3 {
             return String(letters.prefix(3))
         }
         
-        // Fallback to original input (will likely cause API error, but better than crashing)
+        
         print("⚠️ Could not normalize airport code: \(input)")
         return code
     }
@@ -157,7 +156,6 @@ final class FlightsService {
     
 }
 
-// MARK: - Models
 
 struct Flight: Equatable, Identifiable {
     let id: String
@@ -196,7 +194,7 @@ struct Flight: Equatable, Identifiable {
     }
     
     private func formatDuration(_ duration: String) -> String {
-        // Parse ISO 8601 duration format (PT4H15M)
+        
         let cleanDuration = duration.replacingOccurrences(of: "PT", with: "")
         let hours = cleanDuration.components(separatedBy: "H").first ?? "0"
         let minutes = cleanDuration.components(separatedBy: "H").last?.replacingOccurrences(of: "M", with: "") ?? "0"
@@ -204,7 +202,6 @@ struct Flight: Equatable, Identifiable {
     }
 }
 
-// MARK: - API Response Models
 
 struct FlightsAPIResponse: Codable {
     let data: [FlightData]

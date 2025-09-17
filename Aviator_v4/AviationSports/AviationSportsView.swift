@@ -12,16 +12,11 @@ struct AviationSportsView: View {
                 let _ = print("🛩️ AviationSportsView: AppStore favorites: \(appViewStore.favoriteSports)")
             NavigationStack {
                 ZStack {
-                    // Градієнтний фон
                     AviationGradientBackground()
                     
                     VStack(spacing: 16) {
-                        // Filter Section
                         VStack(spacing: 12) {
                             HStack {
-//                                Text("Category:")
-//                                    .foregroundColor(.white)
-//                                    .fontWeight(.medium)
                                 Picker("Category", selection: viewStore.binding(get: \.selectedCategory, send: { .categoryChanged($0) })) {
                                     ForEach(SportCategory.allCases, id: \.self) { category in
                                         HStack {
@@ -35,9 +30,6 @@ struct AviationSportsView: View {
                                 
                                 Spacer()
                                 
-//                                Text("Location:")
-//                                    .foregroundColor(.white)
-//                                    .fontWeight(.medium)
                                 Picker("Location", selection: viewStore.binding(get: \.selectedLocation, send: { .locationChanged($0) })) {
                                     HStack {
                                         Image(systemName: "globe")
@@ -71,7 +63,6 @@ struct AviationSportsView: View {
                         }
                         .padding()
                         
-                        // Content
                         if viewStore.isLoading {
                             ProgressView("Loading aviation sports...")
                                 .foregroundColor(.white)
@@ -104,17 +95,17 @@ struct AviationSportsView: View {
                                     AviationSportRowView(sport: sport)
                                 }
                                 .onAppear {
-                                    // Завантажуємо зображення тільки один раз
+                                    
                                     if sport.imageURL == nil {
                                         viewStore.send(.loadSportImage(sport.id.uuidString, sport.name))
                                     }
                                 }
-                                .id(sport.id) // Стабільний ID для кожного елемента
+                                .id(sport.id) 
                             }
-                            .listStyle(PlainListStyle()) // Використовуємо PlainListStyle для стабільності
-                            .scrollContentBackground(.hidden) // Приховуємо фон для градієнта
-                            .listRowSeparator(.hidden) // Приховуємо роздільники рядків
-                            .listRowBackground(Color.clear) // Прозорий фон для рядків
+                            .listStyle(PlainListStyle()) 
+                            .scrollContentBackground(.hidden) 
+                            .listRowSeparator(.hidden) 
+                            .listRowBackground(Color.clear) 
                         }
                     }
                     .navigationTitle("Aviation Sports")
@@ -178,7 +169,7 @@ struct AviationSportRowView: View {
     
     var body: some View {
         HStack(spacing: 12) {
-            // Sport Image
+            
             VStack {
                 Image(getSportImageName(for: sport.name))
                     .resizable()
@@ -189,9 +180,9 @@ struct AviationSportRowView: View {
                     .clipped()
             }
             
-            // Content
+            
             VStack(alignment: .leading, spacing: 12) {
-                // Header
+                
                 HStack {
                     VStack(alignment: .leading, spacing: 4) {
                         Text(sport.name)
@@ -221,13 +212,13 @@ struct AviationSportRowView: View {
                     }
                 }
             
-            // Description
+            
             Text(sport.description)
                 .font(.body)
                 .foregroundColor(.secondary)
                 .lineLimit(3)
             
-            // Equipment
+            
             if !sport.equipment.isEmpty {
                 VStack(alignment: .leading, spacing: 4) {
                     Text("Equipment:")
@@ -249,7 +240,7 @@ struct AviationSportRowView: View {
                 }
             }
             
-            // Locations
+            
             if !sport.locations.isEmpty {
                 VStack(alignment: .leading, spacing: 4) {
                     Text("Popular Locations:")
@@ -266,7 +257,7 @@ struct AviationSportRowView: View {
 
         }
         .padding(.vertical, 8)
-        .id(sport.id) // Стабільний ID для кожного рядка
+        .id(sport.id) 
     }
     
     private func sportIcon(for category: SportCategory) -> String {
@@ -324,10 +315,9 @@ struct AviationSportRowView: View {
     )
 }
 
-// MARK: - Helper Functions
 
 private func getSportImageName(for sportName: String) -> String {
-    // Мапінг назв спорту на назви картинок
+    
     let sportImageMapping: [String: String] = [
         "Aerobatic Flying": "Aerobatic Flying",
         "Glider Racing": "Glider Racing", 
@@ -351,6 +341,6 @@ private func getSportImageName(for sportName: String) -> String {
         "Aerobatic Team": "Aerobatic Team"
     ]
     
-    // Повертаємо назву картинки або fallback
+    
     return sportImageMapping[sportName] ?? "Aerobatic Flying"
 }

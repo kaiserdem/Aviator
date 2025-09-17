@@ -11,11 +11,11 @@ struct FavoritesView: View {
             WithViewStore(self.appStore, observe: { $0 }) { appViewStore in
             NavigationStack {
                 ZStack {
-                    // Градієнтний фон
+                    
                     AviationGradientBackground()
                     
                     VStack(spacing: 16) {
-                        // Header
+                        
                         VStack(spacing: 8) {
                            
                             
@@ -25,7 +25,7 @@ struct FavoritesView: View {
                         }
                         .padding(.top)
                         
-                        // Content
+                        
                         if viewStore.isLoading {
                             ProgressView("Loading favorites...")
                                 .foregroundColor(.white)
@@ -58,8 +58,8 @@ struct FavoritesView: View {
                                     .padding(.horizontal)
                                 
                                 Button("Browse Sports") {
-                                    // Переходимо на вкладку Aviation Sports
-                                    // Це можна реалізувати через AppFeature
+                                    
+                                    
                                 }
                                 .buttonStyle(.borderedProminent)
                                 .tint(.white)
@@ -105,7 +105,7 @@ struct FavoritesView: View {
                         viewStore.send(.onAppear)
                     }
                     .onChange(of: viewStore.favoriteSports) { _ in
-                        // Автоматично оновлюємо список при зміні улюблених спорту
+                        
                         viewStore.send(.loadFavorites)
                     }
                 }
@@ -122,7 +122,7 @@ struct FavoriteSportRowView: View {
     
     var body: some View {
         HStack(spacing: 12) {
-            // Sport Image
+            
             VStack {
                 Image(getSportImageName(for: sport.name))
                     .resizable()
@@ -133,7 +133,7 @@ struct FavoriteSportRowView: View {
                     .clipped()
             }
             
-            // Content
+            
             VStack(alignment: .leading, spacing: 8) {
                 Text(sport.name)
                     .font(.headline)
@@ -147,7 +147,7 @@ struct FavoriteSportRowView: View {
             
             Spacer()
             
-            // Remove Button
+            
             Button(action: {
                 onRemove(sport.id.uuidString)
             }) {
@@ -200,10 +200,9 @@ struct FavoriteSportRowView: View {
     )
 }
 
-// MARK: - Helper Functions
 
 private func getSportImageName(for sportName: String) -> String {
-    // Мапінг назв спорту на назви картинок
+    
     let sportImageMapping: [String: String] = [
         "Aerobatic Flying": "Aerobatic Flying",
         "Glider Racing": "Glider Racing", 
@@ -227,6 +226,6 @@ private func getSportImageName(for sportName: String) -> String {
         "Aerobatic Team": "Aerobatic Team"
     ]
     
-    // Повертаємо назву картинки або fallback
+    
     return sportImageMapping[sportName] ?? "Aerobatic Flying"
 }

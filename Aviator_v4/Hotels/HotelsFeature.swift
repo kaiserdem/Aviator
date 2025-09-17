@@ -63,7 +63,6 @@ struct HotelsFeature: Reducer {
     }
 }
 
-// MARK: - Models
 
 struct Hotel: Equatable, Identifiable {
     let id = UUID()

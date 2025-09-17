@@ -29,7 +29,6 @@ extension DependencyValues {
     }
 }
 
-// MARK: - Aviation Sports Service
 
 final class AviationSportsService {
     static let shared = AviationSportsService()
@@ -37,13 +36,13 @@ final class AviationSportsService {
     private init() {}
     
     func getSportImage(sportName: String) async -> String? {
-        // For demo purposes, return mock images
-        // In production, replace with real Unsplash API call
+        
+        
         return getMockImageURL(for: sportName)
         
-        // Uncomment this when you have a real Unsplash API key:
-        // @Dependency(\.unsplashClient) var unsplashClient
-        // return await unsplashClient.searchImage(sportName)
+        
+        
+        
     }
     
     func getSportDescription(sportName: String) async -> String? {
@@ -52,24 +51,24 @@ final class AviationSportsService {
     }
     
     private func getMockImageURL(for sportName: String) -> String? {
-        // Тимчасове рішення - використовуємо одне зображення з Pexels для всіх спорту
-        return "https://images.pexels.com/photos/19571069/pexels-photo-19571069.jpeg"
+        
+        return "https:
     }
     
     func getSports(category: SportCategory, location: String) async -> [AviationSport] {
-        // Simulate API call delay
-        try? await Task.sleep(nanoseconds: 1_000_000_000) // 1 second
+        
+        try? await Task.sleep(nanoseconds: 1_000_000_000) 
         
         let allSports = generateAviationSports()
         
         var filteredSports = allSports
         
-        // Filter by category
+        
         if category != .all {
             filteredSports = filteredSports.filter { $0.category == category }
         }
         
-        // Filter by location
+        
         if location != "Global" {
             filteredSports = filteredSports.filter { sport in
                 sport.locations.contains { $0.lowercased().contains(location.lowercased()) }
@@ -413,7 +412,6 @@ final class AviationSportsService {
     }
 }
 
-// MARK: - Models
 
 enum SportCategory: String, CaseIterable, Equatable {
     case all = "All"

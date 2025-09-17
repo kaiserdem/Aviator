@@ -20,7 +20,6 @@ extension DependencyValues {
     }
 }
 
-// MARK: - Wikipedia Service
 
 final class WikipediaService {
     static let shared = WikipediaService()
@@ -29,11 +28,11 @@ final class WikipediaService {
     
     func getSportDescription(sportName: String) async -> String? {
         do {
-            // Map sport names to Wikipedia article titles
+            
             let wikipediaTitle = mapSportNameToWikipediaTitle(sportName)
             let encodedTitle = wikipediaTitle.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? wikipediaTitle
             
-            let url = URL(string: "https://en.wikipedia.org/api/rest_v1/page/summary/\(encodedTitle)")!
+            let url = URL(string: "https:
             
             var request = URLRequest(url: url)
             request.setValue("application/json", forHTTPHeaderField: "Accept")
@@ -92,7 +91,6 @@ final class WikipediaService {
     }
 }
 
-// MARK: - Wikipedia Response Models
 
 struct WikipediaResponse: Codable {
     let extract: String?

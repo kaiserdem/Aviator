@@ -4,12 +4,12 @@ struct GradientBackground: View {
     var body: some View {
         LinearGradient(
             gradient: Gradient(colors: [
-                Color(red: 0.4, green: 0.6, blue: 0.9),      // Світло-синій зверху
-                Color(red: 0.3, green: 0.5, blue: 0.8),      // Синій
-                Color(red: 0.2, green: 0.4, blue: 0.7),      // Темно-синій
-                Color(red: 0.15, green: 0.3, blue: 0.6),     // Глибокий синій
-                Color(red: 0.1, green: 0.2, blue: 0.5),      // Дуже темний синій
-                Color(red: 0.05, green: 0.1, blue: 0.3)      // Майже чорний синій
+                Color(red: 0.4, green: 0.6, blue: 0.9),      
+                Color(red: 0.3, green: 0.5, blue: 0.8),      
+                Color(red: 0.2, green: 0.4, blue: 0.7),      
+                Color(red: 0.15, green: 0.3, blue: 0.6),     
+                Color(red: 0.1, green: 0.2, blue: 0.5),      
+                Color(red: 0.05, green: 0.1, blue: 0.3)      
             ]),
             startPoint: .top,
             endPoint: .bottom
@@ -21,36 +21,36 @@ struct GradientBackground: View {
 struct AviationGradientBackground: View {
     var body: some View {
         ZStack {
-            // Комбінований градієнт на основі всіх 4 зображень
+            
             LinearGradient(
                 gradient: Gradient(colors: [
-                    // З першого зображення - світлі теплі тони
-                    //Color(red: 1.0, green: 0.95, blue: 0.7),     // Блідо-жовтий/кремовий
-                    //Color(red: 1.0, green: 0.85, blue: 0.5),     // Світло-помаранчевий
                     
-                    // З другого зображення - яскраві помаранчеві тони
-                    //Color(red: 1.0, green: 0.7, blue: 0.3),      // Яскраво-помаранчевий
-                    Color(red: 1.0, green: 0.55, blue: 0.2),     // Насичений помаранчевий
-                    Color(red: 0.95, green: 0.4, blue: 0.15),   // Темно-помаранчевий
                     
-                    // Перехід до червоних тонів
-                    Color(red: 0.8, green: 0.25, blue: 0.1),     // Червоно-помаранчевий
-                    Color(red: 0.6, green: 0.15, blue: 0.08),    // Темно-червоний
                     
-                    // З третього зображення - фіолетово-бордові тони
-                    Color(red: 0.4, green: 0.1, blue: 0.2),      // Темно-фіолетово-бордовий
-                    Color(red: 0.3, green: 0.05, blue: 0.15),   // Глибокий фіолетово-бордовий
                     
-                    // З четвертого зображення - суцільний темно-фіолетовий
-                    Color(red: 0.25, green: 0.1, blue: 0.4),     // Темно-фіолетовий
-                    Color(red: 0.15, green: 0.05, blue: 0.25),  // Дуже темний фіолетовий
-                    Color(red: 0.1, green: 0.02, blue: 0.15)    // Майже чорний фіолетовий
+                    
+                    
+                    Color(red: 1.0, green: 0.55, blue: 0.2),     
+                    Color(red: 0.95, green: 0.4, blue: 0.15),   
+                    
+                    
+                    Color(red: 0.8, green: 0.25, blue: 0.1),     
+                    Color(red: 0.6, green: 0.15, blue: 0.08),    
+                    
+                    
+                    Color(red: 0.4, green: 0.1, blue: 0.2),      
+                    Color(red: 0.3, green: 0.05, blue: 0.15),   
+                    
+                    
+                    Color(red: 0.25, green: 0.1, blue: 0.4),     
+                    Color(red: 0.15, green: 0.05, blue: 0.25),  
+                    Color(red: 0.1, green: 0.02, blue: 0.15)    
                 ]),
                 startPoint: .top,
                 endPoint: .bottom
             )
             
-            // Додатковий радіальний градієнт для глибини
+            
             RadialGradient(
                 gradient: Gradient(colors: [
                     Color.clear,
@@ -61,7 +61,7 @@ struct AviationGradientBackground: View {
                 endRadius: 500
             )
             
-            // Тонкі атмосферні ефекти (менш помітні хмари)
+            
             VStack {
                 HStack {
                     Spacer()
@@ -103,26 +103,26 @@ struct AviationGradientBackground: View {
 struct SunsetGradientBackground: View {
     var body: some View {
         ZStack {
-            // Основний градієнт заходу сонця
+            
             LinearGradient(
                 gradient: Gradient(colors: [
-                    Color(red: 1.0, green: 0.45, blue: 0.15),    // Яскраво-помаранчевий
-                    Color(red: 0.95, green: 0.35, blue: 0.2),   // Помаранчевий
-                    Color(red: 0.85, green: 0.25, blue: 0.3),   // Темно-помаранчевий
-                    Color(red: 0.7, green: 0.2, blue: 0.4),     // Перехід до фіолетового
-                    Color(red: 0.5, green: 0.15, blue: 0.5),     // Фіолетово-синій
-                    Color(red: 0.3, green: 0.08, blue: 0.4),     // Темний фіолетовий
-                    Color(red: 0.15, green: 0.03, blue: 0.25)   // Майже чорний
+                    Color(red: 1.0, green: 0.45, blue: 0.15),    
+                    Color(red: 0.95, green: 0.35, blue: 0.2),   
+                    Color(red: 0.85, green: 0.25, blue: 0.3),   
+                    Color(red: 0.7, green: 0.2, blue: 0.4),     
+                    Color(red: 0.5, green: 0.15, blue: 0.5),     
+                    Color(red: 0.3, green: 0.08, blue: 0.4),     
+                    Color(red: 0.15, green: 0.03, blue: 0.25)   
                 ]),
                 startPoint: .top,
                 endPoint: .bottom
             )
             
-            // Додаткові ефекти
+            
             VStack {
                 Spacer()
                 
-                // Імітація горизонту
+                
                 Rectangle()
                     .fill(
                         LinearGradient(
@@ -141,39 +141,37 @@ struct SunsetGradientBackground: View {
     }
 }
 
-// MARK: - Кольорові константи для використання в інших компонентах
 
 extension Color {
-    // З першого зображення - світлі тони
+    
     static let aviationCream = Color(red: 1.0, green: 0.95, blue: 0.7)
     static let aviationLightOrange = Color(red: 1.0, green: 0.85, blue: 0.5)
     
-    // З другого зображення - яскраві помаранчеві
+    
     static let aviationBrightOrange = Color(red: 1.0, green: 0.7, blue: 0.3)
     static let aviationDeepOrange = Color(red: 1.0, green: 0.55, blue: 0.2)
     
-    // Перехідні червоні тони
+    
     static let aviationRedOrange = Color(red: 0.8, green: 0.25, blue: 0.1)
     static let aviationDarkRed = Color(red: 0.6, green: 0.15, blue: 0.08)
     
-    // З третього зображення - фіолетово-бордові
+    
     static let aviationPurpleBurgundy = Color(red: 0.4, green: 0.1, blue: 0.2)
     static let aviationDeepPurple = Color(red: 0.3, green: 0.05, blue: 0.15)
     
-    // З четвертого зображення - темно-фіолетові
+    
     static let aviationDarkPurple = Color(red: 0.25, green: 0.1, blue: 0.4)
     static let aviationAlmostBlack = Color(red: 0.1, green: 0.02, blue: 0.15)
     
-    // Кольори для кнопок та UI елементів
+    
     static let buttonTextColor = Color(red: 0.25, green: 0.1, blue: 0.4)
     
-    // Градієнтні кольори (ключові точки)
+    
     static let gradientTop = Color.aviationCream
     static let gradientMiddle = Color.aviationDeepOrange
     static let gradientBottom = Color.aviationAlmostBlack
 }
 
-// MARK: - Модифікатори для застосування градієнтів
 
 struct GradientBackgroundModifier: ViewModifier {
     func body(content: Content) -> some View {

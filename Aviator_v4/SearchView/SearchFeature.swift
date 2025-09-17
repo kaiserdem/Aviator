@@ -10,7 +10,7 @@ struct SearchFeature: Reducer {
         var departureDate = Date()
         var passengers = 1
         var errorMessage: String?
-        var hasSearched = false // Чи був пошук виконаний
+        var hasSearched = false 
         
         init() {}
     }
@@ -55,7 +55,7 @@ struct SearchFeature: Reducer {
                 return .none
                 
             case .searchFlights:
-                // Перевіряємо чи заповнені обов'язкові поля
+                
                 guard !state.origin.isEmpty && !state.destination.isEmpty else {
                     state.errorMessage = "Please enter both origin and destination"
                     return .none

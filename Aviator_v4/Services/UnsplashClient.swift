@@ -20,7 +20,6 @@ extension DependencyValues {
     }
 }
 
-// MARK: - Unsplash Service
 
 final class UnsplashService {
     static let shared = UnsplashService()
@@ -52,7 +51,6 @@ final class UnsplashService {
     }
 }
 
-// MARK: - Unsplash Response Models
 
 struct UnsplashResponse: Codable {
     let results: [UnsplashPhoto]

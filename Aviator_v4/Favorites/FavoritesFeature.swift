@@ -16,8 +16,8 @@ struct FavoritesFeature: Reducer {
         case loadFavorites
         case favoritesResponse([AviationSport])
         case loadError(String)
-        case removeFavorite(String) // sportId
-        case favoriteRemoved(String) // sportId
+        case removeFavorite(String) 
+        case favoriteRemoved(String) 
     }
     
     @Dependency(\.aviationSportsClient) var aviationSportsClient
@@ -33,7 +33,7 @@ struct FavoritesFeature: Reducer {
                 state.isLoading = true
                 state.errorMessage = nil
                 return .run { send in
-                    // Отримуємо всі спорти та фільтруємо улюблені
+                    
                     let allSports = await aviationSportsClient.getSports(.all, "Global")
                     await send(.favoritesResponse(allSports))
                 }
@@ -44,7 +44,7 @@ struct FavoritesFeature: Reducer {
                 print("❤️ Current favoriteSports: \(state.favoriteSports)")
                 print("🔍 Looking for favorites in: \(state.favoriteSports)")
                 
-                // Фільтруємо тільки улюблені спорти
+                
                 state.favoriteSportsData = sports.filter { sport in
                     let isFavorite = state.favoriteSports.contains(sport.id.uuidString)
                     print("🔍 Sport '\(sport.name)' (\(sport.id.uuidString)) is favorite: \(isFavorite)")
@@ -68,7 +68,7 @@ struct FavoritesFeature: Reducer {
                 return .send(.favoriteRemoved(sportId))
                 
             case let .favoriteRemoved(sportId):
-                // Можна додати логіку для оновлення списку
+                
                 return .none
             }
         }

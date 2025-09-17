@@ -9,8 +9,8 @@ struct AviationSportsFeature: Reducer {
         var selectedLocation = "Global"
         var errorMessage: String?
         var favoriteSports: Set<String> = []
-        var loadedImages: Set<String> = [] // Відстежуємо завантажені зображення
-        var loadedDescriptions: Set<String> = [] // Відстежуємо завантажені описи
+        var loadedImages: Set<String> = [] 
+        var loadedDescriptions: Set<String> = [] 
         
         init() {}
     }
@@ -22,10 +22,10 @@ struct AviationSportsFeature: Reducer {
         case loadSports
         case sportsResponse([AviationSport])
         case loadError(String)
-        case loadSportImage(String, String) // sportId, sportName
-        case sportImageResponse(String, String?) // sportId, imageURL
-        case loadSportDescription(String, String) // sportId, sportName
-        case sportDescriptionResponse(String, String?) // sportId, description
+        case loadSportImage(String, String) 
+        case sportImageResponse(String, String?) 
+        case loadSportDescription(String, String) 
+        case sportDescriptionResponse(String, String?) 
     }
     
     @Dependency(\.aviationSportsClient) var aviationSportsClient
@@ -42,14 +42,14 @@ struct AviationSportsFeature: Reducer {
                 
             case let .categoryChanged(category):
                 state.selectedCategory = category
-                state.loadedImages.removeAll() // Очищуємо кеш зображень
-                state.loadedDescriptions.removeAll() // Очищуємо кеш описів
+                state.loadedImages.removeAll() 
+                state.loadedDescriptions.removeAll() 
                 return .send(.loadSports)
                 
             case let .locationChanged(location):
                 state.selectedLocation = location
-                state.loadedImages.removeAll() // Очищуємо кеш зображень
-                state.loadedDescriptions.removeAll() // Очищуємо кеш описів
+                state.loadedImages.removeAll() 
+                state.loadedDescriptions.removeAll() 
                 return .send(.loadSports)
                 
             case .loadSports:
@@ -71,7 +71,7 @@ struct AviationSportsFeature: Reducer {
                 return .none
                 
             case let .loadSportImage(sportId, sportName):
-                // Перевіряємо, чи вже завантажували це зображення
+                
                 if state.loadedImages.contains(sportId) {
                     return .none
                 }
@@ -97,7 +97,7 @@ struct AviationSportsFeature: Reducer {
                 return .none
                 
             case let .loadSportDescription(sportId, sportName):
-                // Перевіряємо, чи вже завантажували цей опис
+                
                 if state.loadedDescriptions.contains(sportId) {
                     return .none
                 }

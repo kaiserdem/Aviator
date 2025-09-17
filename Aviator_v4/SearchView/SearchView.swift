@@ -9,11 +9,9 @@ struct SearchView: View {
         WithViewStore(self.store, observe: { $0 }) { viewStore in
             NavigationStack {
                 ZStack {
-                    // Градієнтний фон
                     AviationGradientBackground()
                     
                         VStack(spacing: 16) {
-                            // Search Section
                             VStack(spacing: 12) {
                                 HStack {
                                     VStack(alignment: .leading) {
@@ -69,7 +67,6 @@ struct SearchView: View {
                             }
                             .padding()
                             
-                            // Content
                             if viewStore.isLoading {
                                 ProgressView("Searching flights...")
                                     .foregroundColor(.white)
@@ -85,7 +82,7 @@ struct SearchView: View {
                                 }
                                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                             } else if viewStore.flights.isEmpty && viewStore.hasSearched {
-                                // Красива заглушка для пустого списку після пошуку
+                                
                                 VStack(spacing: 20) {
                                     Image(systemName: "airplane.departure")
                                         .font(.system(size: 80))
@@ -125,7 +122,7 @@ struct SearchView: View {
                                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                                 .padding()
                             } else if viewStore.flights.isEmpty && !viewStore.hasSearched {
-                                // Початковий стан - ще не було пошуку
+                                
                                 VStack(spacing: 20) {
                                     Image(systemName: "magnifyingglass")
                                         .font(.system(size: 80))

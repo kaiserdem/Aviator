@@ -8,14 +8,14 @@ struct AviationSportDetailView: View {
     
     var body: some View {
         ZStack {
-            // Градієнтний фон
+            
             AviationGradientBackground()
             
             ScrollView {
             VStack(spacing: 20) {
-                // Header Section
+                
                 VStack(spacing: 16) {
-                    // Sport Image
+                    
                     Image(getSportImageName(for: sport.name))
                         .resizable()
                         .aspectRatio(contentMode: .fill)
@@ -23,7 +23,7 @@ struct AviationSportDetailView: View {
                         .clipped()
                         .cornerRadius(16)
                     
-                    // Title and Category
+                    
                     VStack(spacing: 8) {
                         Text(sport.name)
                             .font(.largeTitle)
@@ -39,7 +39,7 @@ struct AviationSportDetailView: View {
                             .background(Color.white.opacity(0.2))
                             .cornerRadius(20)
                         
-                        // Difficulty Badge
+                        
                         Text(sport.difficulty.rawValue)
                             .font(.headline)
                             .foregroundColor(sport.difficulty.color)
@@ -51,7 +51,7 @@ struct AviationSportDetailView: View {
                 }
                 .padding(.horizontal)
                 
-                // Description Section
+                
                 VStack(alignment: .leading, spacing: 12) {
                     SectionHeader(title: "Description", icon: "text.alignleft")
                     
@@ -62,7 +62,7 @@ struct AviationSportDetailView: View {
                 }
                 .padding(.horizontal)
                 
-                // Equipment Section
+                
                 VStack(alignment: .leading, spacing: 12) {
                     SectionHeader(title: "Required Equipment", icon: "gear")
                     
@@ -77,7 +77,7 @@ struct AviationSportDetailView: View {
                 }
                 .padding(.horizontal)
                 
-                // Locations Section
+                
                 VStack(alignment: .leading, spacing: 12) {
                     SectionHeader(title: "Popular Locations", icon: "location")
                     
@@ -92,7 +92,7 @@ struct AviationSportDetailView: View {
                 }
                 .padding(.horizontal)
                 
-                // Rules Section
+                
                 VStack(alignment: .leading, spacing: 12) {
                     SectionHeader(title: "Rules & Requirements", icon: "list.bullet.clipboard")
                     
@@ -105,7 +105,7 @@ struct AviationSportDetailView: View {
                 .padding(.horizontal)
                 
                 
-                // Bottom Spacing
+                
                 Spacer(minLength: 20)
             }
             }
@@ -298,10 +298,9 @@ struct RuleRow: View {
     }
 }
 
-// MARK: - Helper Functions
 
 private func getSportImageName(for sportName: String) -> String {
-    // Мапінг назв спорту на назви картинок
+    
     let sportImageMapping: [String: String] = [
         "Aerobatic Flying": "Aerobatic Flying",
         "Glider Racing": "Glider Racing", 
@@ -325,6 +324,6 @@ private func getSportImageName(for sportName: String) -> String {
         "Aerobatic Team": "Aerobatic Team"
     ]
     
-    // Повертаємо назву картинки або fallback
+    
     return sportImageMapping[sportName] ?? "Aerobatic Flying"
 }

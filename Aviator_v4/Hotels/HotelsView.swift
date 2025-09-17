@@ -67,7 +67,7 @@ struct HotelRowView: View {
     
     var body: some View {
         HStack(spacing: 12) {
-            // Hotel Image
+            
             if let imageName = hotel.imageURL {
                 Image(imageName)
                     .resizable()
