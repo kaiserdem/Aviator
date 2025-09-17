@@ -32,7 +32,7 @@ final class WikipediaService {
             let wikipediaTitle = mapSportNameToWikipediaTitle(sportName)
             let encodedTitle = wikipediaTitle.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? wikipediaTitle
             
-            let url = URL(string: "https:
+            let url = URL(string: "https://en.wikipedia.org/api/rest_v1/page/summary/\(encodedTitle)")!
             
             var request = URLRequest(url: url)
             request.setValue("application/json", forHTTPHeaderField: "Accept")

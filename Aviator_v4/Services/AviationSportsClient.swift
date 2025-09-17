@@ -51,8 +51,7 @@ final class AviationSportsService {
     }
     
     private func getMockImageURL(for sportName: String) -> String? {
-        
-        return "https:
+        return "https://images.pexels.com/photos/1268855/pexels-photo-1268855.jpeg"
     }
     
     func getSports(category: SportCategory, location: String) async -> [AviationSport] {

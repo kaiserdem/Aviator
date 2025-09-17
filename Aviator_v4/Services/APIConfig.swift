@@ -3,11 +3,10 @@ import Foundation
 struct APIConfig {
     static let amadeusAPIKey = "eJgrtNELJeHuwATUSGsGZKbRcJnZ3C1y"
     static let amadeusAPISecret = "jnjmOFAwYBzBfsUa"
-    static let baseURL = "https:
-    
+    static let baseURL = "https://test.api.amadeus.com"
     
     static let unsplashAPIKey = "YOUR_UNSPLASH_ACCESS_KEY" 
-    static let unsplashBaseURL = "https:
+    static let unsplashBaseURL = "https://api.unsplash.com"
     
     static var accessToken: String?
     
