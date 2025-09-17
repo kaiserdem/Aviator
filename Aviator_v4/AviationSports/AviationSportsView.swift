@@ -180,48 +180,13 @@ struct AviationSportRowView: View {
         HStack(spacing: 12) {
             // Sport Image
             VStack {
-                if let imageURL = sport.imageURL, let url = URL(string: imageURL) {
-                    AsyncImage(url: url) { phase in
-                        switch phase {
-                        case .success(let image):
-                            image
-                                .resizable()
-                                .aspectRatio(contentMode: .fill)
-                                .frame(width: 60, height: 60)
-                                .background(sportColor(for: sport.category).opacity(0.1))
-                                .cornerRadius(12)
-                                .clipped()
-                        case .failure(_):
-                            Image(systemName: sportIcon(for: sport.category))
-                                .font(.system(size: 30))
-                                .foregroundColor(sportColor(for: sport.category))
-                                .frame(width: 60, height: 60)
-                                .background(sportColor(for: sport.category).opacity(0.1))
-                                .cornerRadius(12)
-                        case .empty:
-                            Image(systemName: sportIcon(for: sport.category))
-                                .font(.system(size: 30))
-                                .foregroundColor(sportColor(for: sport.category))
-                                .frame(width: 60, height: 60)
-                                .background(sportColor(for: sport.category).opacity(0.1))
-                                .cornerRadius(12)
-                        @unknown default:
-                            Image(systemName: sportIcon(for: sport.category))
-                                .font(.system(size: 30))
-                                .foregroundColor(sportColor(for: sport.category))
-                                .frame(width: 60, height: 60)
-                                .background(sportColor(for: sport.category).opacity(0.1))
-                                .cornerRadius(12)
-                        }
-                    }
-                } else {
-                    Image(systemName: sportIcon(for: sport.category))
-                        .font(.system(size: 40))
-                        .foregroundColor(sportColor(for: sport.category))
-                        .frame(width: 60, height: 60)
-                        .background(sportColor(for: sport.category).opacity(0.1))
-                        .cornerRadius(12)
-                }
+                Image(getSportImageName(for: sport.name))
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: 60, height: 60)
+                    .background(sportColor(for: sport.category).opacity(0.1))
+                    .cornerRadius(12)
+                    .clipped()
             }
             
             // Content
@@ -357,4 +322,35 @@ struct AviationSportRowView: View {
             AppFeature()
         }
     )
+}
+
+// MARK: - Helper Functions
+
+private func getSportImageName(for sportName: String) -> String {
+    // Мапінг назв спорту на назви картинок
+    let sportImageMapping: [String: String] = [
+        "Aerobatic Flying": "Aerobatic Flying",
+        "Glider Racing": "Glider Racing", 
+        "Skydiving Formation": "Skydiving Formation",
+        "Hot Air Balloon Racing": "Hot Air Balloon Racing",
+        "Air Racing": "Air Racing",
+        "Formation Flying": "Formation Flying",
+        "Precision Landing": "Precision Landing",
+        "Wing Walking": "Wing Walking",
+        "Helicopter Precision": "Helicopter Precision",
+        "Ultralight Racing": "Ultralight Racing",
+        "Aerobatic Helicopter": "Aerobatic Helicopter",
+        "Paragliding Cross Country": "Paragliding Cross Country",
+        "Base Jumping": "Base Jumping",
+        "Aerobatic Glider": "Aerobatic Glider",
+        "Hang Gliding Racing": "Hang Gliding Racing",
+        "Aerobatic Formation": "Aerobatic Formation",
+        "Helicopter Slalom": "Helicopter Slalom",
+        "Aerobatic Solo": "Aerobatic Solo",
+        "Glider Aerobatics": "Glider Aerobatics",
+        "Aerobatic Team": "Aerobatic Team"
+    ]
+    
+    // Повертаємо назву картинки або fallback
+    return sportImageMapping[sportName] ?? "Aerobatic Flying"
 }
