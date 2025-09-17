@@ -49,7 +49,7 @@ struct HotelsView: View {
                             }
                         }
                     }
-                    .navigationTitle("Hotels")
+                    .navigationTitle("Hotels for an event")
                     .navigationBarTitleDisplayMode(.large)
                     .toolbarColorScheme(.dark, for: .navigationBar)
                     .onAppear {

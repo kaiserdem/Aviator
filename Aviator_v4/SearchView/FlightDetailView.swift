@@ -3,6 +3,7 @@ import ComposableArchitecture
 
 struct FlightDetailView: View {
     let flight: Flight
+    let appStore: StoreOf<AppFeature>
     @Environment(\.dismiss) private var dismiss
     
     var body: some View {
@@ -125,11 +126,11 @@ struct FlightDetailView: View {
                             .cornerRadius(12)
                             
                             // Book Hotel Button
-                            Button(action: {
-                                // Navigate to Hotels tab
-                                // This would need to be implemented with proper navigation
-                                print("🏨 Navigate to Hotels tab for \(flight.destination)")
-                            }) {
+                            WithViewStore(self.appStore, observe: { $0 }) { appViewStore in
+                                Button(action: {
+                                    print("🏨 Navigate to Hotels tab for \(flight.destination)")
+                                    appViewStore.send(.selectTab(.hotels))
+                                }) {
                                 HStack {
                                     Image(systemName: "bed.double.fill")
                                         .foregroundColor(.buttonTextColor)
@@ -142,9 +143,10 @@ struct FlightDetailView: View {
                                 .background(.white)
                                 .cornerRadius(8)
                                 .shadow(color: .black.opacity(0.2), radius: 4)
+                                }
+                                .buttonStyle(PlainButtonStyle())
                             }
-                            .buttonStyle(PlainButtonStyle())
-                        }
+                            }
                     }
                     .padding(.horizontal)
                 }

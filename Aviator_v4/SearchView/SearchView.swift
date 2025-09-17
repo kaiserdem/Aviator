@@ -3,6 +3,7 @@ import ComposableArchitecture
 
 struct SearchView: View {
     let store: StoreOf<SearchFeature>
+    let appStore: StoreOf<AppFeature>
     
     var body: some View {
         WithViewStore(self.store, observe: { $0 }) { viewStore in
@@ -151,7 +152,7 @@ struct SearchView: View {
                                 .padding()
                             } else {
                                 List(viewStore.flights) { flight in
-                                    NavigationLink(destination: FlightDetailView(flight: flight)) {
+                                    NavigationLink(destination: FlightDetailView(flight: flight, appStore: self.appStore)) {
                                         FlightRowView(flight: flight)
                                     }
                                     .buttonStyle(PlainButtonStyle())
@@ -159,7 +160,7 @@ struct SearchView: View {
                             }
                         }
                     }
-                .navigationTitle("Flights")
+                .navigationTitle("Flights for an event")
                 .navigationBarTitleDisplayMode(.large)
                 .toolbarColorScheme(.dark, for: .navigationBar)
                 .onAppear {
@@ -252,6 +253,9 @@ struct FlightRowView: View {
                         SearchView(
         store: Store(initialState: SearchFeature.State()) {
             SearchFeature()
+        },
+        appStore: Store(initialState: AppFeature.State()) {
+            AppFeature()
         }
     )
 }

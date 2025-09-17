@@ -95,7 +95,7 @@ struct FavoritesView: View {
                             .id(scrollViewId)
                         }
                     }
-                    .navigationTitle("Favorites")
+                    .navigationTitle("Favorites sports")
                     .navigationBarTitleDisplayMode(.large)
                     .toolbarColorScheme(.dark, for: .navigationBar)
                     .toolbar {
