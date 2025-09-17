@@ -6,7 +6,7 @@ struct APIConfig {
     static let baseURL = "https://test.api.amadeus.com"
     
     // Unsplash API
-    static let unsplashAPIKey = "YOUR_UNSPLASH_ACCESS_KEY" // Replace with your Unsplash access key
+    static let unsplashAPIKey = "YOUR_UNSPLASH_ACCESS_KEY" 
     static let unsplashBaseURL = "https://api.unsplash.com"
     
     static var accessToken: String?

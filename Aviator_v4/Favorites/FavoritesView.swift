@@ -17,14 +17,7 @@ struct FavoritesView: View {
                     VStack(spacing: 16) {
                         // Header
                         VStack(spacing: 8) {
-                            Image(systemName: "heart.fill")
-                                .font(.largeTitle)
-                                .foregroundColor(.red)
-                            
-                            Text("My Favorite Sports")
-                                .font(.title2)
-                                .fontWeight(.bold)
-                                .foregroundColor(.white)
+                           
                             
                             Text("Sports you've marked as favorites")
                                 .font(.subheadline)
@@ -104,7 +97,7 @@ struct FavoritesView: View {
                                 Button("Clear All") {
                                     appViewStore.send(.clearAllFavorites)
                                 }
-                                .foregroundColor(.red)
+                                .foregroundColor(.white)
                             }
                         }
                     }
@@ -129,25 +122,26 @@ struct FavoriteSportRowView: View {
     
     var body: some View {
         HStack(spacing: 12) {
-            // Sport Icon
+            // Sport Image
             VStack {
-                Image(systemName: sportIcon(for: sport.category))
-                    .font(.system(size: 30))
-                    .foregroundColor(sportColor(for: sport.category))
+                Image(getSportImageName(for: sport.name))
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
                     .frame(width: 60, height: 60)
-                    .background(sportColor(for: sport.category).opacity(0.1))
+                    .background(sportColor(for: sport.category).opacity(0.2))
                     .cornerRadius(12)
+                    .clipped()
             }
             
             // Content
             VStack(alignment: .leading, spacing: 8) {
                 Text(sport.name)
                     .font(.headline)
-                    .foregroundColor(.primary)
+                    .foregroundColor(.white)
                 
                 Text(sport.description)
-                    .font(.body)
-                    .foregroundColor(.secondary)
+                    .font(.subheadline)
+                    .foregroundColor(.white.opacity(0.8))
                     .lineLimit(2)
             }
             
@@ -157,15 +151,15 @@ struct FavoriteSportRowView: View {
             Button(action: {
                 onRemove(sport.id.uuidString)
             }) {
-                Image(systemName: "heart.fill")
+                Image(systemName: "trash")
                     .foregroundColor(.red)
                     .font(.title2)
             }
         }
-        .padding(.vertical, 8)
-        .padding(.horizontal, 12)
-        .background(Color.white.opacity(0.1))
+        .padding()
+        .background(.white.opacity(0.1))
         .cornerRadius(12)
+        .shadow(color: .black.opacity(0.2), radius: 4)
     }
     
     private func sportIcon(for category: SportCategory) -> String {
@@ -204,4 +198,35 @@ struct FavoriteSportRowView: View {
             AppFeature()
         }
     )
+}
+
+// MARK: - Helper Functions
+
+private func getSportImageName(for sportName: String) -> String {
+    // Мапінг назв спорту на назви картинок
+    let sportImageMapping: [String: String] = [
+        "Aerobatic Flying": "Aerobatic Flying",
+        "Glider Racing": "Glider Racing", 
+        "Skydiving Formation": "Skydiving Formation",
+        "Hot Air Balloon Racing": "Hot Air Balloon Racing",
+        "Air Racing": "Air Racing",
+        "Formation Flying": "Formation Flying",
+        "Precision Landing": "Precision Landing",
+        "Wing Walking": "Wing Walking",
+        "Helicopter Precision": "Helicopter Precision",
+        "Ultralight Racing": "Ultralight Racing",
+        "Aerobatic Helicopter": "Aerobatic Helicopter",
+        "Paragliding Cross Country": "Paragliding Cross Country",
+        "Base Jumping": "Base Jumping",
+        "Aerobatic Glider": "Aerobatic Glider",
+        "Hang Gliding Racing": "Hang Gliding Racing",
+        "Aerobatic Formation": "Aerobatic Formation",
+        "Helicopter Slalom": "Helicopter Slalom",
+        "Aerobatic Solo": "Aerobatic Solo",
+        "Glider Aerobatics": "Glider Aerobatics",
+        "Aerobatic Team": "Aerobatic Team"
+    ]
+    
+    // Повертаємо назву картинки або fallback
+    return sportImageMapping[sportName] ?? "Aerobatic Flying"
 }
