@@ -19,13 +19,10 @@ struct SearchView: View {
                                         Text("From:")
                                             .font(.caption)
                                             .foregroundColor(.white)
-                                        Picker("Origin", selection: viewStore.binding(get: \.origin, send: { .originChanged($0) })) {
-                                            Text("New York (NYC)").tag("NYC")
-                                            Text("Los Angeles (LAX)").tag("LAX")
-                                            Text("Chicago (ORD)").tag("ORD")
-                                            Text("Miami (MIA)").tag("MIA")
-                                        }
-                                        .pickerStyle(MenuPickerStyle())
+                                        TextField("Enter origin (e.g., Paris, NYC)", text: viewStore.binding(get: \.origin, send: { .originChanged($0) }))
+                                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                                            .autocapitalization(.allCharacters)
+                                            .disableAutocorrection(true)
                                     }
                                     
                                     Spacer()
@@ -34,13 +31,10 @@ struct SearchView: View {
                                         Text("To:")
                                             .font(.caption)
                                             .foregroundColor(.white)
-                                        Picker("Destination", selection: viewStore.binding(get: \.destination, send: { .destinationChanged($0) })) {
-                                            Text("Los Angeles (LAX)").tag("LAX")
-                                            Text("New York (NYC)").tag("NYC")
-                                            Text("Chicago (ORD)").tag("ORD")
-                                            Text("Miami (MIA)").tag("MIA")
-                                        }
-                                        .pickerStyle(MenuPickerStyle())
+                                        TextField("Enter destination (e.g., Sofia, LAX)", text: viewStore.binding(get: \.destination, send: { .destinationChanged($0) }))
+                                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                                            .autocapitalization(.allCharacters)
+                                            .disableAutocorrection(true)
                                     }
                                 }
                                 
@@ -70,6 +64,7 @@ struct SearchView: View {
                                 .buttonStyle(.borderedProminent)
                                 .tint(.white)
                                 .foregroundColor(.buttonTextColor)
+                                .disabled(viewStore.origin.isEmpty || viewStore.destination.isEmpty)
                             }
                             .padding()
                             
@@ -88,15 +83,72 @@ struct SearchView: View {
                                         .multilineTextAlignment(.center)
                                 }
                                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-                            } else if viewStore.flights.isEmpty {
-                                VStack {
-                                    Image(systemName: "airplane")
-                                        .font(.largeTitle)
-                                        .foregroundColor(.gray)
-                                    Text("No flights found")
-                                        .foregroundColor(.white)
+                            } else if viewStore.flights.isEmpty && viewStore.hasSearched {
+                                // Красива заглушка для пустого списку після пошуку
+                                VStack(spacing: 20) {
+                                    Image(systemName: "airplane.departure")
+                                        .font(.system(size: 80))
+                                        .foregroundColor(.white.opacity(0.7))
+                                    
+                                    VStack(spacing: 8) {
+                                        Text("No flights found")
+                                            .font(.title2)
+                                            .fontWeight(.bold)
+                                            .foregroundColor(.white)
+                                        
+                                        Text("Try adjusting your search criteria")
+                                            .font(.subheadline)
+                                            .foregroundColor(.white.opacity(0.8))
+                                            .multilineTextAlignment(.center)
+                                        
+                                        Text("• Check airport codes (e.g., NYC, LAX)")
+                                            .font(.caption)
+                                            .foregroundColor(.white.opacity(0.6))
+                                        
+                                        Text("• Try different dates")
+                                            .font(.caption)
+                                            .foregroundColor(.white.opacity(0.6))
+                                        
+                                        Text("• Verify airport names")
+                                            .font(.caption)
+                                            .foregroundColor(.white.opacity(0.6))
+                                    }
+                                    
+                                    Button("Search Again") {
+                                        viewStore.send(.searchFlights)
+                                    }
+                                    .buttonStyle(.borderedProminent)
+                                    .tint(.white)
+                                    .foregroundColor(.buttonTextColor)
                                 }
                                 .frame(maxWidth: .infinity, maxHeight: .infinity)
+                                .padding()
+                            } else if viewStore.flights.isEmpty && !viewStore.hasSearched {
+                                // Початковий стан - ще не було пошуку
+                                VStack(spacing: 20) {
+                                    Image(systemName: "magnifyingglass")
+                                        .font(.system(size: 80))
+                                        .foregroundColor(.white.opacity(0.7))
+                                    
+                                    VStack(spacing: 8) {
+                                        Text("Search for flights")
+                                            .font(.title2)
+                                            .fontWeight(.bold)
+                                            .foregroundColor(.white)
+                                        
+                                        Text("Enter your travel details above to find available flights")
+                                            .font(.subheadline)
+                                            .foregroundColor(.white.opacity(0.8))
+                                            .multilineTextAlignment(.center)
+                                        
+                                        Text("💡 Tip: You can enter city names (Paris, Sofia) or airport codes (CDG, SOF)")
+                                            .font(.caption)
+                                            .foregroundColor(.white.opacity(0.6))
+                                            .padding(.top, 8)
+                                    }
+                                }
+                                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                                .padding()
                             } else {
                                 List(viewStore.flights) { flight in
                                     FlightRowView(flight: flight)

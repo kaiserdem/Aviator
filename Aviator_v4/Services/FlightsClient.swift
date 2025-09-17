@@ -34,13 +34,19 @@ final class FlightsService {
     
     func searchFlights(origin: String, destination: String, departureDate: Date, passengers: Int) async -> [Flight] {
         do {
+            // Validate and normalize airport codes (from v3 architecture)
+            let normalizedOrigin = normalizeAirportCode(origin)
+            let normalizedDestination = normalizeAirportCode(destination)
+            
+            print("🌐 Normalized codes: \(normalizedOrigin) -> \(normalizedDestination)")
+            
             let token = try await APIConfig.getAccessToken()
             
             let formatter = DateFormatter()
             formatter.dateFormat = "yyyy-MM-dd"
             let departureDateString = formatter.string(from: departureDate)
             
-            let url = URL(string: "\(APIConfig.baseURL)/v2/shopping/flight-offers?originLocationCode=\(origin)&destinationLocationCode=\(destination)&departureDate=\(departureDateString)&adults=\(passengers)&max=10")!
+            let url = URL(string: "\(APIConfig.baseURL)/v2/shopping/flight-offers?originLocationCode=\(normalizedOrigin)&destinationLocationCode=\(normalizedDestination)&departureDate=\(departureDateString)&adults=\(passengers)&max=10")!
             
             var request = URLRequest(url: url)
             request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
@@ -57,8 +63,8 @@ final class FlightsService {
             return flightsResponse.data.map { flightData in
                 Flight(
                     id: flightData.id,
-                    origin: flightData.itineraries.first?.segments.first?.departure?.iataCode ?? origin,
-                    destination: flightData.itineraries.first?.segments.last?.arrival?.iataCode ?? destination,
+                    origin: flightData.itineraries.first?.segments.first?.departure?.iataCode ?? normalizedOrigin,
+                    destination: flightData.itineraries.first?.segments.last?.arrival?.iataCode ?? normalizedDestination,
                     departureTime: flightData.itineraries.first?.segments.first?.departure?.at ?? "",
                     arrivalTime: flightData.itineraries.first?.segments.last?.arrival?.at ?? "",
                     airline: flightData.itineraries.first?.segments.first?.carrierCode ?? "Unknown",
@@ -71,54 +77,84 @@ final class FlightsService {
             }
         } catch {
             print("❌ Flights API error: \(error)")
-            // Return mock data if API fails
-            return generateMockFlights(origin: origin, destination: destination)
+            return []
         }
     }
     
-    private func generateMockFlights(origin: String, destination: String) -> [Flight] {
-        return [
-            Flight(
-                id: "1",
-                origin: origin,
-                destination: destination,
-                departureTime: "2024-01-15T08:30:00",
-                arrivalTime: "2024-01-15T12:45:00",
-                airline: "UA",
-                flightNumber: "UA123",
-                price: "299.00",
-                currency: "USD",
-                duration: "PT4H15M",
-                stops: 0
-            ),
-            Flight(
-                id: "2",
-                origin: origin,
-                destination: destination,
-                departureTime: "2024-01-15T14:20:00",
-                arrivalTime: "2024-01-15T18:35:00",
-                airline: "AA",
-                flightNumber: "AA456",
-                price: "349.00",
-                currency: "USD",
-                duration: "PT4H15M",
-                stops: 0
-            ),
-            Flight(
-                id: "3",
-                origin: origin,
-                destination: destination,
-                departureTime: "2024-01-15T20:10:00",
-                arrivalTime: "2024-01-16T00:25:00",
-                airline: "DL",
-                flightNumber: "DL789",
-                price: "279.00",
-                currency: "USD",
-                duration: "PT4H15M",
-                stops: 1
-            )
+    // MARK: - Airport Code Normalization (from v3 architecture)
+    
+    private func normalizeAirportCode(_ input: String) -> String {
+        let code = input.uppercased().trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        // Common airport code mappings
+        let mappings: [String: String] = [
+            "WARSHAWA": "WAW",    // Warsaw
+            "WARSAW": "WAW",
+            "SIFIA": "SOF",       // Sofia
+            "SOFIA": "SOF",
+            "PARIS": "CDG",
+            "LONDON": "LHR",
+            "NEW YORK": "NYC",
+            "LOS ANGELES": "LAX",
+            "MADRID": "MAD",
+            "ROME": "FCO",
+            "BERLIN": "BER",
+            "MUNICH": "MUC",
+            "FRANKFURT": "FRA",
+            "AMSTERDAM": "AMS",
+            "VIENNA": "VIE",
+            "PRAGUE": "PRG",
+            "BUDAPEST": "BUD",
+            "STOCKHOLM": "ARN",
+            "COPENHAGEN": "CPH",
+            "OSLO": "OSL",
+            "HELSINKI": "HEL",
+            "MOSCOW": "SVO",
+            "ISTANBUL": "IST",
+            "DUBAI": "DXB",
+            "TOKYO": "NRT",
+            "SEOUL": "ICN",
+            "BEIJING": "PEK",
+            "SHANGHAI": "PVG",
+            "SYDNEY": "SYD",
+            "MELBOURNE": "MEL",
+            "TORONTO": "YYZ",
+            "VANCOUVER": "YVR",
+            "MEXICO CITY": "MEX",
+            "SAO PAULO": "GRU",
+            "BUENOS AIRES": "EZE",
+            "JOHANNESBURG": "JNB",
+            "CAIRO": "CAI",
+            "MUMBAI": "BOM",
+            "DELHI": "DEL",
+            "BANGKOK": "BKK",
+            "SINGAPORE": "SIN",
+            "HONG KONG": "HKG",
+            "TAIPEI": "TPE"
         ]
+        
+        // If it's already a 3-letter code, return as is
+        if code.count == 3 && code.allSatisfy({ $0.isLetter }) {
+            return code
+        }
+        
+        // Try to find mapping
+        if let mapped = mappings[code] {
+            return mapped
+        }
+        
+        // If no mapping found, try to extract 3-letter code from input
+        let letters = code.filter { $0.isLetter }
+        if letters.count >= 3 {
+            return String(letters.prefix(3))
+        }
+        
+        // Fallback to original input (will likely cause API error, but better than crashing)
+        print("⚠️ Could not normalize airport code: \(input)")
+        return code
     }
+    
+    
 }
 
 // MARK: - Models

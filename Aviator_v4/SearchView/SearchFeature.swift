@@ -5,11 +5,12 @@ struct SearchFeature: Reducer {
     struct State: Equatable {
         var isLoading = false
         var flights: [Flight] = []
-        var origin = "NYC"
-        var destination = "LAX"
+        var origin = ""
+        var destination = ""
         var departureDate = Date()
         var passengers = 1
         var errorMessage: String?
+        var hasSearched = false // Чи був пошук виконаний
         
         init() {}
     }
@@ -54,8 +55,20 @@ struct SearchFeature: Reducer {
                 return .none
                 
             case .searchFlights:
+                // Перевіряємо чи заповнені обов'язкові поля
+                guard !state.origin.isEmpty && !state.destination.isEmpty else {
+                    state.errorMessage = "Please enter both origin and destination"
+                    return .none
+                }
+                
+                guard state.origin != state.destination else {
+                    state.errorMessage = "Origin and destination cannot be the same"
+                    return .none
+                }
+                
                 state.isLoading = true
                 state.errorMessage = nil
+                state.hasSearched = true
                 return .run { [origin = state.origin, destination = state.destination, departureDate = state.departureDate, passengers = state.passengers] send in
                     let flights = await flightsClient.searchFlights(origin, destination, departureDate, passengers)
                     await send(.flightsResponse(flights))
