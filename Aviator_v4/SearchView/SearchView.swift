@@ -151,7 +151,10 @@ struct SearchView: View {
                                 .padding()
                             } else {
                                 List(viewStore.flights) { flight in
-                                    FlightRowView(flight: flight)
+                                    NavigationLink(destination: FlightDetailView(flight: flight)) {
+                                        FlightRowView(flight: flight)
+                                    }
+                                    .buttonStyle(PlainButtonStyle())
                                 }
                             }
                         }

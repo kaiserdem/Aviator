@@ -8,38 +8,16 @@ struct HotelsView: View {
         WithViewStore(self.store, observe: { $0 }) { viewStore in
             NavigationStack {
                 ZStack {
-                    // Градієнтний фон
                     AviationGradientBackground()
                     
                     VStack(spacing: 16) {
-                        // Search Section
                         VStack(spacing: 12) {
                             TextField("Search hotels...", text: viewStore.binding(get: \.searchText, send: { .searchTextChanged($0) }))
                                 .textFieldStyle(RoundedBorderTextFieldStyle())
                             
-                            HStack {
-                                Text("City:")
-                                    .foregroundColor(.white)
-                                    .fontWeight(.medium)
-                                Picker("City", selection: viewStore.binding(get: \.selectedCity, send: { .cityChanged($0) })) {
-                                    Text("Paris").tag("PAR")
-                                    Text("London").tag("LON")
-                                    Text("New York").tag("NYC")
-                                    Text("Tokyo").tag("TYO")
-                                }
-                                .pickerStyle(SegmentedPickerStyle())
-                                
-                                Button("Search") {
-                                    viewStore.send(.searchHotels)
-                                }
-                                .buttonStyle(.borderedProminent)
-                                .tint(.white)
-                                .foregroundColor(.buttonTextColor)
-                            }
                         }
                         .padding()
                         
-                        // Content
                         if viewStore.isLoading {
                             ProgressView("Searching hotels...")
                                 .foregroundColor(.white)
