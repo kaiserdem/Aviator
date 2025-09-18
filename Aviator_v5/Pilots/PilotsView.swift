@@ -83,6 +83,7 @@ struct PilotsView: View {
                                         }
                                     }
                                     .padding(.horizontal, 16)
+                                    .padding(.top, 30)
                                 }
                                 .padding(.vertical, 8)
                                 
@@ -102,7 +103,7 @@ struct PilotsView: View {
                             }
                         }
                     }
-                    .navigationBarTitleDisplayMode(.large)
+                    .navigationBarTitleDisplayMode(.inline)
                     .toolbarColorScheme(.dark, for: .navigationBar)
                     .toolbar {
                         ToolbarItem(placement: .principal) {
@@ -120,6 +121,21 @@ struct PilotsView: View {
             }
             .onAppear {
                 viewStore.send(.onAppear)
+                
+                // Налаштування кольору заголовка навігації
+                let appearance = UINavigationBarAppearance()
+                appearance.configureWithOpaqueBackground()
+                appearance.backgroundColor = UIColor.clear
+                appearance.titleTextAttributes = [
+                    .foregroundColor: UIColor(red: 0.7, green: 0.13, blue: 0.13, alpha: 1.0) // Червоний колір
+                ]
+                appearance.largeTitleTextAttributes = [
+                    .foregroundColor: UIColor(red: 0.7, green: 0.13, blue: 0.13, alpha: 1.0) // Червоний колір
+                ]
+                
+                UINavigationBar.appearance().standardAppearance = appearance
+                UINavigationBar.appearance().scrollEdgeAppearance = appearance
+                UINavigationBar.appearance().compactAppearance = appearance
             }
         }
     }
@@ -153,8 +169,6 @@ struct FilterChip: View {
                 .padding(.horizontal, 12)
                 .padding(.vertical, 6)
                 .background(Theme.Gradients.soft)
-
-                //.background(isSelected ? Theme.Gradients. : Theme.Palette.white.opacity(0.1))
                 .foregroundColor(Theme.Palette.white)
                 .cornerRadius(16)
         }
@@ -167,29 +181,40 @@ struct PilotRowView: View {
     
     var body: some View {
         HStack(spacing: 12) {
-            // Зображення пілота або плейсхолдер
-            if let imageURL = pilot.imageURL {
-                AsyncImage(url: imageURL) { image in
-                    image
+            // Зображення пілота
+            Group {
+                if UIImage(named: pilot.imageName) != nil {
+                    // Локальне зображення з Assets
+                    Image(pilot.imageName)
                         .resizable()
                         .aspectRatio(contentMode: .fill)
                         .frame(width: 60, height: 60)
                         .clipShape(Circle())
-                } placeholder: {
+                } else if let imageURL = pilot.imageURL {
+                    // Завантаження з інтернету
+                    AsyncImage(url: imageURL) { image in
+                        image
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: 60, height: 60)
+                            .clipShape(Circle())
+                    } placeholder: {
+                        Image(systemName: "person.circle.fill")
+                            .font(.system(size: 50))
+                            .foregroundColor(Theme.Palette.white.opacity(Theme.Opacity.textSecondary))
+                            .frame(width: 60, height: 60)
+                            .background(Theme.Palette.white.opacity(Theme.Opacity.cardBackground))
+                            .cornerRadius(30)
+                    }
+                } else {
+                    // Плейсхолдер
                     Image(systemName: "person.circle.fill")
                         .font(.system(size: 50))
-                        .foregroundColor(Theme.Palette.black.opacity(Theme.Opacity.textSecondary))
+                        .foregroundColor(Theme.Palette.white.opacity(Theme.Opacity.textSecondary))
                         .frame(width: 60, height: 60)
                         .background(Theme.Palette.white.opacity(Theme.Opacity.cardBackground))
                         .cornerRadius(30)
                 }
-            } else {
-                Image(systemName: "person.circle.fill")
-                    .font(.system(size: 50))
-                    .foregroundColor(Theme.Palette.white.opacity(Theme.Opacity.textSecondary))
-                    .frame(width: 60, height: 60)
-                    .background(Theme.Palette.white.opacity(Theme.Opacity.cardBackground))
-                    .cornerRadius(30)
             }
             
             VStack(alignment: .leading, spacing: 4) {
@@ -227,7 +252,7 @@ struct PilotRowView: View {
             Spacer()
             
             Image(systemName: "chevron.right")
-                .foregroundColor(Theme.Palette.white.opacity(Theme.Opacity.textTertiary))
+                .foregroundColor(Theme.Palette.darkRed)
                 .font(.caption)
         }
         .padding()
@@ -244,27 +269,48 @@ struct PilotDetailView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
                 // Зображення пілота
-                if let imageURL = pilot.imageURL {
-                    AsyncImage(url: imageURL) { image in
-                        image
+                Group {
+                    if UIImage(named: pilot.imageName) != nil {
+                        // Локальне зображення з Assets
+                        Image(pilot.imageName)
                             .resizable()
                             .aspectRatio(contentMode: .fill)
                             .frame(maxWidth: .infinity)
                             .frame(height: 250)
                             .clipShape(RoundedRectangle(cornerRadius: 16))
                             .shadow(color: Theme.Shadows.medium, radius: 12)
-                    } placeholder: {
+                    } else if let imageURL = pilot.imageURL {
+                        // Завантаження з інтернету
+                        AsyncImage(url: imageURL) { image in
+                            image
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .frame(maxWidth: .infinity)
+                                .frame(height: 250)
+                                .clipShape(RoundedRectangle(cornerRadius: 16))
+                                .shadow(color: Theme.Shadows.medium, radius: 12)
+                        } placeholder: {
+                            Image(systemName: "person.crop.rectangle.fill")
+                                .font(.system(size: 80))
+                                .foregroundColor(Theme.Palette.white.opacity(Theme.Opacity.textSecondary))
+                                .frame(maxWidth: .infinity)
+                                .frame(height: 250)
+                                .background(Theme.Palette.white.opacity(Theme.Opacity.cardBackground))
+                                .clipShape(RoundedRectangle(cornerRadius: 16))
+                        }
+                    } else {
+                        // Плейсхолдер
                         Image(systemName: "person.crop.rectangle.fill")
                             .font(.system(size: 80))
-                            .foregroundColor(Theme.Palette.black.opacity(Theme.Opacity.textSecondary))
+                            .foregroundColor(Theme.Palette.white.opacity(Theme.Opacity.textSecondary))
                             .frame(maxWidth: .infinity)
                             .frame(height: 250)
                             .background(Theme.Palette.white.opacity(Theme.Opacity.cardBackground))
                             .clipShape(RoundedRectangle(cornerRadius: 16))
                     }
-                    .frame(maxWidth: .infinity, alignment: .center)
-                    .padding(.bottom, 16)
                 }
+                .frame(maxWidth: .infinity, alignment: .center)
+                .padding(.bottom, 16)
                 
                 // Заголовок
                 VStack(alignment: .leading, spacing: 8) {
@@ -306,7 +352,7 @@ struct PilotDetailView: View {
                 }
                 
                 Divider()
-                    .background(Theme.Palette.white.opacity(Theme.Opacity.textTertiary))
+                    .background(Theme.Palette.darkRed)
                 
                 // Біографія
                 VStack(alignment: .leading, spacing: 8) {
@@ -321,7 +367,7 @@ struct PilotDetailView: View {
                 }
                 
                 Divider()
-                    .background(Theme.Palette.white.opacity(Theme.Opacity.textTertiary))
+                    .background(Theme.Palette.darkRed)
                 
                 // Досягнення
                 VStack(alignment: .leading, spacing: 8) {

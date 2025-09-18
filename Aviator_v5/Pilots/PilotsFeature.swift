@@ -423,6 +423,385 @@ struct PilotsFeature {
                 imageURL: nil,
                 era: .modern,
                 category: .commercial
+            ),
+            
+            // Нові пілоти з вашого списку
+            Pilot(
+                name: "Karen Skinner",
+                fullName: "Karen Skinner",
+                nationality: "Spanish",
+                birthDate: "Unknown",
+                deathDate: nil,
+                achievements: [
+                    "Microlights and Paramotors specialist",
+                    "Aviation instructor",
+                    "Pioneer in ultralight aviation"
+                ],
+                biography: "Karen Skinner is a Spanish aviation specialist known for her expertise in microlights and paramotors, contributing to the development of ultralight aviation.",
+                imageName: "KAREN SKINNER",
+                imageURL: nil,
+                era: .modern,
+                category: .microlights
+            ),
+            
+            Pilot(
+                name: "Wanraya Wannapong",
+                fullName: "Wanraya Wannapong",
+                nationality: "Thai",
+                birthDate: "Unknown",
+                deathDate: nil,
+                achievements: [
+                    "Drone racing champion",
+                    "Aerial photography specialist",
+                    "UAV technology pioneer"
+                ],
+                biography: "Wanraya Wannapong is a Thai drone pilot and aerial photography specialist, known for her expertise in UAV technology and drone racing.",
+                imageName: "WANRAYA WANNAPONG ",
+                imageURL: nil,
+                era: .modern,
+                category: .drones
+            ),
+            
+            Pilot(
+                name: "Castor Fantoba",
+                fullName: "Castor Fantoba",
+                nationality: "Spanish",
+                birthDate: "Unknown",
+                deathDate: nil,
+                achievements: [
+                    "Aerobatics champion",
+                    "Air show performer",
+                    "Flight instructor"
+                ],
+                biography: "Castor Fantoba is a Spanish aerobatics pilot known for his precision flying and air show performances.",
+                imageName: "CASTOR FANTOBA",
+                imageURL: nil,
+                era: .modern,
+                category: .aerobatics
+            ),
+            
+            Pilot(
+                name: "Klaus Ohlmann",
+                fullName: "Klaus Ohlmann",
+                nationality: "German",
+                birthDate: "Unknown",
+                deathDate: nil,
+                achievements: [
+                    "Gliding world record holder",
+                    "Long-distance gliding specialist",
+                    "Meteorology expert"
+                ],
+                biography: "Klaus Ohlmann is a German glider pilot known for his world records in long-distance gliding and expertise in meteorology.",
+                imageName: "KLAUS OHLMANN",
+                imageURL: nil,
+                era: .modern,
+                category: .gliding
+            ),
+            
+            Pilot(
+                name: "Corinna Schwiegshausen",
+                fullName: "Corinna Schwiegshausen",
+                nationality: "German",
+                birthDate: "Unknown",
+                deathDate: nil,
+                achievements: [
+                    "Hang gliding champion",
+                    "Cross-country flying specialist",
+                    "Aviation safety advocate"
+                ],
+                biography: "Corinna Schwiegshausen is a German hang gliding pilot known for her cross-country flying achievements and aviation safety advocacy.",
+                imageName: "CORINNA SCHWIEGERSHAUSEN",
+                imageURL: nil,
+                era: .modern,
+                category: .hangGliding
+            ),
+            
+            Pilot(
+                name: "Jennifer Murray",
+                fullName: "Jennifer Murray",
+                nationality: "British",
+                birthDate: "Unknown",
+                deathDate: nil,
+                achievements: [
+                    "Helicopter world record holder",
+                    "First woman to fly around the world in helicopter",
+                    "Aviation author and speaker"
+                ],
+                biography: "Jennifer Murray is a British helicopter pilot who became the first woman to fly around the world in a helicopter, setting multiple world records.",
+                imageName: "JENNIFER MURRAY",
+                imageURL: nil,
+                era: .modern,
+                category: .rotorcraft
+            ),
+            
+            Pilot(
+                name: "David Hempleman-Adams",
+                fullName: "David Hempleman-Adams",
+                nationality: "British",
+                birthDate: "Unknown",
+                deathDate: nil,
+                achievements: [
+                    "Ballooning world record holder",
+                    "Adventure sports pioneer",
+                    "Polar explorer"
+                ],
+                biography: "David Hempleman-Adams is a British adventurer and balloonist known for his world records in ballooning and polar exploration.",
+                imageName: "DAVID HEMPLEMAN-ADAMS",
+                imageURL: nil,
+                era: .modern,
+                category: .ballooning
+            ),
+            
+            Pilot(
+                name: "Honorin Hamard",
+                fullName: "Honorin Hamard",
+                nationality: "French",
+                birthDate: "Unknown",
+                deathDate: nil,
+                achievements: [
+                    "Paragliding world champion",
+                    "Cross-country flying specialist",
+                    "Aviation instructor"
+                ],
+                biography: "Honorin Hamard is a French paragliding pilot known for his world championship titles and expertise in cross-country flying.",
+                imageName: "HONORIN HAMARD",
+                imageURL: nil,
+                era: .modern,
+                category: .paragliding
+            ),
+            
+            Pilot(
+                name: "Jean Batten",
+                fullName: "Jean Batten",
+                nationality: "New Zealand",
+                birthDate: "1909",
+                deathDate: "1982",
+                achievements: [
+                    "First woman to fly solo from England to Australia",
+                    "Multiple long-distance flight records",
+                    "Aviation pioneer"
+                ],
+                biography: "Jean Batten was a New Zealand aviator who made several record-breaking solo flights across the world in the 1930s.",
+                imageName: "JEAN BATTEN",
+                imageURL: nil,
+                era: .pioneers,
+                category: .generalAviation
+            ),
+            
+            Pilot(
+                name: "Eldon W. Joersz",
+                fullName: "Eldon W. Joersz",
+                nationality: "American",
+                birthDate: "Unknown",
+                deathDate: nil,
+                achievements: [
+                    "SR-71 Blackbird pilot",
+                    "Speed record holder",
+                    "Reconnaissance specialist"
+                ],
+                biography: "Eldon W. Joersz is an American pilot known for flying the SR-71 Blackbird and setting speed records in reconnaissance missions.",
+                imageName: "ELDON JOERSZ",
+                imageURL: nil,
+                era: .modern,
+                category: .military
+            ),
+            
+            Pilot(
+                name: "Ennio Graber",
+                fullName: "Ennio Graber",
+                nationality: "Swiss",
+                birthDate: "Unknown",
+                deathDate: nil,
+                achievements: [
+                    "Aeromodelling world champion",
+                    "Model aircraft designer",
+                    "Aviation educator"
+                ],
+                biography: "Ennio Graber is a Swiss aeromodelling champion known for his innovative model aircraft designs and world championship titles.",
+                imageName: "ENNIO GRABER",
+                imageURL: nil,
+                era: .modern,
+                category: .aeromodelling
+            ),
+            
+            Pilot(
+                name: "Thomas Grout",
+                fullName: "Thomas Grout",
+                nationality: "French",
+                birthDate: "Unknown",
+                deathDate: nil,
+                achievements: [
+                    "Drone racing champion",
+                    "FPV flying specialist",
+                    "Technology innovator"
+                ],
+                biography: "Thomas Grout is a French drone racing champion known for his FPV flying skills and contributions to drone racing technology.",
+                imageName: "THOMAS GROUT",
+                imageURL: nil,
+                era: .modern,
+                category: .drones
+            ),
+            
+            Pilot(
+                name: "Christian Ciech",
+                fullName: "Christian Ciech",
+                nationality: "Italian",
+                birthDate: "Unknown",
+                deathDate: nil,
+                achievements: [
+                    "Hang gliding world champion",
+                    "Cross-country flying specialist",
+                    "Aviation safety expert"
+                ],
+                biography: "Christian Ciech is an Italian hang gliding pilot known for his world championship titles and expertise in cross-country flying.",
+                imageName: "CHRISTIAN CIECH",
+                imageURL: nil,
+                era: .modern,
+                category: .hangGliding
+            ),
+            
+            Pilot(
+                name: "Gayeon Mo",
+                fullName: "Gayeon Mo",
+                nationality: "South Korean",
+                birthDate: "Unknown",
+                deathDate: nil,
+                achievements: [
+                    "Drone racing champion",
+                    "Aerial photography specialist",
+                    "UAV technology pioneer"
+                ],
+                biography: "Gayeon Mo is a South Korean drone pilot known for her achievements in drone racing and aerial photography.",
+                imageName: "GAYEON MO",
+                imageURL: nil,
+                era: .modern,
+                category: .drones
+            ),
+            
+            Pilot(
+                name: "David Broom",
+                fullName: "David Broom",
+                nationality: "British",
+                birthDate: "Unknown",
+                deathDate: nil,
+                achievements: [
+                    "Microlights and Paramotors specialist",
+                    "Aviation instructor",
+                    "Ultralight aircraft designer"
+                ],
+                biography: "David Broom is a British aviation specialist known for his expertise in microlights and paramotors, and his work as an aviation instructor.",
+                imageName: "DAVID BROOM",
+                imageURL: nil,
+                era: .modern,
+                category: .microlights
+            ),
+            
+            Pilot(
+                name: "Charles Boden",
+                fullName: "Charles Boden",
+                nationality: "American",
+                birthDate: "Unknown",
+                deathDate: nil,
+                achievements: [
+                    "Space shuttle pilot",
+                    "NASA astronaut",
+                    "Space mission specialist"
+                ],
+                biography: "Charles Boden is an American astronaut and space shuttle pilot known for his contributions to NASA space missions.",
+                imageName: "CHARLES BODEN",
+                imageURL: nil,
+                era: .space,
+                category: .space
+            ),
+            
+            Pilot(
+                name: "Thomas Morgenstern",
+                fullName: "Thomas Morgenstern",
+                nationality: "Austrian",
+                birthDate: "Unknown",
+                deathDate: nil,
+                achievements: [
+                    "Helicopter rescue specialist",
+                    "Mountain rescue pilot",
+                    "Aviation safety expert"
+                ],
+                biography: "Thomas Morgenstern is an Austrian helicopter pilot known for his expertise in mountain rescue operations and aviation safety.",
+                imageName: "THOMAS MORGENSTERN",
+                imageURL: nil,
+                era: .modern,
+                category: .rotorcraft
+            ),
+            
+            Pilot(
+                name: "Curtis Bartholomew",
+                fullName: "Curtis Bartholomew",
+                nationality: "American",
+                birthDate: "Unknown",
+                deathDate: nil,
+                achievements: [
+                    "Parachuting world record holder",
+                    "Skydiving instructor",
+                    "Extreme sports pioneer"
+                ],
+                biography: "Curtis Bartholomew is an American parachuting specialist known for his world records in skydiving and contributions to extreme sports.",
+                imageName: "CURTIS BARTHOLOMEW",
+                imageURL: nil,
+                era: .modern,
+                category: .parachuting
+            ),
+            
+            Pilot(
+                name: "Bertrand Piccard",
+                fullName: "Bertrand Piccard",
+                nationality: "Swiss",
+                birthDate: "1958",
+                deathDate: nil,
+                achievements: [
+                    "First non-stop balloon flight around the world",
+                    "Solar-powered aircraft pioneer",
+                    "Environmental aviation advocate"
+                ],
+                biography: "Bertrand Piccard is a Swiss psychiatrist and balloonist who made the first non-stop balloon flight around the world and pioneered solar-powered aviation.",
+                imageName: "BERTRAND PICCARD",
+                imageURL: nil,
+                era: .modern,
+                category: .ballooning
+            ),
+            
+            Pilot(
+                name: "Mikhail Mamistov",
+                fullName: "Mikhail Mamistov",
+                nationality: "Russian",
+                birthDate: "Unknown",
+                deathDate: nil,
+                achievements: [
+                    "Aerobatics world champion",
+                    "Air show performer",
+                    "Flight instructor"
+                ],
+                biography: "Mikhail Mamistov is a Russian aerobatics pilot known for his world championship titles and spectacular air show performances.",
+                imageName: "MIKHAIL MAMISTOV",
+                imageURL: nil,
+                era: .modern,
+                category: .aerobatics
+            ),
+            
+            Pilot(
+                name: "Rudi Browning",
+                fullName: "Rudi Browning",
+                nationality: "Australian",
+                birthDate: "Unknown",
+                deathDate: nil,
+                achievements: [
+                    "Drone racing champion",
+                    "Aeromodelling specialist",
+                    "Aviation technology innovator"
+                ],
+                biography: "Rudi Browning is an Australian aviation specialist known for his achievements in drone racing and aeromodelling.",
+                imageName: "RUDI BROWNING",
+                imageURL: nil,
+                era: .modern,
+                category: .drones
             )
         ]
     }
