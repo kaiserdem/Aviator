@@ -21,6 +21,9 @@ struct Theme {
         static let black = Color.black
         static let darkGray = Color(hex: "#1A1A1A")
         static let lightGray = Color(hex: "#F5F5F5")
+        
+        // Темно-червоний колір (світліший)
+        static let darkRed = Color(hex: "#B22222")
     }
     
     struct Gradients {
