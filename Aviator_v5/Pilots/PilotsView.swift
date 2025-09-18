@@ -1,5 +1,6 @@
 import SwiftUI
 import ComposableArchitecture
+import UIKit
 
 struct PilotsView: View {
     let store: StoreOf<PilotsFeature>
@@ -18,7 +19,7 @@ struct PilotsView: View {
                                     .scaleEffect(1.5)
                                     .tint(Theme.Palette.white)
                                 Text("Loading pilots...")
-                                    .foregroundColor(Theme.Palette.white)
+                                    .foregroundColor(Theme.Palette.black)
                                     .font(.headline)
                             }
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -30,9 +31,9 @@ struct PilotsView: View {
                                 Text("Error")
                                     .font(.title2)
                                     .fontWeight(.bold)
-                                    .foregroundColor(Theme.Palette.white)
+                                    .foregroundColor(Theme.Palette.black)
                                 Text(errorMessage)
-                                    .foregroundColor(Theme.Palette.white.opacity(Theme.Opacity.textSecondary))
+                                    .foregroundColor(Theme.Palette.black.opacity(Theme.Opacity.textSecondary))
                                     .multilineTextAlignment(.center)
                             }
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -40,14 +41,14 @@ struct PilotsView: View {
                             VStack(spacing: 20) {
                                 Image(systemName: "airplane")
                                     .font(.system(size: 80))
-                                    .foregroundColor(Theme.Palette.white.opacity(Theme.Opacity.textSecondary))
+                                    .foregroundColor(Theme.Palette.black.opacity(Theme.Opacity.textSecondary))
                                 Text("Great Pilots")
                                     .font(.title)
                                     .fontWeight(.bold)
-                                    .foregroundColor(Theme.Palette.white)
+                                    .foregroundColor(Theme.Palette.black)
                                 Text("No pilots data available")
                                     .font(.subheadline)
-                                    .foregroundColor(Theme.Palette.white.opacity(Theme.Opacity.textSecondary))
+                                    .foregroundColor(Theme.Palette.black.opacity(Theme.Opacity.textSecondary))
                                     .multilineTextAlignment(.center)
                             }
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -169,9 +170,9 @@ struct PilotRowView: View {
                 } placeholder: {
                     Image(systemName: "person.circle.fill")
                         .font(.system(size: 50))
-                        .foregroundColor(Theme.Palette.white.opacity(Theme.Opacity.textSecondary))
+                        .foregroundColor(Theme.Palette.black.opacity(Theme.Opacity.textSecondary))
                         .frame(width: 60, height: 60)
-                        .background(Theme.Palette.white.opacity(Theme.Opacity.cardBackground))
+                        .background(Theme.Palette.black.opacity(Theme.Opacity.cardBackground))
                         .cornerRadius(30)
                 }
             } else {
@@ -179,18 +180,18 @@ struct PilotRowView: View {
                     .font(.system(size: 50))
                     .foregroundColor(Theme.Palette.white.opacity(Theme.Opacity.textSecondary))
                     .frame(width: 60, height: 60)
-                    .background(Theme.Palette.white.opacity(Theme.Opacity.cardBackground))
+                    .background(Theme.Palette.black.opacity(Theme.Opacity.cardBackground))
                     .cornerRadius(30)
             }
             
             VStack(alignment: .leading, spacing: 4) {
                 Text(pilot.name)
                     .font(.headline)
-                    .foregroundColor(Theme.Palette.white)
+                    .foregroundColor(Theme.Palette.black)
                 
                 Text(pilot.fullName)
                     .font(.subheadline)
-                    .foregroundColor(Theme.Palette.white.opacity(Theme.Opacity.textSecondary))
+                    .foregroundColor(Theme.Palette.black.opacity(Theme.Opacity.textSecondary))
                 
                 HStack(spacing: 8) {
                     Text(pilot.era.rawValue)
@@ -198,31 +199,31 @@ struct PilotRowView: View {
                         .padding(.horizontal, 6)
                         .padding(.vertical, 2)
                         .background(Theme.Gradients.vibrant)
-                        .foregroundColor(Theme.Palette.white)
+                        .foregroundColor(Theme.Palette.black)
                         .cornerRadius(4)
                     
                     Text(pilot.category.rawValue)
                         .font(.caption)
                         .padding(.horizontal, 6)
                         .padding(.vertical, 2)
-                        .background(Theme.Palette.white.opacity(0.2))
-                        .foregroundColor(Theme.Palette.white)
+                        .background(Theme.Palette.black.opacity(0.2))
+                        .foregroundColor(Theme.Palette.black)
                         .cornerRadius(4)
                 }
                 
                 Text(pilot.nationality)
                     .font(.caption)
-                    .foregroundColor(Theme.Palette.white.opacity(Theme.Opacity.textTertiary))
+                    .foregroundColor(Theme.Palette.black.opacity(Theme.Opacity.textTertiary))
             }
             
             Spacer()
             
             Image(systemName: "chevron.right")
-                .foregroundColor(Theme.Palette.white.opacity(Theme.Opacity.textTertiary))
+                .foregroundColor(Theme.Palette.black.opacity(Theme.Opacity.textTertiary))
                 .font(.caption)
         }
         .padding()
-        .background(Theme.Palette.white.opacity(Theme.Opacity.cardBackground))
+        .background(Theme.Palette.black.opacity(Theme.Opacity.cardBackground))
         .cornerRadius(12)
         .shadow(color: Theme.Shadows.medium, radius: 4)
     }
@@ -240,19 +241,21 @@ struct PilotDetailView: View {
                         image
                             .resizable()
                             .aspectRatio(contentMode: .fill)
-                            .frame(width: 120, height: 120)
-                            .clipShape(Circle())
-                            .shadow(color: Theme.Shadows.medium, radius: 8)
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 250)
+                            .clipShape(RoundedRectangle(cornerRadius: 16))
+                            .shadow(color: Theme.Shadows.medium, radius: 12)
                     } placeholder: {
-                        Image(systemName: "person.circle.fill")
-                            .font(.system(size: 120))
-                            .foregroundColor(Theme.Palette.white.opacity(Theme.Opacity.textSecondary))
-                            .frame(width: 120, height: 120)
-                            .background(Theme.Palette.white.opacity(Theme.Opacity.cardBackground))
-                            .cornerRadius(60)
+                        Image(systemName: "person.crop.rectangle.fill")
+                            .font(.system(size: 80))
+                            .foregroundColor(Theme.Palette.black.opacity(Theme.Opacity.textSecondary))
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 250)
+                            .background(Theme.Palette.black.opacity(Theme.Opacity.cardBackground))
+                            .clipShape(RoundedRectangle(cornerRadius: 16))
                     }
                     .frame(maxWidth: .infinity, alignment: .center)
-                    .padding(.bottom, 8)
+                    .padding(.bottom, 16)
                 }
                 
                 // Заголовок
@@ -260,11 +263,11 @@ struct PilotDetailView: View {
                     Text(pilot.name)
                         .font(.largeTitle)
                         .fontWeight(.bold)
-                        .foregroundColor(Theme.Palette.white)
+                        .foregroundColor(Theme.Palette.black)
                     
                     Text(pilot.fullName)
                         .font(.title2)
-                        .foregroundColor(Theme.Palette.white.opacity(Theme.Opacity.textSecondary))
+                        .foregroundColor(Theme.Palette.black.opacity(Theme.Opacity.textSecondary))
                     
                     HStack(spacing: 12) {
                         Text(pilot.era.rawValue)
@@ -272,15 +275,15 @@ struct PilotDetailView: View {
                             .padding(.horizontal, 8)
                             .padding(.vertical, 4)
                             .background(Theme.Gradients.vibrant)
-                            .foregroundColor(Theme.Palette.white)
+                            .foregroundColor(Theme.Palette.black)
                             .cornerRadius(6)
                         
                         Text(pilot.category.rawValue)
                             .font(.caption)
                             .padding(.horizontal, 8)
                             .padding(.vertical, 4)
-                            .background(Theme.Palette.white.opacity(0.2))
-                            .foregroundColor(Theme.Palette.white)
+                            .background(Theme.Palette.black.opacity(0.2))
+                            .foregroundColor(Theme.Palette.black)
                             .cornerRadius(6)
                     }
                 }
@@ -295,28 +298,28 @@ struct PilotDetailView: View {
                 }
                 
                 Divider()
-                    .background(Theme.Palette.white.opacity(Theme.Opacity.textTertiary))
+                    .background(Theme.Palette.black.opacity(Theme.Opacity.textTertiary))
                 
                 // Біографія
                 VStack(alignment: .leading, spacing: 8) {
                     Text("Biography")
                         .font(.headline)
-                        .foregroundColor(Theme.Palette.white)
+                        .foregroundColor(Theme.Palette.black)
                     
                     Text(pilot.biography)
                         .font(.body)
-                        .foregroundColor(Theme.Palette.white.opacity(Theme.Opacity.textSecondary))
+                        .foregroundColor(Theme.Palette.black.opacity(Theme.Opacity.textSecondary))
                         .fixedSize(horizontal: false, vertical: true)
                 }
                 
                 Divider()
-                    .background(Theme.Palette.white.opacity(Theme.Opacity.textTertiary))
+                    .background(Theme.Palette.black.opacity(Theme.Opacity.textTertiary))
                 
                 // Досягнення
                 VStack(alignment: .leading, spacing: 8) {
                     Text("Achievements")
                         .font(.headline)
-                        .foregroundColor(Theme.Palette.white)
+                        .foregroundColor(Theme.Palette.black)
                     
                     ForEach(pilot.achievements, id: \.self) { achievement in
                         HStack(alignment: .top, spacing: 8) {
@@ -327,11 +330,51 @@ struct PilotDetailView: View {
                             
                             Text(achievement)
                                 .font(.body)
-                                .foregroundColor(Theme.Palette.white.opacity(Theme.Opacity.textSecondary))
+                                .foregroundColor(Theme.Palette.black.opacity(Theme.Opacity.textSecondary))
                                 .fixedSize(horizontal: false, vertical: true)
                         }
                     }
                 }
+                
+                // Кнопки дій
+                VStack(spacing: 12) {
+                    HStack(spacing: 16) {
+                        // Кнопка копіювання лінку
+                        Button(action: {
+                            copyPilotLink(pilot)
+                        }) {
+                            HStack(spacing: 8) {
+                                Image(systemName: "doc.on.doc")
+                                    .font(.system(size: 16, weight: .medium))
+                                Text("Copy Link")
+                                    .font(.system(size: 16, weight: .medium))
+                            }
+                            .foregroundColor(Theme.Palette.black)
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 44)
+                            .background(Theme.Palette.black.opacity(0.2))
+                            .cornerRadius(12)
+                        }
+                        
+                        // Кнопка поширення
+                        Button(action: {
+                            sharePilot(pilot)
+                        }) {
+                            HStack(spacing: 8) {
+                                Image(systemName: "square.and.arrow.up")
+                                    .font(.system(size: 16, weight: .medium))
+                                Text("Share")
+                                    .font(.system(size: 16, weight: .medium))
+                            }
+                            .foregroundColor(Theme.Palette.black)
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 44)
+                            .background(Theme.Gradients.vibrant)
+                            .cornerRadius(12)
+                        }
+                    }
+                }
+                .padding(.top, 20)
             }
             .padding(.horizontal, 16)
             .padding(.vertical, 8)
@@ -349,13 +392,74 @@ struct InfoRow: View {
         HStack {
             Text(title)
                 .font(.subheadline)
-                .foregroundColor(Theme.Palette.white)
+                .foregroundColor(Theme.Palette.black)
             
             Spacer()
             
             Text(value)
                 .font(.subheadline)
-                .foregroundColor(Theme.Palette.white.opacity(Theme.Opacity.textSecondary))
+                .foregroundColor(Theme.Palette.black.opacity(Theme.Opacity.textSecondary))
+        }
+    }
+}
+
+// MARK: - Helper Functions
+
+extension PilotDetailView {
+    private func copyPilotLink(_ pilot: Pilot) {
+        let pilotInfo = """
+        \(pilot.name) (\(pilot.fullName))
+        
+        Nationality: \(pilot.nationality)
+        Born: \(pilot.birthDate)
+        \(pilot.deathDate != nil ? "Died: \(pilot.deathDate!)" : "")
+        
+        Achievements:
+        \(pilot.achievements.map { "• \($0)" }.joined(separator: "\n"))
+        
+        Biography:
+        \(pilot.biography)
+        """
+        
+        UIPasteboard.general.string = pilotInfo
+        
+        // Показуємо підтвердження (можна додати toast notification)
+        let impactFeedback = UIImpactFeedbackGenerator(style: .medium)
+        impactFeedback.impactOccurred()
+    }
+    
+    private func sharePilot(_ pilot: Pilot) {
+        let pilotInfo = """
+        \(pilot.name) (\(pilot.fullName))
+        
+        Nationality: \(pilot.nationality)
+        Born: \(pilot.birthDate)
+        \(pilot.deathDate != nil ? "Died: \(pilot.deathDate!)" : "")
+        
+        Achievements:
+        \(pilot.achievements.map { "• \($0)" }.joined(separator: "\n"))
+        
+        Biography:
+        \(pilot.biography)
+        """
+        
+        let activityViewController = UIActivityViewController(
+            activityItems: [pilotInfo],
+            applicationActivities: nil
+        )
+        
+        // Для iPad
+        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+           let window = windowScene.windows.first {
+            activityViewController.popoverPresentationController?.sourceView = window
+            activityViewController.popoverPresentationController?.sourceRect = CGRect(x: window.bounds.midX, y: window.bounds.midY, width: 0, height: 0)
+            activityViewController.popoverPresentationController?.permittedArrowDirections = []
+        }
+        
+        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+           let window = windowScene.windows.first,
+           let rootViewController = window.rootViewController {
+            rootViewController.present(activityViewController, animated: true)
         }
     }
 }

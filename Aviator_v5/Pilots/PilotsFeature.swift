@@ -257,6 +257,172 @@ struct PilotsFeature {
                 imageURL: nil,
                 era: .space,
                 category: .astronaut
+            ),
+            
+            // Додаткові піонери
+            Pilot(
+                name: "Bessie Coleman",
+                fullName: "Elizabeth Coleman",
+                nationality: "American",
+                birthDate: "1892",
+                deathDate: "1926",
+                achievements: [
+                    "First African-American woman pilot",
+                    "First Native American woman pilot",
+                    "Stunt pilot and barnstormer"
+                ],
+                biography: "Bessie Coleman was an early American civil aviator. She was the first African-American woman and first Native American to hold a pilot license.",
+                imageName: "bessie_coleman",
+                imageURL: nil,
+                era: .pioneers,
+                category: .recordBreaker
+            ),
+            
+            Pilot(
+                name: "Howard Hughes",
+                fullName: "Howard Robard Hughes Jr.",
+                nationality: "American",
+                birthDate: "1905",
+                deathDate: "1976",
+                achievements: [
+                    "Transcontinental speed record (1937)",
+                    "Around-the-world flight record (1938)",
+                    "Aviation entrepreneur and filmmaker"
+                ],
+                biography: "Howard Hughes was an American business magnate, investor, record-setting pilot, engineer, film director, and philanthropist.",
+                imageName: "howard_hughes",
+                imageURL: nil,
+                era: .pioneers,
+                category: .recordBreaker
+            ),
+            
+            // Додаткові військові пілоти
+            Pilot(
+                name: "Douglas Bader",
+                fullName: "Sir Douglas Robert Steuart Bader",
+                nationality: "British",
+                birthDate: "1910",
+                deathDate: "1982",
+                achievements: [
+                    "Fighter ace despite losing both legs",
+                    "22 aerial victories in WWII",
+                    "Inspiration for disabled pilots"
+                ],
+                biography: "Douglas Bader was a Royal Air Force flying ace during the Second World War. He was credited with 22 aerial victories despite having lost both legs in a flying accident.",
+                imageName: "douglas_bader",
+                imageURL: nil,
+                era: .worldWar,
+                category: .military
+            ),
+            
+            Pilot(
+                name: "Saburo Sakai",
+                fullName: "Saburo Sakai",
+                nationality: "Japanese",
+                birthDate: "1916",
+                deathDate: "2000",
+                achievements: [
+                    "64 aerial victories in WWII",
+                    "Flew with one eye after injury",
+                    "Respected by Allied pilots"
+                ],
+                biography: "Saburo Sakai was a Japanese naval aviator and flying ace of the Imperial Japanese Navy during World War II.",
+                imageName: "saburo_sakai",
+                imageURL: nil,
+                era: .worldWar,
+                category: .military
+            ),
+            
+            // Додаткові космонавти
+            Pilot(
+                name: "John Glenn",
+                fullName: "John Herschel Glenn Jr.",
+                nationality: "American",
+                birthDate: "1921",
+                deathDate: "2016",
+                achievements: [
+                    "First American to orbit Earth (1962)",
+                    "Oldest person in space (77 years)",
+                    "US Senator and Marine Corps pilot"
+                ],
+                biography: "John Glenn was an American Marine Corps aviator, engineer, astronaut, and United States Senator from Ohio.",
+                imageName: "john_glenn",
+                imageURL: nil,
+                era: .space,
+                category: .astronaut
+            ),
+            
+            Pilot(
+                name: "Sally Ride",
+                fullName: "Sally Kristen Ride",
+                nationality: "American",
+                birthDate: "1951",
+                deathDate: "2012",
+                achievements: [
+                    "First American woman in space (1983)",
+                    "Youngest American astronaut",
+                    "Physicist and educator"
+                ],
+                biography: "Sally Ride was an American astronaut and physicist. She joined NASA in 1978 and became the first American woman in space in 1983.",
+                imageName: "sally_ride",
+                imageURL: nil,
+                era: .space,
+                category: .astronaut
+            ),
+            
+            // Додаткові сучасні пілоти
+            Pilot(
+                name: "Eileen Collins",
+                fullName: "Eileen Marie Collins",
+                nationality: "American",
+                birthDate: "1956",
+                deathDate: nil,
+                achievements: [
+                    "First female Space Shuttle pilot",
+                    "First female Space Shuttle commander",
+                    "USAF Colonel and test pilot"
+                ],
+                biography: "Eileen Collins is a retired NASA astronaut and United States Air Force colonel. She was the first female pilot and first female commander of a Space Shuttle.",
+                imageName: "eileen_collins",
+                imageURL: nil,
+                era: .modern,
+                category: .astronaut
+            ),
+            
+            Pilot(
+                name: "Barrington Irving",
+                fullName: "Barrington Irving",
+                nationality: "Jamaican-American",
+                birthDate: "1983",
+                deathDate: nil,
+                achievements: [
+                    "Youngest person to fly solo around the world",
+                    "First African-American to fly solo around the world",
+                    "Aviation educator and mentor"
+                ],
+                biography: "Barrington Irving is a Jamaican-American pilot who became the youngest person and first African-American to fly solo around the world.",
+                imageName: "barrington_irving",
+                imageURL: nil,
+                era: .modern,
+                category: .recordBreaker
+            ),
+            
+            Pilot(
+                name: "Tammie Jo Shults",
+                fullName: "Tammie Jo Shults",
+                nationality: "American",
+                birthDate: "1961",
+                deathDate: nil,
+                achievements: [
+                    "Southwest Flight 1380 emergency landing",
+                    "Former Navy fighter pilot",
+                    "One of first female F/A-18 Hornet pilots"
+                ],
+                biography: "Tammie Jo Shults is a retired American commercial airline pilot and former United States Navy pilot. She was the captain of Southwest Airlines Flight 1380.",
+                imageName: "tammie_jo_shults",
+                imageURL: nil,
+                era: .modern,
+                category: .commercial
             )
         ]
     }
