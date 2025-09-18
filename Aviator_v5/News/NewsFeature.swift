@@ -30,7 +30,7 @@ struct NewsFeature {
                 return .run { send in
                     do {
                         let newsModel = try await newsClient.fetchNews(
-                            "avia",
+                            "flight",
                             "2025-09-01",
                             "96d6a43448504d8fa60ca4cde10987ee"
                         )
@@ -39,7 +39,7 @@ struct NewsFeature {
                             NewsItem(
                                 id: article.url,
                                 title: article.title,
-                                summary: article.description,
+                                summary: article.description ?? "No description available",
                                 date: article.publishedAt,
                                 category: article.source.name,
                                 url: article.url,

@@ -8,21 +8,17 @@ struct NewsView: View {
         WithViewStore(self.store, observe: { $0 }) { viewStore in
             NavigationStack {
                 ZStack {
-                    LinearGradient(
-                        colors: [.green.opacity(0.8), .blue.opacity(0.6)],
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    )
-                    .ignoresSafeArea()
+                    Theme.Gradients.primary
+                        .ignoresSafeArea()
                     
                     VStack {
                         if viewStore.isLoading {
                             VStack {
                                 ProgressView()
                                     .scaleEffect(1.5)
-                                    .tint(.white)
+                                    .tint(Theme.Palette.white)
                                 Text("Loading news...")
-                                    .foregroundColor(.white)
+                                    .foregroundColor(Theme.Palette.white)
                                     .font(.headline)
                             }
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -30,13 +26,13 @@ struct NewsView: View {
                             VStack(spacing: 16) {
                                 Image(systemName: "exclamationmark.triangle")
                                     .font(.system(size: 60))
-                                    .foregroundColor(.red)
+                                    .foregroundColor(Theme.Palette.brightOrangeRed)
                                 Text("Error")
                                     .font(.title2)
                                     .fontWeight(.bold)
-                                    .foregroundColor(.white)
+                                    .foregroundColor(Theme.Palette.white)
                                 Text(errorMessage)
-                                    .foregroundColor(.white.opacity(0.8))
+                                    .foregroundColor(Theme.Palette.white.opacity(Theme.Opacity.textSecondary))
                                     .multilineTextAlignment(.center)
                             }
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -44,14 +40,14 @@ struct NewsView: View {
                             VStack(spacing: 20) {
                                 Image(systemName: "newspaper")
                                     .font(.system(size: 80))
-                                    .foregroundColor(.white.opacity(0.7))
+                                    .foregroundColor(Theme.Palette.white.opacity(Theme.Opacity.textSecondary))
                                 Text("News")
                                     .font(.title)
                                     .fontWeight(.bold)
-                                    .foregroundColor(.white)
+                                    .foregroundColor(Theme.Palette.white)
                                 Text("Latest aviation news will appear here")
                                     .font(.subheadline)
-                                    .foregroundColor(.white.opacity(0.8))
+                                    .foregroundColor(Theme.Palette.white.opacity(Theme.Opacity.textSecondary))
                                     .multilineTextAlignment(.center)
                             }
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -104,9 +100,9 @@ struct NewsRowView: View {
                         .aspectRatio(contentMode: .fill)
                 } placeholder: {
                     Image(systemName: "photo")
-                        .foregroundColor(.white.opacity(0.6))
+                        .foregroundColor(Theme.Palette.white.opacity(Theme.Opacity.textTertiary))
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        .background(.white.opacity(0.1))
+                        .background(Theme.Palette.white.opacity(Theme.Opacity.cardBackground))
                 }
                 .frame(width: 80, height: 80)
                 .clipped()
@@ -114,9 +110,9 @@ struct NewsRowView: View {
             } else {
                 Image(systemName: "newspaper")
                     .font(.title2)
-                    .foregroundColor(.white.opacity(0.6))
+                    .foregroundColor(Theme.Palette.white.opacity(Theme.Opacity.textTertiary))
                     .frame(width: 80, height: 80)
-                    .background(.white.opacity(0.1))
+                    .background(Theme.Palette.white.opacity(Theme.Opacity.cardBackground))
                     .cornerRadius(8)
             }
             
@@ -125,12 +121,12 @@ struct NewsRowView: View {
                     VStack(alignment: .leading, spacing: 4) {
                         Text(newsItem.title)
                             .font(.headline)
-                            .foregroundColor(.white)
+                            .foregroundColor(Theme.Palette.white)
                             .lineLimit(2)
                         
                         Text(newsItem.summary)
                             .font(.subheadline)
-                            .foregroundColor(.white.opacity(0.8))
+                            .foregroundColor(Theme.Palette.white.opacity(Theme.Opacity.textSecondary))
                             .lineLimit(2)
                     }
                     
@@ -141,25 +137,25 @@ struct NewsRowView: View {
                             .font(.caption)
                             .padding(.horizontal, 8)
                             .padding(.vertical, 2)
-                            .background(.white.opacity(0.2))
-                            .foregroundColor(.white)
+                            .background(Theme.Gradients.vibrant)
+                            .foregroundColor(Theme.Palette.white)
                             .cornerRadius(4)
                         
                         Text(formattedDate)
                             .font(.caption)
-                            .foregroundColor(.white.opacity(0.7))
+                            .foregroundColor(Theme.Palette.white.opacity(Theme.Opacity.textSecondary))
                         
                         Image(systemName: "chevron.right")
-                            .foregroundColor(.white.opacity(0.6))
+                            .foregroundColor(Theme.Palette.white.opacity(Theme.Opacity.textTertiary))
                             .font(.caption)
                     }
                 }
             }
         }
         .padding()
-        .background(.white.opacity(0.1))
+        .background(Theme.Palette.white.opacity(Theme.Opacity.cardBackground))
         .cornerRadius(12)
-        .shadow(color: .black.opacity(0.2), radius: 4)
+        .shadow(color: Theme.Shadows.medium, radius: 4)
     }
 }
 

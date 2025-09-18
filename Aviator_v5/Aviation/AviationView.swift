@@ -8,21 +8,17 @@ struct AviationView: View {
         WithViewStore(self.store, observe: { $0 }) { viewStore in
             NavigationStack {
                 ZStack {
-                    LinearGradient(
-                        colors: [.blue.opacity(0.8), .purple.opacity(0.6)],
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    )
-                    .ignoresSafeArea()
+                    Theme.Gradients.primary
+                        .ignoresSafeArea()
                     
                     VStack {
                         if viewStore.isLoading {
                             VStack {
                                 ProgressView()
                                     .scaleEffect(1.5)
-                                    .tint(.white)
+                                    .tint(Theme.Palette.white)
                                 Text("Loading...")
-                                    .foregroundColor(.white)
+                                    .foregroundColor(Theme.Palette.white)
                                     .font(.headline)
                             }
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -30,13 +26,13 @@ struct AviationView: View {
                             VStack(spacing: 16) {
                                 Image(systemName: "exclamationmark.triangle")
                                     .font(.system(size: 60))
-                                    .foregroundColor(.red)
+                                    .foregroundColor(Theme.Palette.brightOrangeRed)
                                 Text("Error")
                                     .font(.title2)
                                     .fontWeight(.bold)
-                                    .foregroundColor(.white)
+                                    .foregroundColor(Theme.Palette.white)
                                 Text(errorMessage)
-                                    .foregroundColor(.white.opacity(0.8))
+                                    .foregroundColor(Theme.Palette.white.opacity(Theme.Opacity.textSecondary))
                                     .multilineTextAlignment(.center)
                             }
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -44,14 +40,14 @@ struct AviationView: View {
                             VStack(spacing: 20) {
                                 Image(systemName: "airplane")
                                     .font(.system(size: 80))
-                                    .foregroundColor(.white.opacity(0.7))
+                                    .foregroundColor(Theme.Palette.white.opacity(Theme.Opacity.textSecondary))
                                 Text("Aviation")
                                     .font(.title)
                                     .fontWeight(.bold)
-                                    .foregroundColor(.white)
+                                    .foregroundColor(Theme.Palette.white)
                                 Text("Aviation information will appear here")
                                     .font(.subheadline)
-                                    .foregroundColor(.white.opacity(0.8))
+                                    .foregroundColor(Theme.Palette.white.opacity(Theme.Opacity.textSecondary))
                                     .multilineTextAlignment(.center)
                             }
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -86,33 +82,33 @@ struct AviationRowView: View {
                 VStack(alignment: .leading, spacing: 4) {
                     Text(item.title)
                         .font(.headline)
-                        .foregroundColor(.white)
+                        .foregroundColor(Theme.Palette.white)
                     
                     Text(item.category)
                         .font(.caption)
                         .padding(.horizontal, 8)
                         .padding(.vertical, 2)
-                        .background(.white.opacity(0.2))
-                        .foregroundColor(.white)
+                        .background(Theme.Gradients.vibrant)
+                        .foregroundColor(Theme.Palette.white)
                         .cornerRadius(4)
                 }
                 
                 Spacer()
                 
                 Image(systemName: "chevron.right")
-                    .foregroundColor(.white.opacity(0.6))
+                    .foregroundColor(Theme.Palette.white.opacity(Theme.Opacity.textTertiary))
                     .font(.caption)
             }
             
             Text(item.description)
                 .font(.subheadline)
-                .foregroundColor(.white.opacity(0.8))
+                .foregroundColor(Theme.Palette.white.opacity(Theme.Opacity.textSecondary))
                 .lineLimit(2)
         }
         .padding()
-        .background(.white.opacity(0.1))
+        .background(Theme.Palette.white.opacity(Theme.Opacity.cardBackground))
         .cornerRadius(12)
-        .shadow(color: .black.opacity(0.2), radius: 4)
+        .shadow(color: Theme.Shadows.medium, radius: 4)
     }
 }
 

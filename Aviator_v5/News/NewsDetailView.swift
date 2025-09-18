@@ -29,71 +29,71 @@ struct NewsDetailView: View {
                     Text(newsItem.title)
                         .font(.title)
                         .fontWeight(.bold)
-                        .foregroundColor(.white)
+                        .foregroundColor(Theme.Palette.white)
                         .multilineTextAlignment(.leading)
                     
                     VStack(alignment: .leading, spacing: 8) {
                         HStack {
                             Image(systemName: "person.circle")
-                                .foregroundColor(.white)
+                                .foregroundColor(Theme.Palette.white)
                             Text("Author")
                                 .font(.subheadline)
-                                .foregroundColor(.white)
+                                .foregroundColor(Theme.Palette.white)
                         }
                         Text(newsItem.category)
                             .font(.body)
-                            .foregroundColor(.white.opacity(0.8))
+                            .foregroundColor(Theme.Palette.white.opacity(Theme.Opacity.textSecondary))
                             .padding(.leading, 20)
                     }
                     
                     VStack(alignment: .leading, spacing: 8) {
                         HStack {
                             Image(systemName: "building.2")
-                                .foregroundColor(.white)
+                                .foregroundColor(Theme.Palette.white)
                             Text("Source")
                                 .font(.subheadline)
-                                .foregroundColor(.white)
+                                .foregroundColor(Theme.Palette.white)
                         }
                         Text(newsItem.category)
                             .font(.body)
-                            .foregroundColor(.white.opacity(0.8))
+                            .foregroundColor(Theme.Palette.white.opacity(Theme.Opacity.textSecondary))
                             .padding(.leading, 20)
                     }
                     
                     VStack(alignment: .leading, spacing: 8) {
                         HStack {
                             Image(systemName: "calendar")
-                                .foregroundColor(.white)
+                                .foregroundColor(Theme.Palette.white)
                             Text("Published")
                                 .font(.subheadline)
-                                .foregroundColor(.white)
+                                .foregroundColor(Theme.Palette.white)
                         }
                         Text(newsItem.date, style: .date)
                             .font(.body)
-                            .foregroundColor(.white.opacity(0.8))
+                            .foregroundColor(Theme.Palette.white.opacity(Theme.Opacity.textSecondary))
                             .padding(.leading, 20)
                         
                         Text(newsItem.date, style: .time)
                             .font(.caption)
-                            .foregroundColor(.white.opacity(0.7))
+                            .foregroundColor(Theme.Palette.white.opacity(Theme.Opacity.textSecondary))
                             .padding(.leading, 20)
                     }
                     
                     Divider()
-                        .background(.white.opacity(0.3))
+                        .background(Theme.Palette.white.opacity(Theme.Opacity.textTertiary))
                         .padding(.vertical, 4)
                     
                     VStack(alignment: .leading, spacing: 8) {
                         HStack {
                             Image(systemName: "doc.text")
-                                .foregroundColor(.white)
+                                .foregroundColor(Theme.Palette.white)
                             Text("Description")
                                 .font(.subheadline)
-                                .foregroundColor(.white)
+                                .foregroundColor(Theme.Palette.white)
                         }
                         Text(newsItem.summary)
                             .font(.body)
-                            .foregroundColor(.white.opacity(0.9))
+                            .foregroundColor(Theme.Palette.white.opacity(Theme.Opacity.textSecondary))
                             .lineSpacing(4)
                             .fixedSize(horizontal: false, vertical: true)
                             .padding(.leading, 20)
@@ -102,19 +102,19 @@ struct NewsDetailView: View {
                     if !newsItem.url.isEmpty {
                         VStack(alignment: .leading, spacing: 8) {
                             HStack {
-                                Image(systemName: "link")
-                                    .foregroundColor(.white)
-                                Text("Article URL")
-                                    .font(.subheadline)
-                                    .foregroundColor(.white)
-                            }
-                            
-                            Text(newsItem.url)
-                                .font(.caption)
-                                .foregroundColor(.white.opacity(0.7))
-                                .padding(.leading, 20)
-                                .lineLimit(nil)
-                                .fixedSize(horizontal: false, vertical: true)
+                            Image(systemName: "link")
+                                .foregroundColor(Theme.Palette.white)
+                            Text("Article URL")
+                                .font(.subheadline)
+                                .foregroundColor(Theme.Palette.white)
+                        }
+                        
+                        Text(newsItem.url)
+                            .font(.caption)
+                            .foregroundColor(Theme.Palette.white.opacity(Theme.Opacity.textSecondary))
+                            .padding(.leading, 20)
+                            .lineLimit(nil)
+                            .fixedSize(horizontal: false, vertical: true)
                             
                             Button(action: {
                                 UIPasteboard.general.string = newsItem.url
@@ -125,8 +125,8 @@ struct NewsDetailView: View {
                                 }
                                 .frame(maxWidth: .infinity)
                                 .padding()
-                                .background(.white.opacity(0.2))
-                                .foregroundColor(.white)
+                                .background(Theme.Gradients.button)
+                                .foregroundColor(Theme.Palette.white)
                                 .cornerRadius(8)
                             }
                             .padding(.top, 4)
@@ -137,13 +137,8 @@ struct NewsDetailView: View {
                 .padding(.vertical, 8)
             }
         }
-        .background(
-            LinearGradient(
-                colors: [.green.opacity(0.8), .blue.opacity(0.6)],
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            )
-        )
+        .background(Theme.Gradients.primary)
         .navigationBarTitleDisplayMode(.inline)
     }
 }
+

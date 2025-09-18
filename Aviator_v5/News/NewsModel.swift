@@ -11,7 +11,8 @@ struct NewsModel: Codable {
 struct Article: Codable {
     let source: Source
     let author: String?
-    let title, description: String
+    let title: String
+    let description: String?
     let url: String
     let urlToImage: String?
     let publishedAt: Date
@@ -20,6 +21,13 @@ struct Article: Codable {
 
 // MARK: - Source
 struct Source: Codable {
-    let id: String?
+    let id: ID?
     let name: String
+}
+
+enum ID: String, Codable {
+    case businessInsider = "business-insider"
+    case cbsNews = "cbs-news"
+    case theVerge = "the-verge"
+    case wired = "wired"
 }

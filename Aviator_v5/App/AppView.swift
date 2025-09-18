@@ -58,7 +58,25 @@ struct AppView: View {
                 }
                 .tag(AppFeature.Tab.tab3)
             }
-            .accentColor(.blue)
+            .accentColor(Theme.Palette.vibrantPink)
+            .onAppear {
+                let appearance = UITabBarAppearance()
+                appearance.configureWithTransparentBackground()
+                appearance.backgroundColor = UIColor.clear
+                
+                appearance.stackedLayoutAppearance.normal.iconColor = UIColor.white.withAlphaComponent(0.6)
+                appearance.stackedLayoutAppearance.normal.titleTextAttributes = [
+                    .foregroundColor: UIColor.white.withAlphaComponent(0.6)
+                ]
+                
+                appearance.stackedLayoutAppearance.selected.iconColor = UIColor.white
+                appearance.stackedLayoutAppearance.selected.titleTextAttributes = [
+                    .foregroundColor: UIColor.white
+                ]
+                
+                UITabBar.appearance().standardAppearance = appearance
+                UITabBar.appearance().scrollEdgeAppearance = appearance
+            }
         }
     }
 }
