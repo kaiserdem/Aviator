@@ -1,10 +1,8 @@
 import SwiftUI
 import ComposableArchitecture
-import WebKit
 
 struct NewsView: View {
     let store: StoreOf<NewsFeature>
-    @State private var webURL: URL?
 
     var body: some View {
         WithViewStore(self.store, observe: { $0 }) { viewStore in
@@ -22,18 +20,51 @@ struct NewsView: View {
                         List(viewStore.posts) { post in
                             Button {
                                 viewStore.send(.select(post))
-                                webURL = post.url
                             } label: {
-                                VStack(alignment: .leading, spacing: 6) {
-                                    Text(post.title)
-                                        .font(.title3)
-                                        .foregroundStyle(Theme.Palette.textPrimary)
+                                VStack(alignment: .leading, spacing: 8) {
+                                    HStack {
+                                        VStack(alignment: .leading, spacing: 4) {
+                                            Text(post.title)
+                                                .font(.title3)
+                                                .foregroundStyle(Theme.Palette.textPrimary)
+                                                .lineLimit(2)
+                                            
+                                            Text(post.description)
+                                                .font(.subheadline)
+                                                .foregroundStyle(.secondary)
+                                                .lineLimit(2)
+                                        }
+                                        
+                                        Spacer()
+                                        
+                                        if let imageURL = post.imageURL, !imageURL.isEmpty {
+                                            AsyncImage(url: URL(string: imageURL)) { image in
+                                                image
+                                                    .resizable()
+                                                    .aspectRatio(contentMode: .fill)
+                                            } placeholder: {
+                                                Rectangle()
+                                                    .fill(Color.gray.opacity(0.3))
+                                                    .overlay(
+                                                        Image(systemName: "photo")
+                                                            .foregroundColor(.gray)
+                                                    )
+                                            }
+                                            .frame(width: 60, height: 60)
+                                            .clipped()
+                                            .cornerRadius(8)
+                                        }
+                                    }
+                                    
                                     HStack(spacing: 8) {
                                         Text("by \(post.author)")
+                                        Text("•")
+                                        Text(post.source)
+                                        Spacer()
                                         Text(post.createdAt, style: .relative)
                                     }
                                     .foregroundStyle(.secondary)
-                                    .font(.subheadline)
+                                    .font(.caption)
                                 }
                             }
                         }
@@ -42,7 +73,7 @@ struct NewsView: View {
                 }
                 .navigationTitle("News")
                 .navigationDestination(item: viewStore.binding(get: \.selected, send: { .select($0) })) { post in
-                    NewsWebScreen(title: post.title, url: post.url)
+                    NewsDetailView(post: post)
                         .toolbarColorScheme(.dark, for: .navigationBar)
                         .toolbarBackground(Theme.Palette.surface, for: .navigationBar)
                         .toolbarBackground(.visible, for: .navigationBar)
@@ -60,47 +91,5 @@ struct NewsView: View {
     }
 }
 
-// Simple WKWebView wrapper for SwiftUI (без індикатора)
-private struct WebView: UIViewRepresentable {
-    let url: URL
-    func makeUIView(context: Context) -> WKWebView {
-        let view = WKWebView()
-        view.isOpaque = false
-        view.backgroundColor = .black
-        view.scrollView.backgroundColor = .black
-        view.load(URLRequest(url: url))
-        return view
-    }
-    func updateUIView(_ uiView: WKWebView, context: Context) {
-        if uiView.url != url {
-            uiView.load(URLRequest(url: url))
-        }
-    }
-}
-
-// Full screen in-app web screen with title
-private struct NewsWebScreen: View, Identifiable {
-    let id = UUID()
-    let title: String
-    let url: URL?
-    var body: some View {
-        if let url = url {
-            WebContentView(title: title, url: url)
-        } else {
-            ContentUnavailableView("Invalid URL", systemImage: "xmark.circle")
-        }
-    }
-}
-
-private struct WebContentView: View {
-    let title: String
-    let url: URL
-    var body: some View {
-        WebView(url: url)
-            .navigationTitle("")
-            .navigationBarTitleDisplayMode(.inline)
-            .background(Theme.Gradient.background)
-    }
-}
 
 
