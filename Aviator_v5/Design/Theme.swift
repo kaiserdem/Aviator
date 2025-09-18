@@ -58,6 +58,13 @@ struct Theme {
             startPoint: .top,
             endPoint: .bottom
         )
+        
+        // Градієнт для таббару (3 кольори)
+        static let tabBar = LinearGradient(
+            colors: [Palette.primaryPurple, Palette.midPurple, Palette.deepMagenta],
+            startPoint: .topLeading,
+            endPoint: .bottomTrailing
+        )
     }
     
     struct Shadows {

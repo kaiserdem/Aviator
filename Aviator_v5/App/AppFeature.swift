@@ -8,7 +8,7 @@ struct AppFeature {
         var selectedTab: Tab = .aviation
         var aviation = AviationFeature.State()
         var news = NewsFeature.State()
-        var tab2 = Tab2Feature.State()
+        var pilots = PilotsFeature.State()
         var tab3 = Tab3Feature.State()
     }
     
@@ -16,20 +16,20 @@ struct AppFeature {
         case selectTab(Tab)
         case aviation(AviationFeature.Action)
         case news(NewsFeature.Action)
-        case tab2(Tab2Feature.Action)
+        case pilots(PilotsFeature.Action)
         case tab3(Tab3Feature.Action)
     }
     
     enum Tab: String, CaseIterable {
         case aviation = "Aviation"
-        case tab2 = "Tab 2"
+        case pilots = "Pilots"
         case news = "News"
         case tab3 = "Tab 4"
         
         var icon: String {
             switch self {
             case .aviation: return "airplane"
-            case .tab2: return "star"
+            case .pilots: return "person.2"
             case .news: return "newspaper"
             case .tab3: return "gear"
             }
@@ -43,8 +43,8 @@ struct AppFeature {
         Scope(state: \.news, action: \.news) {
             NewsFeature()
         }
-        Scope(state: \.tab2, action: \.tab2) {
-            Tab2Feature()
+        Scope(state: \.pilots, action: \.pilots) {
+            PilotsFeature()
         }
         Scope(state: \.tab3, action: \.tab3) {
             Tab3Feature()
@@ -55,7 +55,7 @@ struct AppFeature {
             case let .selectTab(tab):
                 state.selectedTab = tab
                 return .none
-            case .aviation, .news, .tab2, .tab3:
+            case .aviation, .news, .pilots, .tab3:
                 return .none
             }
         }

@@ -9,11 +9,13 @@ struct NewsFeature {
         var errorMessage: String?
         var newsItems: [NewsItem] = []
         var selectedNews: NewsItem?
+        var totalFromAPI = 0
+        var filteredCount = 0
     }
     
     enum Action: Equatable {
         case onAppear
-        case newsLoaded([NewsItem])
+        case newsLoaded([NewsItem], totalFromAPI: Int, filteredCount: Int)
         case newsLoadFailed(String)
         case selectNews(NewsItem?)
     }
@@ -35,7 +37,7 @@ struct NewsFeature {
                             "96d6a43448504d8fa60ca4cde10987ee"
                         )
                         
-                        let newsItems = newsModel.articles.map { article in
+                        let allArticles = newsModel.articles.map { article in
                             NewsItem(
                                 id: article.url,
                                 title: article.title,
@@ -47,15 +49,37 @@ struct NewsFeature {
                             )
                         }
                         
-                        await send(.newsLoaded(newsItems))
+                        // Фільтруємо новини за авіаційними темами
+                        let aviationKeywords = ["авіація", "політ", "рейс", "космос", "небо", "aviation", "flight", "aircraft", "airplane", "space", "spacecraft", "rocket", "satellite", "pilot", "airline", "airport", "airspace", "aerospace", "helicopter", "drone", "jet", "boeing", "airbus", "spacex", "nasa"]
+                        
+                        let filteredNews = allArticles.filter { newsItem in
+                            let titleLower = newsItem.title.lowercased()
+                            let summaryLower = newsItem.summary.lowercased()
+                            
+                            return aviationKeywords.contains { keyword in
+                                titleLower.contains(keyword.lowercased()) || 
+                                summaryLower.contains(keyword.lowercased())
+                            }
+                        }
+                        
+                        print("📊 News Filtering Results:")
+                        print("   Total articles from API: \(allArticles.count)")
+                        print("   Aviation-related articles: \(filteredNews.count)")
+                        print("   Filtered out: \(allArticles.count - filteredNews.count)")
+                        
+                        let newsItems = filteredNews
+                        
+                        await send(.newsLoaded(newsItems, totalFromAPI: allArticles.count, filteredCount: filteredNews.count))
                     } catch {
                         await send(.newsLoadFailed(error.localizedDescription))
                     }
                 }
                 
-            case let .newsLoaded(news):
+            case let .newsLoaded(news, totalFromAPI, filteredCount):
                 state.isLoading = false
                 state.newsItems = news
+                state.totalFromAPI = totalFromAPI
+                state.filteredCount = filteredCount
                 return .none
                 
             case let .newsLoadFailed(error):

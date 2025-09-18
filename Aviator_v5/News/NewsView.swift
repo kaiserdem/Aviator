@@ -52,18 +52,50 @@ struct NewsView: View {
                             }
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
                         } else {
-                            List(viewStore.newsItems) { newsItem in
-                                Button {
-                                    viewStore.send(.selectNews(newsItem))
-                                } label: {
-                                    NewsRowView(newsItem: newsItem)
+                            VStack(spacing: 0) {
+                                // Статистика фільтрації
+                                if viewStore.totalFromAPI > 0 {
+                                    HStack {
+                                        VStack(alignment: .leading, spacing: 4) {
+                                            Text("📊 Filtering Results")
+                                                .font(.caption)
+                                                .foregroundColor(Theme.Palette.white.opacity(Theme.Opacity.textSecondary))
+                                            
+                                            HStack(spacing: 16) {
+                                                Text("Total: \(viewStore.totalFromAPI)")
+                                                    .font(.caption2)
+                                                    .foregroundColor(Theme.Palette.white.opacity(Theme.Opacity.textTertiary))
+                                                
+                                                Text("Aviation: \(viewStore.filteredCount)")
+                                                    .font(.caption2)
+                                                    .foregroundColor(Theme.Palette.vibrantPink)
+                                                
+                                                Text("Filtered: \(viewStore.totalFromAPI - viewStore.filteredCount)")
+                                                    .font(.caption2)
+                                                    .foregroundColor(Theme.Palette.white.opacity(Theme.Opacity.textTertiary))
+                                            }
+                                        }
+                                        
+                                        Spacer()
+                                    }
+                                    .padding(.horizontal, 16)
+                                    .padding(.vertical, 8)
+                                    .background(Theme.Palette.white.opacity(0.05))
                                 }
-                                .buttonStyle(PlainButtonStyle())
-                                .listRowBackground(Color.clear)
-                                .listRowSeparator(.hidden)
+                                
+                                List(viewStore.newsItems) { newsItem in
+                                    Button {
+                                        viewStore.send(.selectNews(newsItem))
+                                    } label: {
+                                        NewsRowView(newsItem: newsItem)
+                                    }
+                                    .buttonStyle(PlainButtonStyle())
+                                    .listRowBackground(Color.clear)
+                                    .listRowSeparator(.hidden)
+                                }
+                                .listStyle(PlainListStyle())
+                                .scrollContentBackground(.hidden)
                             }
-                            .listStyle(PlainListStyle())
-                            .scrollContentBackground(.hidden)
                         }
                     }
                     .navigationTitle("News")

@@ -22,17 +22,17 @@ struct AppView: View {
                 }
                 .tag(AppFeature.Tab.aviation)
                 
-                Tab2View(
+                PilotsView(
                     store: self.store.scope(
-                        state: \.tab2,
-                        action: \.tab2
+                        state: \.pilots,
+                        action: \.pilots
                     )
                 )
                 .tabItem {
-                    Image(systemName: AppFeature.Tab.tab2.icon)
-                    Text(AppFeature.Tab.tab2.rawValue)
+                    Image(systemName: AppFeature.Tab.pilots.icon)
+                    Text(AppFeature.Tab.pilots.rawValue)
                 }
-                .tag(AppFeature.Tab.tab2)
+                .tag(AppFeature.Tab.pilots)
                 
                 NewsView(
                     store: self.store.scope(
@@ -61,12 +61,31 @@ struct AppView: View {
             .accentColor(Theme.Palette.vibrantPink)
             .onAppear {
                 let appearance = UITabBarAppearance()
-                appearance.configureWithTransparentBackground()
+                appearance.configureWithOpaqueBackground()
+                
+                // Створюємо градієнт для таббару
+                let gradientLayer = CAGradientLayer()
+                gradientLayer.colors = [
+                    Theme.Palette.primaryPurple.cgColor,
+                    Theme.Palette.midPurple.cgColor,
+                    Theme.Palette.deepMagenta.cgColor
+                ]
+                gradientLayer.startPoint = CGPoint(x: 0, y: 0)
+                gradientLayer.endPoint = CGPoint(x: 1, y: 1)
+                gradientLayer.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 100)
+                
+                // Конвертуємо градієнт в UIImage
+                UIGraphicsBeginImageContext(gradientLayer.frame.size)
+                gradientLayer.render(in: UIGraphicsGetCurrentContext()!)
+                let gradientImage = UIGraphicsGetImageFromCurrentImageContext()
+                UIGraphicsEndImageContext()
+                
+                appearance.backgroundImage = gradientImage
                 appearance.backgroundColor = UIColor.clear
                 
-                appearance.stackedLayoutAppearance.normal.iconColor = UIColor.white.withAlphaComponent(0.6)
+                appearance.stackedLayoutAppearance.normal.iconColor = UIColor.white.withAlphaComponent(0.7)
                 appearance.stackedLayoutAppearance.normal.titleTextAttributes = [
-                    .foregroundColor: UIColor.white.withAlphaComponent(0.6)
+                    .foregroundColor: UIColor.white.withAlphaComponent(0.7)
                 ]
                 
                 appearance.stackedLayoutAppearance.selected.iconColor = UIColor.white
@@ -76,6 +95,13 @@ struct AppView: View {
                 
                 UITabBar.appearance().standardAppearance = appearance
                 UITabBar.appearance().scrollEdgeAppearance = appearance
+                
+                // Додаємо тінь для таббару
+                UITabBar.appearance().layer.shadowColor = UIColor.black.cgColor
+                UITabBar.appearance().layer.shadowOffset = CGSize(width: 0, height: -2)
+                UITabBar.appearance().layer.shadowOpacity = 0.3
+                UITabBar.appearance().layer.shadowRadius = 8
+                UITabBar.appearance().clipsToBounds = false
             }
         }
     }
