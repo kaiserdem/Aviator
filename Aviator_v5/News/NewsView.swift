@@ -78,6 +78,7 @@ struct NewsView: View {
                                         
                                         Spacer()
                                     }
+                                    .padding(.top, 40)
                                     .padding(.horizontal, 16)
                                     .padding(.vertical, 8)
                                     .background(Theme.Palette.white.opacity(0.05))
@@ -98,9 +99,17 @@ struct NewsView: View {
                             }
                         }
                     }
-                    .navigationTitle("News")
-                    .navigationBarTitleDisplayMode(.large)
+                    .navigationBarTitleDisplayMode(.inline)
                     .toolbarColorScheme(.dark, for: .navigationBar)
+                    .toolbar {
+                        ToolbarItem(placement: .principal) {
+                            Text("News")
+                                .font(.largeTitle)
+                                .fontWeight(.bold)
+                                .foregroundColor(Theme.Palette.darkRed)
+                                .padding(.top, 50)
+                        }
+                    }
                     .navigationDestination(item: viewStore.binding(get: \.selectedNews, send: { .selectNews($0) })) { newsItem in
                         NewsDetailView(newsItem: newsItem)
                     }

@@ -32,9 +32,17 @@ struct Tab3View: View {
                             .multilineTextAlignment(.center)
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .navigationTitle("Tab 4")
-                    .navigationBarTitleDisplayMode(.large)
+                    .navigationBarTitleDisplayMode(.inline)
                     .toolbarColorScheme(.dark, for: .navigationBar)
+                    .toolbar {
+                        ToolbarItem(placement: .principal) {
+                            Text("Tab 4")
+                                .font(.largeTitle)
+                                .fontWeight(.bold)
+                                .foregroundColor(Theme.Palette.darkRed)
+                                .padding(.top, 50)
+                        }
+                    }
                 }
             }
             .onAppear {

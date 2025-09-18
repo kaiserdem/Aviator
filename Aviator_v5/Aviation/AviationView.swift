@@ -50,6 +50,7 @@ struct AviationView: View {
                                     .foregroundColor(Theme.Palette.white.opacity(Theme.Opacity.textSecondary))
                                     .multilineTextAlignment(.center)
                             }
+                            .padding(.top, 40)
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
                         } else {
                             List(viewStore.aviationData) { item in
@@ -59,11 +60,20 @@ struct AviationView: View {
                             }
                             .listStyle(PlainListStyle())
                             .scrollContentBackground(.hidden)
+                            .padding(.top, 40)
                         }
                     }
-                    .navigationTitle("Aviation")
-                    .navigationBarTitleDisplayMode(.large)
+                    .navigationBarTitleDisplayMode(.inline)
                     .toolbarColorScheme(.dark, for: .navigationBar)
+                    .toolbar {
+                        ToolbarItem(placement: .principal) {
+                            Text("Aviation")
+                                .font(.largeTitle)
+                                .fontWeight(.bold)
+                                .foregroundColor(Theme.Palette.darkRed)
+                                .padding(.top, 50)
+                        }
+                    }
                 }
             }
             .onAppear {
