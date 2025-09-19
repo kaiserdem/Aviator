@@ -18,18 +18,12 @@ extension DependencyValues {
 extension AviationEventsClient: DependencyKey {
     static let liveValue = Self(
         loadCurrentEvents: {
-            // Тут буде реальний API виклик
-            // Поки що повертаємо тестові дані
             return AviationEventsClient.mockCurrentEvents
         },
         loadFAIChampionships: {
-            // Тут буде реальний API виклик
-            // Поки що повертаємо тестові дані
             return AviationEventsClient.mockFAIChampionships
         },
         loadAllEvents: {
-            // Тут буде реальний API виклик
-            // Поки що повертаємо тестові дані
             return AviationEventsClient.mockAllEvents
         }
     )
@@ -42,7 +36,6 @@ extension AviationEventsClient: DependencyKey {
 }
 
 extension AviationEventsClient {
-    // Mock дані для CURRENT EVENTS
     static let mockCurrentEvents: [AviationEvent] = [
         AviationEvent(
             id: "17267",
@@ -466,7 +459,6 @@ extension AviationEventsClient {
         )
     ]
     
-    // Mock дані для FAI WORLD AND CONTINENTAL CHAMPIONSHIPS
     static let mockFAIChampionships: [AviationEvent] = [
         AviationEvent(
             id: "17786",

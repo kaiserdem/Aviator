@@ -2,67 +2,56 @@ import SwiftUI
 
 struct Theme {
     struct Palette {
-        // Основні кольори градієнтів
-        static let primaryPurple = Color(hex: "#320064") // Темно-фіолетовий
-        static let secondaryDarkBlue = Color(hex: "#0A001E") // Темно-синьо-чорний
+        static let primaryPurple = Color(hex: "#320064")
+        static let secondaryDarkBlue = Color(hex: "#0A001E")
         
-        static let vibrantPink = Color(hex: "#E91E63") // Яскраво-рожевий
-        static let deepMagenta = Color(hex: "#9C27B0") // Глибокий магента
+        static let vibrantPink = Color(hex: "#E91E63")
+        static let deepMagenta = Color(hex: "#9C27B0")
         
-        static let darkPurpleRed = Color(hex: "#B41446") // Темно-фіолетово-червоний
-        static let brightOrangeRed = Color(hex: "#E62814") // Яскраво-оранжево-червоний
+        static let darkPurpleRed = Color(hex: "#B41446")
+        static let brightOrangeRed = Color(hex: "#E62814")
         
-        // Додаткові кольори
-        static let midPurple = Color(hex: "#C0399B") // Середній фіолетовий
-        static let lightPink = Color(hex: "#D82C7C") // Світло-рожевий
-        
-        // Нейтральні кольори
+        static let midPurple = Color(hex: "#C0399B")
+        static let lightPink = Color(hex: "#D82C7C")
         static let white = Color.white
         static let black = Color.black
         static let darkGray = Color(hex: "#1A1A1A")
         static let lightGray = Color(hex: "#F5F5F5")
         
-        // Темно-червоний колір (світліший)
         static let darkRed = Color(hex: "#B22222")
     }
     
     struct Gradients {
-        // Основний градієнт - темно-фіолетовий до темно-синього
         static let primary = LinearGradient(
             colors: [Palette.primaryPurple, Palette.secondaryDarkBlue],
             startPoint: .topLeading,
             endPoint: .bottomTrailing
         )
         
-        // Яскравий градієнт - рожевий до магенти
         static let vibrant = LinearGradient(
             colors: [Palette.vibrantPink, Palette.deepMagenta],
             startPoint: .leading,
             endPoint: .trailing
         )
         
-        // Градієнт для карток - від темно-червоного до яскраво-червоного
         static let card = LinearGradient(
             colors: [Palette.darkPurpleRed, Palette.brightOrangeRed],
             startPoint: .leading,
             endPoint: .trailing
         )
         
-        // М'який градієнт для фонів
         static let soft = LinearGradient(
             colors: [Palette.midPurple.opacity(0.8), Palette.lightPink.opacity(0.6)],
             startPoint: .topLeading,
             endPoint: .bottomTrailing
         )
         
-        // Градієнт для кнопок
         static let button = LinearGradient(
             colors: [Palette.vibrantPink, Palette.deepMagenta],
             startPoint: .top,
             endPoint: .bottom
         )
         
-        // Градієнт для таббару (3 кольори)
         static let tabBar = LinearGradient(
             colors: [Palette.primaryPurple, Palette.midPurple, Palette.deepMagenta],
             startPoint: .topLeading,
@@ -90,11 +79,11 @@ extension Color {
         Scanner(string: hex).scanHexInt64(&int)
         let a, r, g, b: UInt64
         switch hex.count {
-        case 3: // RGB (12-bit)
+        case 3:
             (a, r, g, b) = (255, (int >> 8) * 17, (int >> 4 & 0xF) * 17, (int & 0xF) * 17)
-        case 6: // RGB (24-bit)
+        case 6:
             (a, r, g, b) = (255, int >> 16, int >> 8 & 0xFF, int & 0xFF)
-        case 8: // ARGB (32-bit)
+        case 8:
             (a, r, g, b) = (int >> 24, int >> 16 & 0xFF, int >> 8 & 0xFF, int & 0xFF)
         default:
             (a, r, g, b) = (1, 1, 1, 0)

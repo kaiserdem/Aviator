@@ -10,14 +10,12 @@ struct AviationRecordsClient {
 
 extension AviationRecordsClient: DependencyKey {
     static let liveValue = Self(
-        loadRecords: {
-            return AviationRecordsClient.mockRecords
-        },
+        loadRecords: { AviationRecordsClient.mockRecords },
         loadRecordsByCategory: { category in
-            return AviationRecordsClient.mockRecords.filter { $0.category == category }
+            AviationRecordsClient.mockRecords.filter { $0.category == category }
         },
         loadHistoricalRecords: {
-            return AviationRecordsClient.mockRecords.filter { $0.category == .historical }
+            AviationRecordsClient.mockRecords.filter { $0.category == .historical }
         }
     )
     
@@ -37,7 +35,6 @@ extension DependencyValues {
 
 extension AviationRecordsClient {
     static let mockRecords: [AviationRecord] = [
-        // Latest FAI Records (July-August 2025)
         AviationRecord(
             id: "fai_20919",
             title: "Acrobatic Longest sequence",
@@ -230,8 +227,6 @@ extension AviationRecordsClient {
             region: "World",
             faiId: "20886"
         ),
-        
-        // Previous FAI Records (August 2025)
         AviationRecord(
             id: "fai_20976",
             title: "Speed over Recognised Course",
@@ -784,9 +779,6 @@ extension AviationRecordsClient {
             region: "European",
             faiId: "20920"
         ),
-        
-        // Historical Records (existing)
-        // Speed Records
         AviationRecord(
             id: "speed_1",
             title: "Fastest Aircraft",
@@ -859,8 +851,6 @@ extension AviationRecordsClient {
             region: nil,
             faiId: nil
         ),
-        
-        // Altitude Records
         AviationRecord(
             id: "altitude_1",
             title: "Highest Altitude",
@@ -909,8 +899,6 @@ extension AviationRecordsClient {
             region: nil,
             faiId: nil
         ),
-        
-        // Distance Records
         AviationRecord(
             id: "distance_1",
             title: "Longest Non-stop Flight",
@@ -959,8 +947,6 @@ extension AviationRecordsClient {
             region: nil,
             faiId: nil
         ),
-        
-        // Historical Records
         AviationRecord(
             id: "historical_1",
             title: "First Powered Flight",
@@ -1033,8 +1019,6 @@ extension AviationRecordsClient {
             region: nil,
             faiId: nil
         ),
-        
-        // Military Records
         AviationRecord(
             id: "military_1",
             title: "Fastest Military Aircraft",
@@ -1059,8 +1043,6 @@ extension AviationRecordsClient {
             region: nil,
             faiId: nil
         ),
-        
-        // Payload Records
         AviationRecord(
             id: "payload_1",
             title: "Heaviest Aircraft",
@@ -1085,8 +1067,6 @@ extension AviationRecordsClient {
             region: nil,
             faiId: nil
         ),
-        
-        // Experimental Records
         AviationRecord(
             id: "experimental_1",
             title: "First Supersonic Flight",

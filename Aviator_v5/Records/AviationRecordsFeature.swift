@@ -15,12 +15,10 @@ struct AviationRecordsFeature {
         var filteredRecords: [AviationRecord] {
             var filtered = records
             
-            // Фільтр за категорією
             if let category = selectedCategory {
                 filtered = filtered.filter { $0.category == category }
             }
             
-            // Пошук за текстом
             if !searchText.isEmpty {
                 filtered = filtered.filter { record in
                     record.title.localizedCaseInsensitiveContains(searchText) ||

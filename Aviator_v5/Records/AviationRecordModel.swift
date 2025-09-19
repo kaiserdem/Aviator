@@ -15,7 +15,6 @@ struct AviationRecord: Identifiable, Codable, Equatable {
     let isCurrentRecord: Bool
     let previousRecord: String?
     
-    // Нові поля для FAI рекордів
     let faiClass: String?
     let faiSubClass: String?
     let recordType: String?

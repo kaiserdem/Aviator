@@ -12,7 +12,6 @@ struct AviationView: View {
                         .ignoresSafeArea()
                     
                     VStack(spacing: 0) {
-                        // Tab Selector
                         HStack(spacing: 0) {
                             ForEach(AviationEventsFeature.State.EventTab.allCases, id: \.self) { tab in
                                 Button(action: {
@@ -36,7 +35,6 @@ struct AviationView: View {
                         .padding(.top, 20)
                         .padding(.bottom, 16)
                         
-                        // Search Bar
                         HStack {
                             Image(systemName: "magnifyingglass")
                                 .foregroundColor(Theme.Palette.white.opacity(Theme.Opacity.textSecondary))
@@ -55,7 +53,6 @@ struct AviationView: View {
                         .padding(.horizontal, 16)
                         .padding(.bottom, 16)
                         
-                        // Sport Filters
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack(spacing: 12) {
                                 FilterChip(
@@ -80,7 +77,6 @@ struct AviationView: View {
                         }
                         .padding(.bottom, 16)
                         
-                        // Content
                         if viewStore.isLoading {
                             VStack {
                                 ProgressView()
@@ -172,7 +168,6 @@ struct AviationEventCardView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            // Спорт іконка та класифікація
             HStack {
                 Image(systemName: event.sport.icon)
                     .font(.title2)
@@ -189,16 +184,12 @@ struct AviationEventCardView: View {
                     .foregroundColor(Theme.Palette.white)
                     .cornerRadius(4)
             }
-            
-            // Назва події
             Text(event.title)
                 .font(.subheadline)
                 .fontWeight(.semibold)
                 .foregroundColor(Theme.Palette.white)
                 .lineLimit(2)
                 .multilineTextAlignment(.leading)
-            
-            // Дата
             HStack {
                 Image(systemName: "calendar")
                     .foregroundColor(Theme.Palette.darkRed)
@@ -207,8 +198,6 @@ struct AviationEventCardView: View {
                     .font(.caption)
                     .foregroundColor(Theme.Palette.white.opacity(Theme.Opacity.textSecondary))
             }
-            
-            // Місце
             HStack {
                 Image(systemName: "location")
                     .foregroundColor(Theme.Palette.darkRed)
@@ -218,8 +207,6 @@ struct AviationEventCardView: View {
                     .foregroundColor(Theme.Palette.white.opacity(Theme.Opacity.textSecondary))
                     .lineLimit(1)
             }
-            
-            // Спорт
             Text(event.sport.displayName)
                 .font(.caption)
                 .fontWeight(.medium)
@@ -263,7 +250,6 @@ struct AviationEventDetailView: View {
                 
                 ScrollView {
                     VStack(alignment: .leading, spacing: 20) {
-                        // Header
                         VStack(alignment: .leading, spacing: 16) {
                             Text(event.title)
                                 .font(.title)
@@ -305,8 +291,6 @@ struct AviationEventDetailView: View {
                         .background(Theme.Palette.white.opacity(Theme.Opacity.cardBackground))
                         .cornerRadius(12)
                         .shadow(color: Theme.Shadows.medium, radius: 4)
-                        
-                        // Event Details
                         VStack(alignment: .leading, spacing: 20) {
                             Text("Event Details")
                                 .font(.title2)
@@ -332,8 +316,6 @@ struct AviationEventDetailView: View {
                         .background(Theme.Palette.white.opacity(Theme.Opacity.cardBackground))
                         .cornerRadius(12)
                         .shadow(color: Theme.Shadows.medium, radius: 4)
-                        
-                        // Contact Information
                         if event.contactPerson != nil || event.contactEmail != nil || event.contactPhone != nil {
                             VStack(alignment: .leading, spacing: 20) {
                                 Text("Contact Information")
@@ -361,7 +343,6 @@ struct AviationEventDetailView: View {
                             .shadow(color: Theme.Shadows.medium, radius: 4)
                         }
                         
-                        // Documents & Links
                         if let documents = event.documents, !documents.isEmpty {
                             VStack(alignment: .leading, spacing: 20) {
                                 Text("Documents & Links")
@@ -389,7 +370,6 @@ struct AviationEventDetailView: View {
                             .shadow(color: Theme.Shadows.medium, radius: 4)
                         }
                         
-                        // Website Links
                         if event.websiteURL != nil || event.faiMiniSiteURL != nil {
                             VStack(alignment: .leading, spacing: 20) {
                                 Text("Official Links")

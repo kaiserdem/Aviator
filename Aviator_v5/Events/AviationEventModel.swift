@@ -36,7 +36,6 @@ struct AviationEvent: Identifiable, Codable, Equatable {
         return startDate > Date()
     }
     
-    // Кастомна реалізація Equatable для правильної роботи з Date
     static func == (lhs: AviationEvent, rhs: AviationEvent) -> Bool {
         return lhs.id == rhs.id &&
                lhs.title == rhs.title &&

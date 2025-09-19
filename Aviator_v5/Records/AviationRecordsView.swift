@@ -12,7 +12,6 @@ struct AviationRecordsView: View {
                         .ignoresSafeArea()
                     
                     VStack(spacing: 0) {
-                        // Search Bar
                         HStack {
                             Image(systemName: "magnifyingglass")
                                 .foregroundColor(Theme.Palette.white.opacity(Theme.Opacity.textSecondary))
@@ -31,8 +30,6 @@ struct AviationRecordsView: View {
                         .padding(.horizontal, 16)
                         .padding(.top, 20)
                         .padding(.bottom, 16)
-                        
-                        // Category Filters
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack(spacing: 12) {
                                 FilterChip(
@@ -56,8 +53,6 @@ struct AviationRecordsView: View {
                             .padding(.horizontal, 16)
                         }
                         .padding(.bottom, 16)
-                        
-                        // Content
                         if viewStore.isLoading {
                             VStack {
                                 ProgressView()
@@ -149,7 +144,6 @@ struct AviationRecordCardView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            // Category іконка та рік
             HStack {
                 Image(systemName: record.category.icon)
                     .font(.title2)
@@ -166,22 +160,16 @@ struct AviationRecordCardView: View {
                     .foregroundColor(Theme.Palette.white)
                     .cornerRadius(4)
             }
-            
-            // Назва рекорду
             Text(record.title)
                 .font(.subheadline)
                 .fontWeight(.semibold)
                 .foregroundColor(Theme.Palette.white)
                 .lineLimit(2)
                 .multilineTextAlignment(.leading)
-            
-            // Значення рекорду
             Text(record.displayValue)
                 .font(.headline)
                 .fontWeight(.bold)
                 .foregroundColor(Theme.Palette.darkRed)
-            
-            // Пілот (якщо є)
             if let pilot = record.pilot {
                 HStack {
                     Image(systemName: "person")
@@ -193,8 +181,6 @@ struct AviationRecordCardView: View {
                         .lineLimit(1)
                 }
             }
-            
-            // Літак (якщо є)
             if let aircraft = record.aircraft {
                 HStack {
                     Image(systemName: "airplane")
@@ -226,7 +212,6 @@ struct AviationRecordDetailView: View {
                 
                 ScrollView {
                     VStack(alignment: .leading, spacing: 20) {
-                        // Header
                         VStack(alignment: .leading, spacing: 16) {
                             Text(record.title)
                                 .font(.title)
@@ -270,8 +255,6 @@ struct AviationRecordDetailView: View {
                         .background(Theme.Palette.white.opacity(Theme.Opacity.cardBackground))
                         .cornerRadius(12)
                         .shadow(color: Theme.Shadows.medium, radius: 4)
-                        
-                        // Record Details
                         VStack(alignment: .leading, spacing: 20) {
                             Text("Record Details")
                                 .font(.title2)
@@ -299,8 +282,6 @@ struct AviationRecordDetailView: View {
                                 if let previousRecord = record.previousRecord {
                                     InfoRow(icon: "clock.arrow.circlepath", title: "Previous Record", value: previousRecord)
                                 }
-                                
-                                // FAI Information
                                 if let faiId = record.faiId {
                                     InfoRow(icon: "number", title: "FAI Record ID", value: faiId)
                                 }

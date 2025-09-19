@@ -58,12 +58,11 @@ struct AppView: View {
                 }
                 .tag(AppFeature.Tab.tab3)
             }
-            .accentColor(Theme.Palette.vibrantPink)
+            .accentColor(Theme.Palette.darkRed)
             .onAppear {
                 let appearance = UITabBarAppearance()
                 appearance.configureWithOpaqueBackground()
                 
-                // Створюємо градієнт для таббару
                 let gradientLayer = CAGradientLayer()
                 gradientLayer.colors = [
                     Theme.Palette.primaryPurple.cgColor,
@@ -73,8 +72,6 @@ struct AppView: View {
                 gradientLayer.startPoint = CGPoint(x: 0, y: 0)
                 gradientLayer.endPoint = CGPoint(x: 1, y: 1)
                 gradientLayer.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 100)
-                
-                // Конвертуємо градієнт в UIImage
                 UIGraphicsBeginImageContext(gradientLayer.frame.size)
                 gradientLayer.render(in: UIGraphicsGetCurrentContext()!)
                 let gradientImage = UIGraphicsGetImageFromCurrentImageContext()
@@ -96,7 +93,6 @@ struct AppView: View {
                 UITabBar.appearance().standardAppearance = appearance
                 UITabBar.appearance().scrollEdgeAppearance = appearance
                 
-                // Додаємо тінь для таббару
                 UITabBar.appearance().layer.shadowColor = UIColor.black.cgColor
                 UITabBar.appearance().layer.shadowOffset = CGSize(width: 0, height: -2)
                 UITabBar.appearance().layer.shadowOpacity = 0.3

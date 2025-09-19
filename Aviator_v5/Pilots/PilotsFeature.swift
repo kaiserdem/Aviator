@@ -33,10 +33,8 @@ struct PilotsFeature {
                 
                 return .run { send in
                     do {
-                        // Завантажуємо базові дані про пілотів
                         let basePilots = Self.loadPilotsData()
                         
-                        // Завантажуємо зображення для кожного пілота
                         var pilotsWithImages: [Pilot] = []
                         
                         for pilot in basePilots {
@@ -90,10 +88,8 @@ struct PilotsFeature {
         }
     }
     
-    // MARK: - Static Data
     static func loadPilotsData() -> [Pilot] {
         return [
-            // Pioneers
             Pilot(
                 name: "Wright Brothers",
                 fullName: "Orville & Wilbur Wright",
@@ -148,7 +144,6 @@ struct PilotsFeature {
                 category: .recordBreaker
             ),
             
-            // World War Era
             Pilot(
                 name: "Chuck Yeager",
                 fullName: "Charles Elwood Yeager",
@@ -185,7 +180,6 @@ struct PilotsFeature {
                 category: .military
             ),
             
-            // Space Era
             Pilot(
                 name: "Yuri Gagarin",
                 fullName: "Yuri Alekseyevich Gagarin",
@@ -222,7 +216,6 @@ struct PilotsFeature {
                 category: .astronaut
             ),
             
-            // Modern Era
             Pilot(
                 name: "Chesley Sullenberger",
                 fullName: "Chesley Burnett Sullenberger III",
@@ -259,7 +252,6 @@ struct PilotsFeature {
                 category: .astronaut
             ),
             
-            // Додаткові піонери
             Pilot(
                 name: "Bessie Coleman",
                 fullName: "Elizabeth Coleman",
@@ -296,7 +288,6 @@ struct PilotsFeature {
                 category: .recordBreaker
             ),
             
-            // Додаткові військові пілоти
             Pilot(
                 name: "Douglas Bader",
                 fullName: "Sir Douglas Robert Steuart Bader",
@@ -333,7 +324,6 @@ struct PilotsFeature {
                 category: .military
             ),
             
-            // Додаткові космонавти
             Pilot(
                 name: "John Glenn",
                 fullName: "John Herschel Glenn Jr.",
@@ -370,7 +360,6 @@ struct PilotsFeature {
                 category: .astronaut
             ),
             
-            // Додаткові сучасні пілоти
             Pilot(
                 name: "Eileen Collins",
                 fullName: "Eileen Marie Collins",
@@ -425,7 +414,6 @@ struct PilotsFeature {
                 category: .commercial
             ),
             
-            // Нові пілоти з вашого списку
             Pilot(
                 name: "Karen Skinner",
                 fullName: "Karen Skinner",

@@ -9,7 +9,6 @@ struct WikipediaImageClient {
 extension WikipediaImageClient: DependencyKey {
     static let liveValue = Self(
         fetchPilotImage: { pilotName in
-            // Створюємо URL для Wikipedia API
             let encodedName = pilotName.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? pilotName
             let urlString = "https://en.wikipedia.org/api/rest_v1/page/summary/\(encodedName)"
             
@@ -30,11 +29,9 @@ extension WikipediaImageClient: DependencyKey {
                 throw WikipediaImageError.httpError(httpResponse.statusCode)
             }
             
-            // Декодуємо відповідь
             let decoder = JSONDecoder()
             let pageSummary = try decoder.decode(WikipediaPageSummary.self, from: data)
             
-            // Повертаємо URL зображення, якщо воно є
             guard let source = pageSummary.thumbnail?.source,
                   let imageURL = URL(string: source) else {
                 return nil
@@ -51,7 +48,6 @@ extension DependencyValues {
     }
 }
 
-// MARK: - Models
 
 struct WikipediaPageSummary: Codable {
     let title: String
@@ -84,7 +80,6 @@ struct WikipediaMobile: Codable {
     let page: String
 }
 
-// MARK: - Errors
 
 enum WikipediaImageError: Error, LocalizedError {
     case invalidURL

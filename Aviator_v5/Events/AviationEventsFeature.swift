@@ -33,12 +33,10 @@ struct AviationEventsFeature {
             
             var filtered = events
             
-            // Фільтр за спортом
             if let sportFilter = selectedSportFilter {
                 filtered = filtered.filter { $0.sport == sportFilter }
             }
             
-            // Пошук за текстом
             if !searchText.isEmpty {
                 filtered = filtered.filter { event in
                     event.title.localizedCaseInsensitiveContains(searchText) ||
@@ -126,7 +124,7 @@ struct AviationEventsFeature {
                 
             case let .selectTab(tab):
                 state.selectedTab = tab
-                state.selectedSportFilter = nil // Скидаємо фільтр при зміні табу
+                state.selectedSportFilter = nil
                 return .none
                 
             case let .selectEvent(event):

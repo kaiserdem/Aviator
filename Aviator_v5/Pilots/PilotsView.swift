@@ -54,7 +54,6 @@ struct PilotsView: View {
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
                         } else {
                             VStack(spacing: 0) {
-                                // Фільтри
                                 ScrollView(.horizontal, showsIndicators: false) {
                                     HStack(spacing: 12) {
                                         FilterChip(
@@ -87,8 +86,6 @@ struct PilotsView: View {
                                 }
                                 .padding(.top, 20)
                                 .padding(.vertical, 8)
-                                
-                                // Список пілотів
                                 List(filteredPilots(viewStore)) { pilot in
                                     Button {
                                         viewStore.send(.selectPilot(pilot))
@@ -124,15 +121,14 @@ struct PilotsView: View {
             .onAppear {
                 viewStore.send(.onAppear)
                 
-                // Налаштування кольору заголовка навігації
                 let appearance = UINavigationBarAppearance()
                 appearance.configureWithOpaqueBackground()
                 appearance.backgroundColor = UIColor.clear
                 appearance.titleTextAttributes = [
-                    .foregroundColor: UIColor(red: 0.7, green: 0.13, blue: 0.13, alpha: 1.0) // Червоний колір
+                    .foregroundColor: UIColor(red: 0.7, green: 0.13, blue: 0.13, alpha: 1.0)
                 ]
                 appearance.largeTitleTextAttributes = [
-                    .foregroundColor: UIColor(red: 0.7, green: 0.13, blue: 0.13, alpha: 1.0) // Червоний колір
+                    .foregroundColor: UIColor(red: 0.7, green: 0.13, blue: 0.13, alpha: 1.0)
                 ]
                 
                 UINavigationBar.appearance().standardAppearance = appearance
@@ -157,43 +153,20 @@ struct PilotsView: View {
     }
 }
 
-// MARK: - Supporting Views
-
-//struct FilterChip: View {
-//    let title: String
-//    let isSelected: Bool
-//    let action: () -> Void
-//    
-//    var body: some View {
-//        Button(action: action) {
-//            Text(title)
-//                .font(.caption)
-//                .padding(.horizontal, 12)
-//                .padding(.vertical, 6)
-//                .background(Theme.Gradients.soft)
-//                .foregroundColor(Theme.Palette.white)
-//                .cornerRadius(16)
-//        }
-//        .buttonStyle(PlainButtonStyle())
-//    }
-//}
 
 struct PilotRowView: View {
     let pilot: Pilot
     
     var body: some View {
         HStack(spacing: 12) {
-            // Зображення пілота
             Group {
                 if UIImage(named: pilot.imageName) != nil {
-                    // Локальне зображення з Assets
                     Image(pilot.imageName)
                         .resizable()
                         .aspectRatio(contentMode: .fill)
                         .frame(width: 60, height: 60)
                         .clipShape(Circle())
                 } else if let imageURL = pilot.imageURL {
-                    // Завантаження з інтернету
                     AsyncImage(url: imageURL) { image in
                         image
                             .resizable()
@@ -209,7 +182,6 @@ struct PilotRowView: View {
                             .cornerRadius(30)
                     }
                 } else {
-                    // Плейсхолдер
                     Image(systemName: "person.circle.fill")
                         .font(.system(size: 50))
                         .foregroundColor(Theme.Palette.white.opacity(Theme.Opacity.textSecondary))
@@ -270,10 +242,8 @@ struct PilotDetailView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
-                // Зображення пілота
                 Group {
                     if UIImage(named: pilot.imageName) != nil {
-                        // Локальне зображення з Assets
                         Image(pilot.imageName)
                             .resizable()
                             .aspectRatio(contentMode: .fill)
@@ -282,7 +252,6 @@ struct PilotDetailView: View {
                             .clipShape(RoundedRectangle(cornerRadius: 16))
                             .shadow(color: Theme.Shadows.medium, radius: 12)
                     } else if let imageURL = pilot.imageURL {
-                        // Завантаження з інтернету
                         AsyncImage(url: imageURL) { image in
                             image
                                 .resizable()
@@ -301,7 +270,6 @@ struct PilotDetailView: View {
                                 .clipShape(RoundedRectangle(cornerRadius: 16))
                         }
                     } else {
-                        // Плейсхолдер
                         Image(systemName: "person.crop.rectangle.fill")
                             .font(.system(size: 80))
                             .foregroundColor(Theme.Palette.white.opacity(Theme.Opacity.textSecondary))
@@ -314,7 +282,6 @@ struct PilotDetailView: View {
                 .frame(maxWidth: .infinity, alignment: .center)
                 .padding(.bottom, 16)
                 
-                // Заголовок
                 VStack(alignment: .leading, spacing: 8) {
                     Text(pilot.name)
                         .font(.largeTitle)
@@ -344,7 +311,6 @@ struct PilotDetailView: View {
                     }
                 }
                 
-                // Основна інформація
                 VStack(alignment: .leading, spacing: 12) {
                     InfoRow(icon: "flag", title: "Nationality", value: pilot.nationality)
                     InfoRow(icon: "calendar", title: "Born", value: pilot.birthDate)
@@ -356,7 +322,6 @@ struct PilotDetailView: View {
                 Divider()
                     .background(Theme.Palette.darkRed)
                 
-                // Біографія
                 VStack(alignment: .leading, spacing: 8) {
                     Text("Biography")
                         .font(.headline)
@@ -371,7 +336,6 @@ struct PilotDetailView: View {
                 Divider()
                     .background(Theme.Palette.darkRed)
                 
-                // Досягнення
                 VStack(alignment: .leading, spacing: 8) {
                     Text("Achievements")
                         .font(.headline)
@@ -392,10 +356,8 @@ struct PilotDetailView: View {
                     }
                 }
                 
-                // Кнопки дій
                 VStack(spacing: 12) {
                     HStack(spacing: 16) {
-                        // Кнопка копіювання лінку
                         Button(action: {
                             copyPilotLink(pilot)
                         }) {
@@ -412,7 +374,6 @@ struct PilotDetailView: View {
                             .cornerRadius(12)
                         }
                         
-                        // Кнопка поширення
                         Button(action: {
                             sharePilot(pilot)
                         }) {
@@ -440,26 +401,6 @@ struct PilotDetailView: View {
     }
 }
 
-//struct InfoRow: View {
-//    let title: String
-//    let value: String
-//    
-//    var body: some View {
-//        HStack {
-//            Text(title)
-//                .font(.subheadline)
-//                .foregroundColor(Theme.Palette.white)
-//            
-//            Spacer()
-//            
-//            Text(value)
-//                .font(.subheadline)
-//                .foregroundColor(Theme.Palette.white.opacity(Theme.Opacity.textSecondary))
-//        }
-//    }
-//}
-
-// MARK: - Helper Functions
 
 extension PilotDetailView {
     private func copyPilotLink(_ pilot: Pilot) {
@@ -479,7 +420,6 @@ extension PilotDetailView {
         
         UIPasteboard.general.string = pilotInfo
         
-        // Показуємо підтвердження (можна додати toast notification)
         let impactFeedback = UIImpactFeedbackGenerator(style: .medium)
         impactFeedback.impactOccurred()
     }
@@ -504,7 +444,6 @@ extension PilotDetailView {
             applicationActivities: nil
         )
         
-        // Для iPad
         if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
            let window = windowScene.windows.first {
             activityViewController.popoverPresentationController?.sourceView = window

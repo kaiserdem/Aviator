@@ -49,7 +49,6 @@ struct NewsFeature {
                             )
                         }
                         
-                        // Фільтруємо новини за авіаційними темами
                         let aviationKeywords = ["авіація", "політ", "рейс", "космос", "небо", "aviation", "flight", "aircraft", "airplane", "space", "spacecraft", "rocket", "satellite", "pilot", "airline", "airport", "airspace", "aerospace", "helicopter", "drone", "jet", "boeing", "airbus", "spacex", "nasa"]
                         
                         let filteredNews = allArticles.filter { newsItem in

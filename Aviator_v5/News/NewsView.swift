@@ -53,7 +53,6 @@ struct NewsView: View {
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
                         } else {
                             VStack(spacing: 0) {
-                                // Статистика фільтрації
                                 if viewStore.totalFromAPI > 0 {
                                     HStack {
                                         VStack(alignment: .leading, spacing: 4) {
