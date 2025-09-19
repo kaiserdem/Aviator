@@ -46,10 +46,10 @@ struct AppView: View {
                 }
                 .tag(AppFeature.Tab.news)
                 
-                Tab3View(
+                AviationRecordsView(
                     store: self.store.scope(
-                        state: \.tab3,
-                        action: \.tab3
+                        state: \.records,
+                        action: \.records
                     )
                 )
                 .tabItem {
