@@ -6,7 +6,7 @@ struct AppFeature {
     @ObservableState
     struct State: Equatable {
         var selectedTab: Tab = .aviation
-        var aviation = AviationFeature.State()
+        var aviation = AviationEventsFeature.State()
         var news = NewsFeature.State()
         var pilots = PilotsFeature.State()
         var tab3 = Tab3Feature.State()
@@ -14,7 +14,7 @@ struct AppFeature {
     
     enum Action {
         case selectTab(Tab)
-        case aviation(AviationFeature.Action)
+        case aviation(AviationEventsFeature.Action)
         case news(NewsFeature.Action)
         case pilots(PilotsFeature.Action)
         case tab3(Tab3Feature.Action)
@@ -38,7 +38,7 @@ struct AppFeature {
     
     var body: some ReducerOf<Self> {
         Scope(state: \.aviation, action: \.aviation) {
-            AviationFeature()
+            AviationEventsFeature()
         }
         Scope(state: \.news, action: \.news) {
             NewsFeature()

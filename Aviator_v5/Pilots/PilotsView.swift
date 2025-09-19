@@ -83,8 +83,9 @@ struct PilotsView: View {
                                         }
                                     }
                                     .padding(.horizontal, 16)
-                                    .padding(.top, 30)
+                                    .padding(.top, 10)
                                 }
+                                .padding(.top, 20)
                                 .padding(.vertical, 8)
                                 
                                 // Список пілотів
@@ -100,6 +101,7 @@ struct PilotsView: View {
                                 }
                                 .listStyle(PlainListStyle())
                                 .scrollContentBackground(.hidden)
+                                .padding(.top, 10)
                             }
                         }
                     }
@@ -157,24 +159,24 @@ struct PilotsView: View {
 
 // MARK: - Supporting Views
 
-struct FilterChip: View {
-    let title: String
-    let isSelected: Bool
-    let action: () -> Void
-    
-    var body: some View {
-        Button(action: action) {
-            Text(title)
-                .font(.caption)
-                .padding(.horizontal, 12)
-                .padding(.vertical, 6)
-                .background(Theme.Gradients.soft)
-                .foregroundColor(Theme.Palette.white)
-                .cornerRadius(16)
-        }
-        .buttonStyle(PlainButtonStyle())
-    }
-}
+//struct FilterChip: View {
+//    let title: String
+//    let isSelected: Bool
+//    let action: () -> Void
+//    
+//    var body: some View {
+//        Button(action: action) {
+//            Text(title)
+//                .font(.caption)
+//                .padding(.horizontal, 12)
+//                .padding(.vertical, 6)
+//                .background(Theme.Gradients.soft)
+//                .foregroundColor(Theme.Palette.white)
+//                .cornerRadius(16)
+//        }
+//        .buttonStyle(PlainButtonStyle())
+//    }
+//}
 
 struct PilotRowView: View {
     let pilot: Pilot
@@ -344,10 +346,10 @@ struct PilotDetailView: View {
                 
                 // Основна інформація
                 VStack(alignment: .leading, spacing: 12) {
-                    InfoRow(title: "Nationality", value: pilot.nationality)
-                    InfoRow(title: "Born", value: pilot.birthDate)
+                    InfoRow(icon: "flag", title: "Nationality", value: pilot.nationality)
+                    InfoRow(icon: "calendar", title: "Born", value: pilot.birthDate)
                     if let deathDate = pilot.deathDate {
-                        InfoRow(title: "Died", value: deathDate)
+                        InfoRow(icon: "calendar.badge.minus", title: "Died", value: deathDate)
                     }
                 }
                 
@@ -438,24 +440,24 @@ struct PilotDetailView: View {
     }
 }
 
-struct InfoRow: View {
-    let title: String
-    let value: String
-    
-    var body: some View {
-        HStack {
-            Text(title)
-                .font(.subheadline)
-                .foregroundColor(Theme.Palette.white)
-            
-            Spacer()
-            
-            Text(value)
-                .font(.subheadline)
-                .foregroundColor(Theme.Palette.white.opacity(Theme.Opacity.textSecondary))
-        }
-    }
-}
+//struct InfoRow: View {
+//    let title: String
+//    let value: String
+//    
+//    var body: some View {
+//        HStack {
+//            Text(title)
+//                .font(.subheadline)
+//                .foregroundColor(Theme.Palette.white)
+//            
+//            Spacer()
+//            
+//            Text(value)
+//                .font(.subheadline)
+//                .foregroundColor(Theme.Palette.white.opacity(Theme.Opacity.textSecondary))
+//        }
+//    }
+//}
 
 // MARK: - Helper Functions
 
